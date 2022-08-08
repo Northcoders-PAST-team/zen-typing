@@ -4,3 +4,15 @@
     align-items: center;
     justify-items: center;
 }
+.correct {
+    font-weight: bold;
+    color: green;
+}
+.incorrect {
+    font-weight: bold;
+    color: red;
+}
+.active {
+    font-weight: bold;
+    color: blue;
+}
