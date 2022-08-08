@@ -47,7 +47,7 @@ export default function Home() {
     const emptyBooleanArray: boolean[] = [];
     const [correctWordArray, setCorrectWordArray] = useState(emptyBooleanArray);
 
-    const cloud = 'apple banana carrot'.split(' ');
+    const cloud = 'apple banana carrot dog elephant fudge ghana hello iguana jacket king llama monkey nose oval potato queen rat steam tomato umbrella very well xylophone young zoom'.split(' ');
 
     function processInput(value: string) {
         if(value.endsWith(' ')) {
