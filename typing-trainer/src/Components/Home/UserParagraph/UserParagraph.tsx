@@ -2,9 +2,16 @@ import "./UserParagraph.scss"
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { FC } from "react";
 
-export default function UserParagraph() {
 
+interface UserParagraphProps {
+    userInput: string;
+}
+
+
+const UserParagraph:FC<UserParagraphProps> = (props) => {
+console.log("userInput is " + props.userInput);
 
     return (
 <div>
@@ -15,3 +22,5 @@ export default function UserParagraph() {
 
     )
 }
+
+export default UserParagraph;
