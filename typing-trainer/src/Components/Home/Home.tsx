@@ -17,7 +17,7 @@ export default function Home() {
         <div className="home">
 
             <TargetParagraph />
-            <UserParagraph userInput={userInput}/>
+            <UserParagraph userInput={userInput} setUserInput={setUserInput}/>
         </div>
     )
 }

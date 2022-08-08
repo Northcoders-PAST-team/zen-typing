@@ -6,12 +6,15 @@ import { FC } from "react";
 
 
 interface UserParagraphProps {
-    userInput: string;
+    userInput?: string;
+    setUserInput?: object;
 }
 
 
 const UserParagraph:FC<UserParagraphProps> = (props) => {
+    console.log(props);
 console.log("userInput is " + props.userInput);
+console.log("setUserInput is " + props.setUserInput);
 
     return (
 <div>
