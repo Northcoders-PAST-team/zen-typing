@@ -1,12 +1,21 @@
 import { useState, Fragment } from "react";
 
 import "./Home.scss";
-
+import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
+import { db } from "../../firebaseConfig";
+import {
+  collection,
+  getDoc,
+  addDoc,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 
 import Face from "../Face/Face";
 
@@ -36,12 +45,64 @@ export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
+  const choices = ["HTML", "CSS", "javascript", "python"];
+  const [paragraph, setParagraph] = useState("");
+  const colRef = collection(db, "paragraphs");
+  //React.MouseEvent<HTMLButtonElement, MouseEvent>
+  function buttonHandler(e) {
+    const difficulty = e.target.value;
+    if (difficulty === "hard") {
+      const docRef = doc(
+        db,
+        "paragraphs",
+        choices[Math.floor(Math.random() * 4)]
+      );
+      getDoc(docRef).then((docSnap) => {
+        if (docSnap.exists()) {
+          setParagraph(docSnap.data().paragraph);
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      });
+    } else if (difficulty === "medium") {
+      const options = {
+        method: "GET",
+        url: "https://dinoipsum.com/api/?format=text&words=30&paragraphs=1",
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          setParagraph(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    } else if (difficulty === "easy") {
+      const options = {
+        method: "GET",
+        url: "https://type.fit/api/quotes",
+      };
+
+      axios
+        .request(options)
+        .then(function (response) {
+          setParagraph(response.data[Math.floor(Math.random() * 100)].text);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    }
+  }
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
-  const cloud =
-    "apple banana carrot dog elephant fudge ghana hello iguana jacket king llama monkey nose oval potato queen rat steam tomato umbrella very well xylophone young zoom".split(
-      " "
-    );
+  // const cloud =
+  //   "apple banana carrot dog elephant fudge ghana hello iguana jacket king llama monkey nose oval potato queen rat steam tomato umbrella very well xylophone young zoom".split(
+  //     " "
+  //   );
+
+  const cloud = paragraph.split(" ");
 
   // 9. A handler function for the onChange
   // If the keystroke was a space then assume the user has attempted the active word, so increment the activeWordIndex and reset the userInput
@@ -66,6 +127,12 @@ export default function Home() {
 
   return (
     <div className="home">
+      <select name="difficulty" id="difficulty" onChange={buttonHandler}>
+        <option>choose difficulty level</option>
+        <option value="easy">easy</option>
+        <option value="medium">medium</option>
+        <option value="hard">hard</option>
+      </select>
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
       <Fragment>
         <CssBaseline />
