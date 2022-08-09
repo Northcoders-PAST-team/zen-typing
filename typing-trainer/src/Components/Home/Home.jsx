@@ -97,13 +97,14 @@ export default function Home() {
     if (!startCounting) {
       setStartCounting(true);
     }
-    setStartCounting(true);
+
+    //If they misspelled the last word then this one will catch them when they try to
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
-      console.log("FINISHED");
       setUserInput("FINISHED");
       return;
     }
+    // after a word
     if (value.endsWith(" ")) {
       setActiveWordIndex((index) => index + 1);
       setUserInput("");
@@ -115,6 +116,24 @@ export default function Home() {
 
         return newResult;
       });
+    } else if (
+      //   activeWordIndex === cloud.length - 1 &&
+      //   userInput === cloud[activeWordIndex].slice(0, -1) &&
+      value === cloud[cloud.length - 1]
+    ) {
+      setActiveWordIndex((index) => index + 1);
+      setUserInput("");
+
+      setCorrectWordArray((data) => {
+        const word = value.trim();
+        const newResult = [...data];
+        newResult[activeWordIndex] = word === cloud[activeWordIndex];
+
+        return newResult;
+      });
+      setStartCounting(false);
+      setUserInput("FINISHED");
+      return;
     } else {
       setUserInput(value);
     }
