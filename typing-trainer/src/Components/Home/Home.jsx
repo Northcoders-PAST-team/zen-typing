@@ -32,9 +32,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 //importing authentication function
-import { getAuth } from "firebase/auth";
 
-const auth = getAuth();
 // 7. Define the Word component, picking up the 3 props it's passed and destructure them, change className based on props
 // function Word(props) {
 //   const { text, active, correct } = props;
@@ -53,7 +51,7 @@ const auth = getAuth();
 // 8. This is to stop each Word component from rerendering on every onChange rerender
 // I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
 
-export default function Home() {
+export default function Home({ auth }) {
   const [user] = useAuthState(auth);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
@@ -174,10 +172,6 @@ export default function Home() {
 
   return (
     <div className="home">
-      <section>
-        {user ? <SignOut auth={auth} /> : <SignIn auth={auth} />}
-      </section>
-
       <Timer
         startCounting={startCounting}
         correctWords={correctWordArray.filter(Boolean).length}

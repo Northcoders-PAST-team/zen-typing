@@ -1,5 +1,5 @@
 import "./Nav.scss";
-
+import { useAuthState } from "react-firebase-hooks/auth";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,10 +14,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
+import SignIn from "../SignIn/SignIn";
+import SignOut from "../SignOut/SignOut";
+
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = ({ auth }) => {
+  const [user] = useAuthState(auth);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -68,6 +72,9 @@ const ResponsiveAppBar = () => {
               color="inherit"
             >
               {/* <MenuIcon /> */}
+              <section>
+                {user ? <SignOut auth={auth} /> : <SignIn auth={auth} />}
+              </section>
             </IconButton>
             <Menu
               id="menu-appbar"
