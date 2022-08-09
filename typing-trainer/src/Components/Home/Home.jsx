@@ -19,6 +19,7 @@ import {
 
 import Face from "../Face/Face";
 import Word from "./Word";
+import Timer from "./Timer";
 
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
@@ -27,6 +28,8 @@ export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
+  const [startCounting, setStartCounting] = useState(false);
+
   const choices = ["HTML", "CSS", "javascript", "python"];
   const [paragraph, setParagraph] = useState("");
   const colRef = collection(db, "paragraphs");
@@ -91,6 +94,16 @@ export default function Home() {
   // Log in the correctWordArray a true if the attempt matches the paragraph array item at activeWordIndex, a false otherwise.
   // If the keystroke wasn't a space then they're still typing the active word, so just setUserInput(value).
   function processInput(value) {
+    if (!startCounting) {
+      setStartCounting(true);
+    }
+    setStartCounting(true);
+    if (activeWordIndex === cloud.length) {
+      setStartCounting(false);
+      console.log("FINISHED");
+      setUserInput("FINISHED");
+      return;
+    }
     if (value.endsWith(" ")) {
       setActiveWordIndex((index) => index + 1);
       setUserInput("");
@@ -109,6 +122,10 @@ export default function Home() {
 
   return (
     <div className="home">
+      <Timer
+        startCounting={startCounting}
+        correctWords={correctWordArray.filter(Boolean).length}
+      />
       <select name="difficulty" id="difficulty" onChange={buttonHandler}>
         <option>choose difficulty level</option>
         <option value="easy">easy</option>
