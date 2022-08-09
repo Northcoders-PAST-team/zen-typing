@@ -1,8 +1,12 @@
 import React from 'react'
+import UserInfoCard from './UserInfoCard'
+import './User.scss'
 
 const User = () => {
   return (
-    <div>User</div>
+    <div className="user">
+        <UserInfoCard/>
+    </div>
   )
 }
 

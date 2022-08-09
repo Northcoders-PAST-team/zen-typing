@@ -1,0 +1,19 @@
+.user {
+    display: grid;
+    grid-template-columns: 25% 75%;
+    grid-template-rows: auto;
+    grid-template-areas: 'info data', ;
+    min-height: 100vh;
+
+
+    &-infocard {
+        display: flex;
+        flex-direction: column;
+        grid-area: info;
+    }
+
+    &-avatar {
+        border-radius: 50%;
+        width: 100%;
+    }
+}
