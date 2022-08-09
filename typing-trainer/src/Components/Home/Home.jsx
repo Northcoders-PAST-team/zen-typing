@@ -17,8 +17,13 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-import Face from "../Face/Face";
+import SignIn from "../SignIn/SignIn";
+import SignOut from "../SignOut/SignOut";
 
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getAuth } from "firebase/auth";
+import Face from "../Face/Face";
+const auth = getAuth();
 // 7. Define the Word component, picking up the 3 props it's passed and destructure them, change className based on props
 function Word(props) {
   const { text, active, correct } = props;
@@ -39,6 +44,7 @@ function Word(props) {
 Word = React.memo(Word);
 
 export default function Home() {
+  const [user] = useAuthState(auth);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
   // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
@@ -127,6 +133,9 @@ export default function Home() {
 
   return (
     <div className="home">
+      <section>
+        {user ? <SignOut auth={auth} /> : <SignIn auth={auth} />}
+      </section>
       <select name="difficulty" id="difficulty" onChange={buttonHandler}>
         <option>choose difficulty level</option>
         <option value="easy">easy</option>
