@@ -1,5 +1,7 @@
 import { useState, Fragment } from "react";
-
+import Face from "../Face/Face";
+import Word from "./Word";
+import Timer from "./Timer";
 import "./Home.scss";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -7,7 +9,11 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
+
+//importing database
 import { db } from "../../firebaseConfig";
+
+//importing functions
 import {
   collection,
   getDoc,
@@ -17,31 +23,35 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
+//importing components
 import SignIn from "../SignIn/SignIn";
 import SignOut from "../SignOut/SignOut";
 
+//importing react-firebase hooks
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+
+//importing authentication function
 import { getAuth } from "firebase/auth";
-import Face from "../Face/Face";
+
 const auth = getAuth();
 // 7. Define the Word component, picking up the 3 props it's passed and destructure them, change className based on props
-function Word(props) {
-  const { text, active, correct } = props;
-  if (correct === true) {
-    return <span className="correct">{text} </span>;
-  }
-  if (correct === false) {
-    return <span className="incorrect">{text} </span>;
-  }
-  if (active === true) {
-    return <span className="active">{text} </span>;
-  }
-  return <span>{text} </span>;
-}
+// function Word(props) {
+//   const { text, active, correct } = props;
+//   if (correct === true) {
+//     return <span className="correct">{text} </span>;
+//   }
+//   if (correct === false) {
+//     return <span className="incorrect">{text} </span>;
+//   }
+//   if (active === true) {
+//     return <span className="active">{text} </span>;
+//   }
+//   return <span>{text} </span>;
+// }
 
 // 8. This is to stop each Word component from rerendering on every onChange rerender
 // I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
-Word = React.memo(Word);
 
 export default function Home() {
   const [user] = useAuthState(auth);
@@ -51,6 +61,8 @@ export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
+  const [startCounting, setStartCounting] = useState(false);
+
   const choices = ["HTML", "CSS", "javascript", "python"];
   const [paragraph, setParagraph] = useState("");
   const colRef = collection(db, "paragraphs");
@@ -115,6 +127,17 @@ export default function Home() {
   // Log in the correctWordArray a true if the attempt matches the paragraph array item at activeWordIndex, a false otherwise.
   // If the keystroke wasn't a space then they're still typing the active word, so just setUserInput(value).
   function processInput(value) {
+    if (!startCounting) {
+      setStartCounting(true);
+    }
+
+    //If they misspelled the last word then this one will catch them when they try to
+    if (activeWordIndex === cloud.length) {
+      setStartCounting(false);
+      setUserInput("FINISHED");
+      return;
+    }
+    // after a word
     if (value.endsWith(" ")) {
       setActiveWordIndex((index) => index + 1);
       setUserInput("");
@@ -126,6 +149,24 @@ export default function Home() {
 
         return newResult;
       });
+    } else if (
+      //   activeWordIndex === cloud.length - 1 &&
+      //   userInput === cloud[activeWordIndex].slice(0, -1) &&
+      value === cloud[cloud.length - 1]
+    ) {
+      setActiveWordIndex((index) => index + 1);
+      setUserInput("");
+
+      setCorrectWordArray((data) => {
+        const word = value.trim();
+        const newResult = [...data];
+        newResult[activeWordIndex] = word === cloud[activeWordIndex];
+
+        return newResult;
+      });
+      setStartCounting(false);
+      setUserInput("FINISHED");
+      return;
     } else {
       setUserInput(value);
     }
@@ -136,6 +177,12 @@ export default function Home() {
       <section>
         {user ? <SignOut auth={auth} /> : <SignIn auth={auth} />}
       </section>
+
+      <Timer
+        startCounting={startCounting}
+        correctWords={correctWordArray.filter(Boolean).length}
+      />
+
       <select name="difficulty" id="difficulty" onChange={buttonHandler}>
         <option>choose difficulty level</option>
         <option value="easy">easy</option>
