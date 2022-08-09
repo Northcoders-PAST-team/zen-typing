@@ -1,0 +1,64 @@
+.hide-emotion-and-emotion {
+    display: flex;
+  
+}
+
+
+.current-emotion {
+
+    color: white;
+    animation-name: adjust-emotion;
+    animation-duration: 2s;
+    animation-delay: -2s;
+
+}
+
+.activate {
+    padding-right: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+.face { 
+    display: flex; 
+
+    flex-direction: column;
+    position: absolute;
+    top: 300px;
+    width: 400px; 
+    height: 400px; 
+    align-items: center; 
+    justify-content: space-between;
+    -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+    -webkit-border-radius: 50%; 
+}
+
+.face-video {
+    position: absolute;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #666;
+}
+
+.face-canvas {
+    position: absolute;
+    top: -25px;
+    width: 680px;
+    height: 550px;
+    background-color: rgba(6, 1, 103, 0.432);
+}
+
+.face-canvas-angry {
+    position: absolute;
+    top: -25px;
+    width: 680px;
+    height: 550px;
+    background-color: rgba(147, 66, 0, 0.599);
+}
+
+.hidden{
+    display: none;
+}

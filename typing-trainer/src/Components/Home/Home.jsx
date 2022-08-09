@@ -17,6 +17,8 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
+import Face from "../Face/Face";
+
 // 7. Define the Word component, picking up the 3 props it's passed and destructure them, change className based on props
 function Word(props) {
   const { text, active, correct } = props;
@@ -164,6 +166,9 @@ export default function Home() {
           </Box>
         </Container>
       </Fragment>
+
+      <Face />
+
       <p>{userInput}</p>
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
       <TextField
