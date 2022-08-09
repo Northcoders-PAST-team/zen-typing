@@ -18,25 +18,8 @@ import {
 } from "firebase/firestore";
 
 import Face from "../Face/Face";
-
-// 7. Define the Word component, picking up the 3 props it's passed and destructure them, change className based on props
-function Word(props) {
-  const { text, active, correct } = props;
-  if (correct === true) {
-    return <span className="correct">{text} </span>;
-  }
-  if (correct === false) {
-    return <span className="incorrect">{text} </span>;
-  }
-  if (active === true) {
-    return <span className="active">{text} </span>;
-  }
-  return <span>{text} </span>;
-}
-
-// 8. This is to stop each Word component from rerendering on every onChange rerender
-// I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
-Word = React.memo(Word);
+import Word from "./Word";
+import Timer from "./Timer";
 
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
@@ -45,6 +28,8 @@ export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
+  const [startCounting, setStartCounting] = useState(false);
+
   const choices = ["HTML", "CSS", "javascript", "python"];
   const [paragraph, setParagraph] = useState("");
   const colRef = collection(db, "paragraphs");
@@ -109,6 +94,17 @@ export default function Home() {
   // Log in the correctWordArray a true if the attempt matches the paragraph array item at activeWordIndex, a false otherwise.
   // If the keystroke wasn't a space then they're still typing the active word, so just setUserInput(value).
   function processInput(value) {
+    if (!startCounting) {
+      setStartCounting(true);
+    }
+
+    //If they misspelled the last word then this one will catch them when they try to
+    if (activeWordIndex === cloud.length) {
+      setStartCounting(false);
+      setUserInput("FINISHED");
+      return;
+    }
+    // after a word
     if (value.endsWith(" ")) {
       setActiveWordIndex((index) => index + 1);
       setUserInput("");
@@ -120,6 +116,24 @@ export default function Home() {
 
         return newResult;
       });
+    } else if (
+      //   activeWordIndex === cloud.length - 1 &&
+      //   userInput === cloud[activeWordIndex].slice(0, -1) &&
+      value === cloud[cloud.length - 1]
+    ) {
+      setActiveWordIndex((index) => index + 1);
+      setUserInput("");
+
+      setCorrectWordArray((data) => {
+        const word = value.trim();
+        const newResult = [...data];
+        newResult[activeWordIndex] = word === cloud[activeWordIndex];
+
+        return newResult;
+      });
+      setStartCounting(false);
+      setUserInput("FINISHED");
+      return;
     } else {
       setUserInput(value);
     }
@@ -127,6 +141,10 @@ export default function Home() {
 
   return (
     <div className="home">
+      <Timer
+        startCounting={startCounting}
+        correctWords={correctWordArray.filter(Boolean).length}
+      />
       <select name="difficulty" id="difficulty" onChange={buttonHandler}>
         <option>choose difficulty level</option>
         <option value="easy">easy</option>
