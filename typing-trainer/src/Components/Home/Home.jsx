@@ -33,6 +33,7 @@ export default function Home() {
   const [correctWordArray, setCorrectWordArray] = useState([]);
   const [startCounting, setStartCounting] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [speed, setSpeed] = useState(0);
 
   const choices = ["HTML", "CSS", "javascript", "python"];
   const [paragraph, setParagraph] = useState("");
@@ -148,8 +149,8 @@ export default function Home() {
 
       addDoc(exercisesRef, {
         createdAt: Timestamp.fromDate(new Date()),
-        time: 9,
-        wpm: 9,
+        time: timeElapsed,
+        wpm: speed,
       })
         .then((docRef) => {
           console.log("Document has been added successfully)");
@@ -171,6 +172,8 @@ export default function Home() {
         correctWords={correctWordArray.filter(Boolean).length}
         timeElapsed={timeElapsed}
         setTimeElapsed={setTimeElapsed}
+        speed={speed}
+        setSpeed={setSpeed}
       />
       <select name="difficulty" id="difficulty" onChange={buttonHandler}>
         <option>choose difficulty level</option>
