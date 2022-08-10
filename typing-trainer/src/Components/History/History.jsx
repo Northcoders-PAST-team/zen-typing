@@ -1,6 +1,6 @@
 import "firebase/compat/firestore";
 import { db } from "../../firebaseConfig";
-import { collection } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 

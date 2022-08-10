@@ -1,7 +1,4 @@
 import { useState, Fragment, useEffect } from "react";
-import Face from "../Face/Face";
-import Word from "./Word";
-import Timer from "./Timer";
 
 import "./Home.scss";
 import axios from "axios";
@@ -28,9 +25,6 @@ import Face from "../Face/Face";
 import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
-
-//importing functions
-import { getDoc, doc } from "firebase/firestore";
 
 const choices = ["HTML", "CSS", "javascript", "python"];
 
@@ -179,8 +173,8 @@ export default function Home() {
 
       console.log("timeElapsed is " + timeElapsed);
 
-      const speed =
-        correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
+      // const speed =
+      //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
 
       addDoc(exercisesRef, {
         createdAt: Timestamp.fromDate(new Date()),
