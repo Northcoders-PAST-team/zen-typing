@@ -1,7 +1,3 @@
-.hide-emotion-and-emotion {
-    display: flex;
-  
-}
 
 
 .current-emotion {
@@ -10,13 +6,14 @@
     animation-name: adjust-emotion;
     animation-duration: 2s;
     animation-delay: -2s;
-
+    font-size: 20px;
+    
 }
 
-.activate {
+.activate-button {
     padding-right: 200px;
-    display: flex;
-    flex-direction: column;
+
+    text-align: center;
 }
 
 
@@ -34,6 +31,8 @@
     justify-content: space-between;
     -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
     -webkit-border-radius: 50%; 
+    
+    margin-top: 160px;
 }
 
 .face-video {
@@ -42,6 +41,9 @@
     border-radius: 50%;
     background-color: #666;
 }
+
+
+
 
 .face-canvas {
     position: absolute;
@@ -58,6 +60,7 @@
     height: 550px;
     background-color: rgba(147, 66, 0, 0.599);
 }
+
 
 .hidden{
     display: none;
