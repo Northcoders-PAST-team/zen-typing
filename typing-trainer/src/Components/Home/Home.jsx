@@ -1,4 +1,7 @@
-import { useState, useRef, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
+import Face from "../Face/Face";
+import Word from "./Word";
+import Timer from "./Timer";
 
 import "./Home.scss";
 import axios from "axios";
@@ -7,6 +10,8 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
+
+//importing database
 import { db } from "../../firebaseConfig";
 import {
   collection,
@@ -24,6 +29,11 @@ import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
 
+//importing functions
+import { getDoc, doc } from "firebase/firestore";
+
+const choices = ["HTML", "CSS", "javascript", "python"];
+
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
@@ -31,18 +41,43 @@ export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
+
   const [startCounting, setStartCounting] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [speed, setSpeed] = useState(0);
 
+  const [emotionLog, setEmotionLog] = useState({
+    neutral: 0,
+    happy: 0,
+    surprised: 0,
+    angry: 0,
+    sad: 0,
+    disgusted: 0,
+  });
+
+  ///testing
+
+  // let primaryEmotion = Object.keys(currentEmotions).reduce((a, b) =>
+  //   currentEmotions[a] > currentEmotions[b] ? a : b
+  // );
+
   const choices = ["HTML", "CSS", "javascript", "python"];
+
+  const [difficulty, setDifficulty] = useState("easy");
+  const [finished, setFinished] = useState(false);
+
   const [paragraph, setParagraph] = useState("");
+
   const colRef = collection(db, "paragraphs");
   // const exercisesRef = collection(db, "exercises");
   const exercisesRef = collection(db, "exercises");
+
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
-  function buttonHandler(e) {
-    const difficulty = e.target.value;
+  function selectHandler(e) {
+    setDifficulty(e.target.value);
+  }
+
+  useEffect(() => {
     if (difficulty === "hard") {
       const docRef = doc(
         db,
@@ -86,7 +121,7 @@ export default function Home() {
           console.error(error);
         });
     }
-  }
+  }, [finished, difficulty]);
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
   // const cloud =
@@ -109,6 +144,7 @@ export default function Home() {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
       return;
     }
     // after a word
@@ -141,7 +177,6 @@ export default function Home() {
       setStartCounting(false);
       setUserInput("FINISHED");
 
-      //timeElapsed is 0 at this point when it should be 10 or whatever
       console.log("timeElapsed is " + timeElapsed);
 
       const speed =
@@ -159,6 +194,8 @@ export default function Home() {
           console.log("ERROR IS " + error);
         });
 
+      setFinished(userInput === "FINISHED");
+
       return;
     } else {
       setUserInput(value);
@@ -174,8 +211,10 @@ export default function Home() {
         setTimeElapsed={setTimeElapsed}
         speed={speed}
         setSpeed={setSpeed}
+        emotionLog={emotionLog}
       />
-      <select name="difficulty" id="difficulty" onChange={buttonHandler}>
+
+      <select name="difficulty" id="difficulty" onChange={selectHandler}>
         <option>choose difficulty level</option>
         <option value="easy">easy</option>
         <option value="medium">medium</option>
@@ -183,39 +222,47 @@ export default function Home() {
       </select>
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
       <Fragment>
-        <CssBaseline />
-        <Container maxWidth="sm">
-          <Box
-            sx={{
-              borderLeft: 1,
-              borderRight: 1,
-              borderRadius: "16px",
-              mt: "1.5rem",
-              bgcolor: "#black",
-              height: "20vh",
-              color: "white",
-              fontFamily: "Georgia",
-            }}
-          >
-            {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
-            {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
-            {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
-            <p>
-              {cloud.map((word, index) => {
-                return (
-                  <Word
-                    text={word}
-                    active={index === activeWordIndex}
-                    correct={correctWordArray[index]}
-                  />
-                );
-              })}
-            </p>
-          </Box>
-        </Container>
+        <div className="target-paragraph">
+          <CssBaseline />
+          <Container maxWidth="sm">
+            <Box
+              sx={{
+                borderLeft: 1,
+                borderRight: 1,
+                borderRadius: "16px",
+                mt: "1.5rem",
+                bgcolor: "#black",
+                height: "20vh",
+                color: "white",
+                fontFamily: "Georgia",
+              }}
+            >
+              {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
+              {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
+              {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
+              <p>
+                {cloud.map((word, index) => {
+                  return (
+                    <Word
+                      text={word}
+                      active={index === activeWordIndex}
+                      correct={correctWordArray[index]}
+                    />
+                  );
+                })}
+              </p>
+            </Box>
+          </Container>
+        </div>
       </Fragment>
 
-      <Face />
+      <Face
+        startCounting={startCounting}
+        setEmotionLog={setEmotionLog}
+        emotionLog={emotionLog}
+        timeElapsed={timeElapsed}
+        // primaryEmotion={primaryEmotion}
+      />
 
       <p>{userInput}</p>
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
