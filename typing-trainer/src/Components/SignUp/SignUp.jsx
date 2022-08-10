@@ -2,20 +2,7 @@ import { db } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
-  setDoc,
-  serverTimestamp,
-  query,
-  orderBy,
-  where,
-  onSnapshot,
-} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 function SignUp({ auth }) {
   let navigate = useNavigate();
@@ -55,7 +42,7 @@ function SignUp({ auth }) {
   return (
     <form onSubmit={signupUser}>
       <div className="container">
-        <h1>Sign Up</h1>
+        <h2>Sign Up</h2>
         <p>Please fill in this form to create an account.</p>
 
         <label>
@@ -97,7 +84,7 @@ function SignUp({ auth }) {
         <br />
         <br />
         <div onSubmit={signupUser}>
-          <button type="submit" className="signupbtn">
+          <button type="submit" className="btn btn-primary">
             Sign Up
           </button>
         </div>

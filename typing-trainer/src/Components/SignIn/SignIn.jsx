@@ -3,26 +3,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
-  setDoc,
-  serverTimestamp,
-  query,
-  orderBy,
-  where,
-  onSnapshot,
-} from "firebase/firestore";
-import {
   signInWithPopup,
   GoogleAuthProvider,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
+
 function SignIn({ auth }) {
   let navigate = useNavigate();
   //set login details state with Email
@@ -64,7 +49,14 @@ function SignIn({ auth }) {
     <div>
       <Link to="/">
         {" "}
-        <button onClick={signInWithGoogle}>Sign in with Google</button>
+        <button onClick={signInWithGoogle} className="btn btn-success">
+          Sign in with Google
+          <img
+            src="https://img.icons8.com/clouds/100/000000/gmail-new.png"
+            alt="google mail"
+            className="google"
+          />
+        </button>
       </Link>
 
       <form onSubmit={loginUser}>
@@ -95,7 +87,9 @@ function SignIn({ auth }) {
           <br />
           <br />
 
-          <button type="submit">Login</button>
+          <button type="submit" className="btn btn-primary">
+            Login
+          </button>
         </div>
       </form>
       <Link to="/signup">Create account</Link>

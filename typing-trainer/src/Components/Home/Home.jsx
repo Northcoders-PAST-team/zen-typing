@@ -52,7 +52,7 @@ export default function Home() {
 
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
   function selectHandler(e) {
-    setId(String(Math.floor(Math.random() * 10) + 1));
+    setId(String(Math.floor(Math.random() * 10 + 1)));
     setDifficulty(e.target.value);
   }
 
@@ -78,7 +78,26 @@ export default function Home() {
   //   "apple banana carrot dog elephant fudge ghana hello iguana jacket king llama monkey nose oval potato queen rat steam tomato umbrella very well xylophone young zoom".split(
   //     " "
   //   );
-  let cloud = paragraph.split(" ");
+
+  let cloud = String(paragraph).split(" ");
+  cloud = JSON.stringify(cloud);
+
+  if (cloud === JSON.stringify(["undefined"])) {
+    if (difficulty === "easy") {
+      setParagraph(
+        "Books enable you to expose yourself to new ideas and new ways to achieve your goals. They enable you to think outside the box."
+      );
+    } else if (difficulty === "medium") {
+      setParagraph(
+        "Things that used to take hours to complete can now be completed in a matter of minutes because of technology. Everything is just a click away, including banking, sending e-mail, assignments, and even shopping."
+      );
+    } else {
+      setParagraph(
+        "def prepend_path(self, name: str, paths: List[str]) -> None: old_val = self.env.get(name)         paths = [p for p in paths if isdir(p)]         if not paths:  return  if old_val is not None: new_val = ':'.join(itertools.chain(paths, [old_val])) else: new_val = ':'.join(paths)     self.env[name] = new_val ~ `! 1@ 2# 3$ 4% 5^ 6& 7* 8( 9) 0_ -+ =Backspace"
+      );
+    }
+  }
+  cloud = JSON.parse(cloud);
 
   // 9. A handler function for the onChange
   // If the keystroke was a space then assume the user has attempted the active word, so increment the activeWordIndex and reset the userInput
