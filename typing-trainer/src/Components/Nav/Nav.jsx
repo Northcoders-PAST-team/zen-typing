@@ -1,5 +1,7 @@
 import "./Nav.scss";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Link } from "react-router-dom";
+
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,10 +16,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
+import { useAuthState } from "react-firebase-hooks/auth";
+
 const pages = ["About", "Community", "Statistics"];
 const settings = ["Profile", "Account", "Dashboard"];
 
 const ResponsiveAppBar = ({ auth }) => {
+  const [user] = useAuthState(auth);
+  if (user) console.log("im the user", user.email);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,17 +41,6 @@ const ResponsiveAppBar = ({ auth }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  function signInWithGoogle() {
-    //google authentication provider
-
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({
-      login_hint: "user@example.com",
-    });
-    //sign in with google popup
-    signInWithPopup(auth, provider);
-  }
 
   return (
     <AppBar position="static" style={{ background: "#0e34c2", color: "white" }}>
@@ -160,18 +155,19 @@ const ResponsiveAppBar = ({ auth }) => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-              {auth.currentUser ? (
+              {user ? (
                 <MenuItem key="Logout" onClick={handleCloseUserMenu}>
                   <Typography textAlign="center" onClick={() => auth.signOut()}>
                     Logout
                   </Typography>
                 </MenuItem>
               ) : (
-                <MenuItem key="Login" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={signInWithGoogle}>
-                    Login
-                  </Typography>
-                </MenuItem>
+                <Link to="/signin">
+                  {" "}
+                  <MenuItem key="Login">
+                    <Typography textAlign="center">Login</Typography>
+                  </MenuItem>
+                </Link>
               )}
             </Menu>
           </Box>
