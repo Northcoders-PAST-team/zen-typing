@@ -3,13 +3,17 @@ import "./Face.scss";
 import * as faceapi from "face-api.js";
 import Button from "@mui/material/Button";
 
-export default function Face() {
+export default function Face({
+  startCounting,
+  emotionLog,
+  setEmotionLog,
+  timeElapsed,
+}) {
   const videoRef = useRef();
   const canvasRef = useRef();
 
   useEffect(() => {
     startVideo();
-
     videoRef && loadModels();
   }, []);
 
@@ -41,6 +45,7 @@ export default function Face() {
   const [surprised, setSurprised] = useState();
   const [angry, setAngry] = useState();
   const [sad, setSad] = useState();
+  const [disgusted, setDisgusted] = useState();
 
   const [calm, setCalm] = useState(true);
 
@@ -50,14 +55,24 @@ export default function Face() {
     surprised: surprised,
     angry: angry,
     sad: sad,
+    disgusted: disgusted,
   };
 
-  let primaryEmotion = Object.keys(currentEmotions).reduce((a, b) =>
-    currentEmotions[a] > currentEmotions[b] ? a : b
-  );
+  let primaryEmotion = !currentEmotions
+    ? "neutral"
+    : Object.keys(currentEmotions).reduce((a, b) =>
+        currentEmotions[a] > currentEmotions[b] ? a : b
+      );
+
+  const [previousInterval, setPreviousInterval] = useState(0);
+  const [previousEmotion, setPreviousEmotion] = useState("neutral");
 
   useEffect(() => {
-    setInterval(setCalm(primaryEmotion !== "neutral" ? false : true));
+    setCalm(primaryEmotion !== "neutral" ? false : true);
+
+    emotionLog[previousEmotion] += timeElapsed - previousInterval;
+    setPreviousInterval(timeElapsed);
+    setPreviousEmotion(primaryEmotion);
   }, [primaryEmotion]);
 
   const faceDetection = async () => {
@@ -67,11 +82,16 @@ export default function Face() {
         .withFaceLandmarks()
         .withFaceExpressions();
 
-      setNeutral(detections[0].expressions.neutral);
-      setHappy(detections[0].expressions.happy);
-      setSurprised(detections[0].expressions.surprised);
-      setAngry(detections[0].expressions.angry);
-      setSad(detections[0].expressions.sad);
+      if (!detections[0]) {
+        return;
+      } else {
+        setNeutral(detections[0].expressions.neutral);
+        setHappy(detections[0].expressions.happy);
+        setSurprised(detections[0].expressions.surprised);
+        setAngry(detections[0].expressions.angry);
+        setSad(detections[0].expressions.sad);
+        setDisgusted(detections[0].expressions.disgusted);
+      }
 
       canvasRef.current.innerHtml = faceapi.createCanvasFromMedia(
         videoRef.current
@@ -85,6 +105,7 @@ export default function Face() {
         width: 940,
         height: 650,
       });
+
       faceapi.draw.drawDetections(canvasRef.current, resized);
       faceapi.draw.drawFaceLandmarks(canvasRef.current, resized);
       faceapi.draw.drawFaceExpressions(canvasRef.current, resized);
@@ -102,6 +123,7 @@ export default function Face() {
           variant="contained"
           sx={{
             mr: 5,
+            width: "300px",
           }}
         >
           {hiddenVideo

@@ -28,7 +28,24 @@ export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
+
   const [startCounting, setStartCounting] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+
+  const [emotionLog, setEmotionLog] = useState({
+    neutral: 0,
+    happy: 0,
+    surprised: 0,
+    angry: 0,
+    sad: 0,
+    disgusted: 0,
+  });
+
+  ///testing
+
+  // let primaryEmotion = Object.keys(currentEmotions).reduce((a, b) =>
+  //   currentEmotions[a] > currentEmotions[b] ? a : b
+  // );
 
   const choices = ["HTML", "CSS", "javascript", "python"];
   const [paragraph, setParagraph] = useState("");
@@ -144,6 +161,9 @@ export default function Home() {
       <Timer
         startCounting={startCounting}
         correctWords={correctWordArray.filter(Boolean).length}
+        timeElapsed={timeElapsed}
+        setTimeElapsed={setTimeElapsed}
+        emotionLog={emotionLog}
       />
       <select name="difficulty" id="difficulty" onChange={buttonHandler}>
         <option>choose difficulty level</option>
@@ -153,39 +173,47 @@ export default function Home() {
       </select>
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
       <Fragment>
-        <CssBaseline />
-        <Container maxWidth="sm">
-          <Box
-            sx={{
-              borderLeft: 1,
-              borderRight: 1,
-              borderRadius: "16px",
-              mt: "1.5rem",
-              bgcolor: "#black",
-              height: "20vh",
-              color: "white",
-              fontFamily: "Georgia",
-            }}
-          >
-            {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
-            {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
-            {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
-            <p>
-              {cloud.map((word, index) => {
-                return (
-                  <Word
-                    text={word}
-                    active={index === activeWordIndex}
-                    correct={correctWordArray[index]}
-                  />
-                );
-              })}
-            </p>
-          </Box>
-        </Container>
+        <div className="target-paragraph">
+          <CssBaseline />
+          <Container maxWidth="sm">
+            <Box
+              sx={{
+                borderLeft: 1,
+                borderRight: 1,
+                borderRadius: "16px",
+                mt: "1.5rem",
+                bgcolor: "#black",
+                height: "20vh",
+                color: "white",
+                fontFamily: "Georgia",
+              }}
+            >
+              {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
+              {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
+              {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
+              <p>
+                {cloud.map((word, index) => {
+                  return (
+                    <Word
+                      text={word}
+                      active={index === activeWordIndex}
+                      correct={correctWordArray[index]}
+                    />
+                  );
+                })}
+              </p>
+            </Box>
+          </Container>
+        </div>
       </Fragment>
 
-      <Face />
+      <Face
+        startCounting={startCounting}
+        setEmotionLog={setEmotionLog}
+        emotionLog={emotionLog}
+        timeElapsed={timeElapsed}
+        // primaryEmotion={primaryEmotion}
+      />
 
       <p>{userInput}</p>
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
