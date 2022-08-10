@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, useRef, Fragment } from "react";
 
 import "./Home.scss";
 import axios from "axios";
@@ -14,12 +14,15 @@ import {
   addDoc,
   deleteDoc,
   doc,
+  setDoc,
   updateDoc,
+  Timestamp,
 } from "firebase/firestore";
 
 import Face from "../Face/Face";
 import Word from "./Word";
 import Timer from "./Timer";
+import History from "../History/History";
 
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
@@ -29,10 +32,13 @@ export default function Home() {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
   const [startCounting, setStartCounting] = useState(false);
+  const [timeElapsed, setTimeElapsed] = useState(0);
 
   const choices = ["HTML", "CSS", "javascript", "python"];
   const [paragraph, setParagraph] = useState("");
   const colRef = collection(db, "paragraphs");
+  // const exercisesRef = collection(db, "exercises");
+  const exercisesRef = collection(db, "exercises");
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
   function buttonHandler(e) {
     const difficulty = e.target.value;
@@ -93,7 +99,7 @@ export default function Home() {
   // If the keystroke was a space then assume the user has attempted the active word, so increment the activeWordIndex and reset the userInput
   // Log in the correctWordArray a true if the attempt matches the paragraph array item at activeWordIndex, a false otherwise.
   // If the keystroke wasn't a space then they're still typing the active word, so just setUserInput(value).
-  function processInput(value) {
+  const processInput = (value) => {
     if (!startCounting) {
       setStartCounting(true);
     }
@@ -133,17 +139,38 @@ export default function Home() {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
+
+      //timeElapsed is 0 at this point when it should be 10 or whatever
+      console.log("timeElapsed is " + timeElapsed);
+
+      const speed =
+        correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
+
+      addDoc(exercisesRef, {
+        createdAt: Timestamp.fromDate(new Date()),
+        time: 9,
+        wpm: 9,
+      })
+        .then((docRef) => {
+          console.log("Document has been added successfully)");
+        })
+        .catch((error) => {
+          console.log("ERROR IS " + error);
+        });
+
       return;
     } else {
       setUserInput(value);
     }
-  }
+  };
 
   return (
     <div className="home">
       <Timer
         startCounting={startCounting}
         correctWords={correctWordArray.filter(Boolean).length}
+        timeElapsed={timeElapsed}
+        setTimeElapsed={setTimeElapsed}
       />
       <select name="difficulty" id="difficulty" onChange={buttonHandler}>
         <option>choose difficulty level</option>
@@ -213,6 +240,7 @@ export default function Home() {
           style: { color: "black" },
         }}
       />
+      <History />
     </div>
   );
 }

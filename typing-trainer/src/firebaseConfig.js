@@ -14,8 +14,8 @@ const firebaseConfig = {
   projectId: "tr-practice",
   storageBucket: "tr-practice.appspot.com",
   messagingSenderId: "288443965163",
-  appId: "1:288443965163:web:7d42ef65141b76307668ae",
-  measurementId: "G-NJQ64W9PS8",
+  appId: "1:288443965163:web:4e95325f7b2231e37668ae",
+  measurementId: "G-M4CQE95XRJ",
 };
 
 // Initialize Firebase
