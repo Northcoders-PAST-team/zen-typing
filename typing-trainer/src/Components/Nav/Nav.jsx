@@ -23,7 +23,7 @@ const settings = ["Profile", "Account", "Dashboard"];
 
 const ResponsiveAppBar = ({ auth }) => {
   const [user] = useAuthState(auth);
-  if (user) console.log("im the user", user.email);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -98,6 +98,7 @@ const ResponsiveAppBar = ({ auth }) => {
               ))}
             </Menu>
           </Box>
+
           <Typography
             variant="h5"
             noWrap
@@ -127,7 +128,7 @@ const ResponsiveAppBar = ({ auth }) => {
               </Button>
             ))}
           </Box>
-
+          {user ? <p> {user.email}</p> : null}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

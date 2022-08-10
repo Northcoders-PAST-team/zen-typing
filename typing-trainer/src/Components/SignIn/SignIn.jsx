@@ -26,6 +26,7 @@ function SignIn({ auth }) {
     e.preventDefault();
     signInWithEmailAndPassword(auth, login.email, login.password)
       .then((cred) => {
+        setError(null);
         console.log("user logged in", cred.user);
         navigate("/", { replace: true });
       })
@@ -43,6 +44,7 @@ function SignIn({ auth }) {
     });
     //sign in with google popup
     signInWithPopup(auth, provider);
+    console.log(auth.currentUser, "here");
   }
 
   return (
