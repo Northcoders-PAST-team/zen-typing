@@ -1,4 +1,5 @@
 import "./Nav.scss";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
@@ -18,7 +19,7 @@ import SignIn from "../SignIn/SignIn";
 import SignOut from "../SignOut/SignOut";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Account", "Dashboard"];
 
 const ResponsiveAppBar = ({ auth }) => {
   const [user] = useAuthState(auth);
@@ -39,6 +40,17 @@ const ResponsiveAppBar = ({ auth }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  function signInWithGoogle() {
+    //google authentication provider
+
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({
+      login_hint: "user@example.com",
+    });
+    //sign in with google popup
+    signInWithPopup(auth, provider);
+  }
 
   return (
     <AppBar position="static" style={{ background: "#0e34c2", color: "white" }}>
@@ -158,6 +170,19 @@ const ResponsiveAppBar = ({ auth }) => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              {user ? (
+                <MenuItem key="Logout" onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={() => auth.signOut()}>
+                    Logout
+                  </Typography>
+                </MenuItem>
+              ) : (
+                <MenuItem key="Login" onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={signInWithGoogle}>
+                    Login
+                  </Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>
