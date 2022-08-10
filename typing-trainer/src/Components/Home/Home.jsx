@@ -34,7 +34,7 @@ export default function Home() {
   const [paragraph, setParagraph] = useState("");
 
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
-  function buttonHandler(e) {
+  function selectHandler(e) {
     setDifficulty(e.target.value);
   }
 
@@ -151,7 +151,7 @@ export default function Home() {
         correctWords={correctWordArray.filter(Boolean).length}
       />
 
-      <select name="difficulty" id="difficulty" onChange={buttonHandler}>
+      <select name="difficulty" id="difficulty" onChange={selectHandler}>
         <option>choose difficulty level</option>
         <option value="easy">easy</option>
         <option value="medium">medium</option>

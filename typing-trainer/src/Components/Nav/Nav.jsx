@@ -1,6 +1,5 @@
 import "./Nav.scss";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,14 +14,10 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-import SignIn from "../SignIn/SignIn";
-import SignOut from "../SignOut/SignOut";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard"];
+const pages = ["About", "Community", "Statistics"];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = ({ auth }) => {
-  const [user] = useAuthState(auth);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -64,14 +59,14 @@ const ResponsiveAppBar = ({ auth }) => {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
+              fontFamily: ["Plus Jakarta Sans", "sans-serif"],
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            Typing Trainer
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -82,12 +77,7 @@ const ResponsiveAppBar = ({ auth }) => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-            >
-              {/* <MenuIcon /> */}
-              <section>
-                {user ? <SignOut auth={auth} /> : <SignIn auth={auth} />}
-              </section>
-            </IconButton>
+            ></IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
