@@ -1,5 +1,7 @@
-import { useState, Fragment } from "react";
-
+import { useState, Fragment, useEffect } from "react";
+import Face from "../Face/Face";
+import Word from "./Word";
+import Timer from "./Timer";
 import "./Home.scss";
 import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -7,19 +9,17 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { db } from "../../firebaseConfig";
-import {
-  collection,
-  getDoc,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
 
-import Face from "../Face/Face";
-import Word from "./Word";
-import Timer from "./Timer";
+//importing database
+import { db } from "../../firebaseConfig";
+
+//importing functions
+import { getDoc, doc } from "firebase/firestore";
+
+const choices = ["HTML", "CSS", "javascript", "python"];
+
+// 8. This is to stop each Word component from rerendering on every onChange rerender
+// I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
 
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
@@ -30,6 +30,7 @@ export default function Home() {
   const [correctWordArray, setCorrectWordArray] = useState([]);
 
   const [startCounting, setStartCounting] = useState(false);
+
   const [timeElapsed, setTimeElapsed] = useState(0);
 
   const [emotionLog, setEmotionLog] = useState({
@@ -48,11 +49,18 @@ export default function Home() {
   // );
 
   const choices = ["HTML", "CSS", "javascript", "python"];
+
+  const [difficulty, setDifficulty] = useState("easy");
+  const [finished, setFinished] = useState(false);
+
   const [paragraph, setParagraph] = useState("");
-  const colRef = collection(db, "paragraphs");
+
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
-  function buttonHandler(e) {
-    const difficulty = e.target.value;
+  function selectHandler(e) {
+    setDifficulty(e.target.value);
+  }
+
+  useEffect(() => {
     if (difficulty === "hard") {
       const docRef = doc(
         db,
@@ -96,7 +104,7 @@ export default function Home() {
           console.error(error);
         });
     }
-  }
+  }, [finished, difficulty]);
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
   // const cloud =
@@ -119,6 +127,7 @@ export default function Home() {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
       return;
     }
     // after a word
@@ -150,6 +159,7 @@ export default function Home() {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
       return;
     } else {
       setUserInput(value);
@@ -165,7 +175,8 @@ export default function Home() {
         setTimeElapsed={setTimeElapsed}
         emotionLog={emotionLog}
       />
-      <select name="difficulty" id="difficulty" onChange={buttonHandler}>
+
+      <select name="difficulty" id="difficulty" onChange={selectHandler}>
         <option>choose difficulty level</option>
         <option value="easy">easy</option>
         <option value="medium">medium</option>
