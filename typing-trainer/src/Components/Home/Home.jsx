@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import Face from "../Face/Face";
 import Word from "./Word";
 import Timer from "./Timer";
@@ -14,45 +14,14 @@ import React from "react";
 import { db } from "../../firebaseConfig";
 
 //importing functions
-import {
-  collection,
-  getDoc,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
-//importing components
-import SignIn from "../SignIn/SignIn";
-import SignOut from "../SignOut/SignOut";
-
-//importing react-firebase hooks
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
-
-//importing authentication function
-
-// 7. Define the Word component, picking up the 3 props it's passed and destructure them, change className based on props
-// function Word(props) {
-//   const { text, active, correct } = props;
-//   if (correct === true) {
-//     return <span className="correct">{text} </span>;
-//   }
-//   if (correct === false) {
-//     return <span className="incorrect">{text} </span>;
-//   }
-//   if (active === true) {
-//     return <span className="active">{text} </span>;
-//   }
-//   return <span>{text} </span>;
-// }
+const choices = ["HTML", "CSS", "javascript", "python"];
 
 // 8. This is to stop each Word component from rerendering on every onChange rerender
 // I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
 
-export default function Home({ auth }) {
-  const [user] = useAuthState(auth);
+export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
   // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
@@ -60,13 +29,16 @@ export default function Home({ auth }) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
   const [startCounting, setStartCounting] = useState(false);
-
-  const choices = ["HTML", "CSS", "javascript", "python"];
+  const [difficulty, setDifficulty] = useState("easy");
+  const [finished, setFinished] = useState(false);
   const [paragraph, setParagraph] = useState("");
-  const colRef = collection(db, "paragraphs");
+
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
   function buttonHandler(e) {
-    const difficulty = e.target.value;
+    setDifficulty(e.target.value);
+  }
+
+  useEffect(() => {
     if (difficulty === "hard") {
       const docRef = doc(
         db,
@@ -110,7 +82,7 @@ export default function Home({ auth }) {
           console.error(error);
         });
     }
-  }
+  }, [finished, difficulty]);
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
   // const cloud =
@@ -133,6 +105,7 @@ export default function Home({ auth }) {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
       return;
     }
     // after a word
@@ -164,6 +137,7 @@ export default function Home({ auth }) {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
       return;
     } else {
       setUserInput(value);

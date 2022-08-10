@@ -170,7 +170,7 @@ const ResponsiveAppBar = ({ auth }) => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
-              {user ? (
+              {auth.currentUser ? (
                 <MenuItem key="Logout" onClick={handleCloseUserMenu}>
                   <Typography textAlign="center" onClick={() => auth.signOut()}>
                     Logout
