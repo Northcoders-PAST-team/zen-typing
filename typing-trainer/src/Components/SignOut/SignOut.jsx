@@ -1,7 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 function SignOut({ auth }) {
-  return (
-    auth.currentUser && <button onClick={() => auth.signOut()}>Sign out</button>
-  );
+  let navigate = useNavigate();
+  function logOut() {
+    navigate("/", { replace: true });
+    auth.signOut();
+  }
+
+  return auth.currentUser && <button onClick={logOut}>Sign out</button>;
 }
 
 export default SignOut;

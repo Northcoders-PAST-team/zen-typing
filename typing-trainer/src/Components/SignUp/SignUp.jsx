@@ -33,8 +33,12 @@ function SignUp({ auth }) {
           console.log("user created", cred.user);
           const docRef = doc(db, "users", cred.user.uid);
           return setDoc(docRef, {
-            email: signUp.email,
+            email: SignUp.email,
+            userName: signUp.email,
             createdAt: serverTimestamp(),
+            friends: [],
+            online: true,
+            avatar: undefined,
           });
         })
         .catch((err) => {
@@ -86,6 +90,18 @@ function SignUp({ auth }) {
             required
             onChange={signupHandler}
           />
+
+          {/* <label>
+            <b>Avatar photo URL</b>
+          </label>
+          <input
+            type="text"
+            placeholder="Avatar URL"
+            name="photoURL"
+            value={signUp.photoURL}
+            required
+            onChange={signupHandler}
+          /> */}
 
           <br />
           <br />

@@ -23,6 +23,9 @@ const settings = ["Profile", "Account", "Dashboard"];
 
 const ResponsiveAppBar = ({ auth }) => {
   const [user] = useAuthState(auth);
+  if (user) {
+    const { uid } = auth.currentUser;
+  }
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -156,6 +159,16 @@ const ResponsiveAppBar = ({ auth }) => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              {user ? (
+                <Link to={`/users/${user.uid}`}>
+                  {" "}
+                  <MenuItem key="loggedProfile">
+                    <Typography textAlign="center">
+                      logged in Profile
+                    </Typography>
+                  </MenuItem>
+                </Link>
+              ) : null}
               {user ? (
                 <MenuItem key="Logout" onClick={handleCloseUserMenu}>
                   <Typography textAlign="center" onClick={() => auth.signOut()}>

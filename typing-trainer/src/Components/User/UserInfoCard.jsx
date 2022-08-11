@@ -4,53 +4,63 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 
-const UserInfoCard = ({ userName, friendList, loggedIn }) => {
+const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
   const [isDelete, setDelete] = useState(false);
 
   return (
     <div className="user-InfoCard">
-      <img src={Avatar} alt="" className="user-avatar" />
+      {avatar ? (
+        <img src={avatar} alt="" className="user-avatar" />
+      ) : (
+        <img src={Avatar} alt="" className="user-avatar" />
+      )}
+      {/* <img src={Avatar} alt="" className="user-avatar" /> */}
       <div className="user-options">
         <p className="username">
           {userName} <span className={loggedIn ? "online" : "offline"}></span>
         </p>
-        <Button
-          variant="contained"
-          size="large"
-          startIcon={<BorderColorIcon />}
-        >
-          Edit Profile
-        </Button>
-        {!isDelete ? (
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => {
-              setDelete(true);
-            }}
-            startIcon={<DeleteIcon />}
-            size="large"
-          >
-            Delete profile
-          </Button>
-        ) : (
+        {auth.currentUser ? (
           <div>
-            <p className="user-option-question">Are you sure?</p>
-            <Button variant="contained" color="success">
-              Yes
-            </Button>
             <Button
               variant="contained"
-              color="error"
-              onClick={() => {
-                setDelete(false);
-              }}
+              size="large"
+              startIcon={<BorderColorIcon />}
             >
-              No
+              Edit Profile
             </Button>
+            {!isDelete ? (
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => {
+                  setDelete(true);
+                }}
+                startIcon={<DeleteIcon />}
+                size="large"
+              >
+                Delete profile
+              </Button>
+            ) : (
+              <div>
+                <p className="user-option-question">Are you sure?</p>
+                <Button variant="contained" color="success">
+                  Yes
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => {
+                    setDelete(false);
+                  }}
+                >
+                  No
+                </Button>
+              </div>
+            )}
           </div>
-        )}
+        ) : null}
       </div>
+
       <div className="user-friends">
         <table className="user-table">
           <thead>
@@ -59,13 +69,17 @@ const UserInfoCard = ({ userName, friendList, loggedIn }) => {
             </tr>
           </thead>
           <tbody>
-            {friendList.map((friend) => {
-              return (
-                <tr key={friend}>
-                  <td>{friend}</td>
-                </tr>
-              );
-            })}
+            {friendList !== undefined ? (
+              <td>
+                {friendList.map((friend) => {
+                  return (
+                    <tr key={friend}>
+                      <td>{friend}</td>
+                    </tr>
+                  );
+                })}
+              </td>
+            ) : null}
           </tbody>
         </table>
       </div>

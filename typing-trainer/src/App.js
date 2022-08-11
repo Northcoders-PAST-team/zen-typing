@@ -19,7 +19,7 @@ onAuthStateChanged(auth, (user) => {
     // https://firebase.google.com/docs/reference/js/firebase.User
 
     const usersRef = doc(db, "users", user.uid);
-
+    console.log(user.photoURL);
     getDoc(usersRef).then((docSnapshot) => {
       if (docSnapshot.exists()) {
         return;
@@ -27,7 +27,11 @@ onAuthStateChanged(auth, (user) => {
         // create the document
         setDoc(usersRef, {
           email: user.email,
+          userName: user.email,
           createdAt: serverTimestamp(),
+          friends: [],
+          online: true,
+          avatar: user.photoURL,
         });
       }
     });
@@ -42,10 +46,8 @@ function App() {
       <BrowserRouter>
         <Nav auth={auth} />
         <Routes>
-
-
           <Route path={"/"} element={<Home />} />
-          <Route path={"/users/:user_id"} element={<User />} />
+          <Route path={"/users/:user_id"} element={<User auth={auth} />} />
           <Route path={"*"} element={<Errors />} />
           <Route path={"/signin"} element={<SignIn auth={auth} />} />
           <Route path={"/signup"} element={<SignUp auth={auth} />} />
