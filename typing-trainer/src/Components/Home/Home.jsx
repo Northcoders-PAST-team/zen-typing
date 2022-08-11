@@ -18,11 +18,11 @@ import {
   setDoc,
   updateDoc,
   Timestamp,
+  onSnapshot 
 } from "firebase/firestore";
 
 
-//importing functions
-import { doc, onSnapshot } from "firebase/firestore";
+
 
 import Face from "../Face/Face";
 import Word from "./Word";
