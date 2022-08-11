@@ -42,9 +42,7 @@ function App() {
       <BrowserRouter>
         <Nav auth={auth} />
         <Routes>
-
-
-          <Route path={"/"} element={<Home />} />
+          <Route path={"/"} element={<Home auth={auth} />} />
           <Route path={"/users/:user_id"} element={<User />} />
           <Route path={"*"} element={<Errors />} />
           <Route path={"/signin"} element={<SignIn auth={auth} />} />

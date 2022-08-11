@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 //importing database
 import { db } from "../../firebaseConfig";
@@ -28,7 +29,8 @@ import History from "../History/History";
 
 const choices = ["HTML", "CSS", "javascript", "python"];
 
-export default function Home() {
+export default function Home({ auth }) {
+  const [user] = useAuthState(auth);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
   // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
@@ -164,17 +166,21 @@ export default function Home() {
       // const speed =
       //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
 
-      addDoc(exercisesRef, {
-        createdAt: Timestamp.fromDate(new Date()),
-        time: timeElapsed,
-        wpm: speed,
-      })
-        .then((docRef) => {
-          console.log("Document has been added successfully)");
+      console.log(user, "<<user");
+      if (user) {
+        addDoc(exercisesRef, {
+          user: user.displayName,
+          createdAt: Timestamp.fromDate(new Date()),
+          time: timeElapsed,
+          wpm: speed,
         })
-        .catch((error) => {
-          console.log("ERROR IS " + error);
-        });
+          .then((docRef) => {
+            console.log("Document has been added successfully)");
+          })
+          .catch((error) => {
+            console.log("ERROR IS " + error);
+          });
+      }
 
       return;
     } else {
@@ -274,7 +280,7 @@ export default function Home() {
           style: { color: "black" },
         }}
       />
-      <History />
+      <History auth={auth} />
     </div>
   );
 }
