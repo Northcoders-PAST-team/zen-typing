@@ -1,7 +1,6 @@
 import { useState, Fragment, useEffect } from "react";
 
 import "./Home.scss";
-import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -21,12 +20,17 @@ import {
   Timestamp,
 } from "firebase/firestore";
 
+
+//importing functions
+import { doc, onSnapshot } from "firebase/firestore";
+
 import Face from "../Face/Face";
 import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
 
 const choices = ["HTML", "CSS", "javascript", "python"];
+
 
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
@@ -55,10 +59,8 @@ export default function Home() {
   //   currentEmotions[a] > currentEmotions[b] ? a : b
   // );
 
-  const choices = ["HTML", "CSS", "javascript", "python"];
-
   const [difficulty, setDifficulty] = useState("easy");
-  const [finished, setFinished] = useState(false);
+  const [id, setId] = useState("1");
 
   const [paragraph, setParagraph] = useState("");
 
@@ -68,54 +70,26 @@ export default function Home() {
 
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
   function selectHandler(e) {
+    setId(String(Math.floor(Math.random() * 10 + 1)));
     setDifficulty(e.target.value);
   }
 
   useEffect(() => {
-    if (difficulty === "hard") {
-      const docRef = doc(
-        db,
-        "paragraphs",
-        choices[Math.floor(Math.random() * 4)]
-      );
-      getDoc(docRef).then((docSnap) => {
+    onSnapshot(
+      doc(db, difficulty, id),
+      (docSnap) => {
         if (docSnap.exists()) {
-          setParagraph(docSnap.data().paragraph);
+          setParagraph(docSnap.data().text);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
         }
-      });
-    } else if (difficulty === "medium") {
-      const options = {
-        method: "GET",
-        url: "https://dinoipsum.com/api/?format=text&words=30&paragraphs=1",
-      };
-
-      axios
-        .request(options)
-        .then(function (response) {
-          setParagraph(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    } else if (difficulty === "easy") {
-      const options = {
-        method: "GET",
-        url: "https://type.fit/api/quotes",
-      };
-
-      axios
-        .request(options)
-        .then(function (response) {
-          setParagraph(response.data[Math.floor(Math.random() * 100)].text);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    }
-  }, [finished, difficulty]);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }, [difficulty, id]);
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
   // const cloud =
@@ -123,7 +97,25 @@ export default function Home() {
   //     " "
   //   );
 
-  const cloud = paragraph.split(" ");
+  let cloud = String(paragraph).split(" ");
+  cloud = JSON.stringify(cloud);
+
+  if (cloud === JSON.stringify(["undefined"])) {
+    if (difficulty === "easy") {
+      setParagraph(
+        "Books enable you to expose yourself to new ideas and new ways to achieve your goals. They enable you to think outside the box."
+      );
+    } else if (difficulty === "medium") {
+      setParagraph(
+        "Things that used to take hours to complete can now be completed in a matter of minutes because of technology. Everything is just a click away, including banking, sending e-mail, assignments, and even shopping."
+      );
+    } else {
+      setParagraph(
+        "def prepend_path(self, name: str, paths: List[str]) -> None: old_val = self.env.get(name)         paths = [p for p in paths if isdir(p)]         if not paths:  return  if old_val is not None: new_val = ':'.join(itertools.chain(paths, [old_val])) else: new_val = ':'.join(paths)     self.env[name] = new_val ~ `! 1@ 2# 3$ 4% 5^ 6& 7* 8( 9) 0_ -+ =Backspace"
+      );
+    }
+  }
+  cloud = JSON.parse(cloud);
 
   // 9. A handler function for the onChange
   // If the keystroke was a space then assume the user has attempted the active word, so increment the activeWordIndex and reset the userInput
@@ -138,7 +130,7 @@ export default function Home() {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
-      setFinished(userInput === "FINISHED");
+
       return;
     }
     // after a word
@@ -170,6 +162,7 @@ export default function Home() {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
+
 
       console.log("timeElapsed is " + timeElapsed);
 
@@ -207,13 +200,17 @@ export default function Home() {
         setSpeed={setSpeed}
         emotionLog={emotionLog}
       />
+      <label htmlFor="difficulty">
+        {" "}
+        Difficulty Level
+        <select name="difficulty" id="difficulty" onChange={selectHandler}>
+          {/* <option>choose difficulty level</option> */}
+          <option value="easy">easy</option>
+          <option value="medium">medium</option>
+          <option value="hard">hard</option>
+        </select>
+      </label>
 
-      <select name="difficulty" id="difficulty" onChange={selectHandler}>
-        <option>choose difficulty level</option>
-        <option value="easy">easy</option>
-        <option value="medium">medium</option>
-        <option value="hard">hard</option>
-      </select>
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
       <Fragment>
         <div className="target-paragraph">
