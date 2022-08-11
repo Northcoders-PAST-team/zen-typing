@@ -14,6 +14,9 @@ export default function Timer({
   timeElapsed,
   emotionLog,
   undetected,
+  
+  speed,
+  setSpeed,
 }) {
   const labels = [
     "neutral",
@@ -63,8 +66,6 @@ export default function Timer({
     ],
   };
 
-  speed,
-  setSpeed,
 }) {
   useEffect(() => {
     let id;
