@@ -1,27 +1,36 @@
 import { useState, Fragment, useEffect } from "react";
-import Face from "../Face/Face";
-import Word from "./Word";
-import Timer from "./Timer";
+
 import "./Home.scss";
-import axios from "axios";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 //importing database
 import { db } from "../../firebaseConfig";
+import {
+  collection,
+  getDoc,
+  addDoc,
+  deleteDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  Timestamp,
+  onSnapshot,
+} from "firebase/firestore";
 
-//importing functions
-import { getDoc, doc } from "firebase/firestore";
+import Face from "../Face/Face";
+import Word from "./Word";
+import Timer from "./Timer";
+import History from "../History/History";
 
 const choices = ["HTML", "CSS", "javascript", "python"];
 
-// 8. This is to stop each Word component from rerendering on every onChange rerender
-// I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
-
-export default function Home() {
+export default function Home({ auth }) {
+  const [user] = useAuthState(auth);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
   // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
@@ -30,8 +39,8 @@ export default function Home() {
   const [correctWordArray, setCorrectWordArray] = useState([]);
 
   const [startCounting, setStartCounting] = useState(false);
-
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [speed, setSpeed] = useState(0);
 
   const [emotionLog, setEmotionLog] = useState({
     neutral: 0,
@@ -43,64 +52,39 @@ export default function Home() {
   });
   const [undetected, setUndetected] = useState(0);
 
-  const choices = ["HTML", "CSS", "javascript", "python"];
-
   const [difficulty, setDifficulty] = useState("easy");
   const [finished, setFinished] = useState(false);
   const [hiddenVideo, setHiddenVideo] = useState(false);
+  const [id, setId] = useState("1");
 
   const [paragraph, setParagraph] = useState("");
 
+  const colRef = collection(db, "paragraphs");
+  // const exercisesRef = collection(db, "exercises");
+  const exercisesRef = collection(db, "exercises");
+
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
   function selectHandler(e) {
+    setId(String(Math.floor(Math.random() * 10 + 1)));
     setDifficulty(e.target.value);
   }
 
   useEffect(() => {
-    if (difficulty === "hard") {
-      const docRef = doc(
-        db,
-        "paragraphs",
-        choices[Math.floor(Math.random() * 4)]
-      );
-      getDoc(docRef).then((docSnap) => {
+    onSnapshot(
+      doc(db, difficulty, id),
+      (docSnap) => {
         if (docSnap.exists()) {
-          setParagraph(docSnap.data().paragraph);
+          setParagraph(docSnap.data().text);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
         }
-      });
-    } else if (difficulty === "medium") {
-      const options = {
-        method: "GET",
-        url: "https://dinoipsum.com/api/?format=text&words=30&paragraphs=1",
-      };
-
-      axios
-        .request(options)
-        .then(function (response) {
-          setParagraph(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    } else if (difficulty === "easy") {
-      const options = {
-        method: "GET",
-        url: "https://type.fit/api/quotes",
-      };
-
-      axios
-        .request(options)
-        .then(function (response) {
-          setParagraph(response.data[Math.floor(Math.random() * 100)].text);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
-    }
-  }, [finished, difficulty]);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }, [difficulty, id]);
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
   // const cloud =
@@ -108,13 +92,31 @@ export default function Home() {
   //     " "
   //   );
 
-  const cloud = paragraph.split(" ");
+  let cloud = String(paragraph).split(" ");
+  cloud = JSON.stringify(cloud);
+
+  if (cloud === JSON.stringify(["undefined"])) {
+    if (difficulty === "easy") {
+      setParagraph(
+        "Books enable you to expose yourself to new ideas and new ways to achieve your goals. They enable you to think outside the box."
+      );
+    } else if (difficulty === "medium") {
+      setParagraph(
+        "Things that used to take hours to complete can now be completed in a matter of minutes because of technology. Everything is just a click away, including banking, sending e-mail, assignments, and even shopping."
+      );
+    } else {
+      setParagraph(
+        "def prepend_path(self, name: str, paths: List[str]) -> None: old_val = self.env.get(name)         paths = [p for p in paths if isdir(p)]         if not paths:  return  if old_val is not None: new_val = ':'.join(itertools.chain(paths, [old_val])) else: new_val = ':'.join(paths)     self.env[name] = new_val ~ `! 1@ 2# 3$ 4% 5^ 6& 7* 8( 9) 0_ -+ =Backspace"
+      );
+    }
+  }
+  cloud = JSON.parse(cloud);
 
   // 9. A handler function for the onChange
   // If the keystroke was a space then assume the user has attempted the active word, so increment the activeWordIndex and reset the userInput
   // Log in the correctWordArray a true if the attempt matches the paragraph array item at activeWordIndex, a false otherwise.
   // If the keystroke wasn't a space then they're still typing the active word, so just setUserInput(value).
-  function processInput(value) {
+  const processInput = (value) => {
     if (!startCounting) {
       setStartCounting(true);
     }
@@ -125,6 +127,7 @@ export default function Home() {
       setUserInput("FINISHED");
       setFinished(userInput === "FINISHED");
       setHiddenVideo(true);
+
       return;
     }
     // after a word
@@ -142,7 +145,10 @@ export default function Home() {
     } else if (
       //   activeWordIndex === cloud.length - 1 &&
       //   userInput === cloud[activeWordIndex].slice(0, -1) &&
-      value === cloud[cloud.length - 1]
+      // value === cloud[cloud.length - 1]
+
+      activeWordIndex === cloud.length - 1 &&
+      value.length === cloud[cloud.length - 1].length
     ) {
       setActiveWordIndex((index) => index + 1);
       setUserInput("");
@@ -158,11 +164,34 @@ export default function Home() {
       setUserInput("FINISHED");
       setFinished(userInput === "FINISHED");
       setHiddenVideo(true);
+
+      console.log("timeElapsed is " + timeElapsed);
+
+      // const speed =
+      //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
+
+      console.log(user, "<<user");
+      if (user) {
+        addDoc(exercisesRef, {
+          user: user.displayName,
+          createdAt: Timestamp.fromDate(new Date()),
+          time: timeElapsed,
+          wpm: speed,
+        })
+          .then((docRef) => {
+            console.log("Document has been added successfully)");
+          })
+          .catch((error) => {
+            console.log("ERROR IS " + error);
+          });
+      }
+
       return;
     } else {
+      //in the middle of a word
       setUserInput(value);
     }
-  }
+  };
 
   return (
     <div className="home">
@@ -171,16 +200,22 @@ export default function Home() {
         correctWords={correctWordArray.filter(Boolean).length}
         timeElapsed={timeElapsed}
         setTimeElapsed={setTimeElapsed}
+        speed={speed}
+        setSpeed={setSpeed}
         emotionLog={emotionLog}
         undetected={undetected}
       />
+      <label htmlFor="difficulty">
+        {" "}
+        Difficulty Level
+        <select name="difficulty" id="difficulty" onChange={selectHandler}>
+          {/* <option>choose difficulty level</option> */}
+          <option value="easy">easy</option>
+          <option value="medium">medium</option>
+          <option value="hard">hard</option>
+        </select>
+      </label>
 
-      <select name="difficulty" id="difficulty" onChange={selectHandler}>
-        <option>choose difficulty level</option>
-        <option value="easy">easy</option>
-        <option value="medium">medium</option>
-        <option value="hard">hard</option>
-      </select>
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
       <Fragment>
         <div className="target-paragraph">
@@ -255,6 +290,7 @@ export default function Home() {
           style: { color: "black" },
         }}
       />
+      <History auth={auth} />
     </div>
   );
 }

@@ -2,23 +2,14 @@ import { db } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  updateDoc,
-  setDoc,
-  serverTimestamp,
-  query,
-  orderBy,
-  where,
-  onSnapshot,
-} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 function SignUp({ auth }) {
+  //navigate hook initialized
   let navigate = useNavigate();
+
+  const [error, setError] = useState(null);
+
   //set signup details state with Email
   const [signUp, setSignUp] = useState({
     email: "",
@@ -38,6 +29,7 @@ function SignUp({ auth }) {
       createUserWithEmailAndPassword(auth, signUp.email, signUp.password)
         .then((cred) => {
           navigate("/", { replace: true });
+          setError(null);
           console.log("user created", cred.user);
           const docRef = doc(db, "users", cred.user.uid);
           return setDoc(docRef, {
@@ -46,63 +38,66 @@ function SignUp({ auth }) {
           });
         })
         .catch((err) => {
-          console.log(err.message);
+          setError(err.message);
         });
     } else {
-      console.log("password does not match");
+      setError("password does not match");
     }
   }
   return (
-    <form onSubmit={signupUser}>
-      <div className="container">
-        <h1>Sign Up</h1>
-        <p>Please fill in this form to create an account.</p>
+    <div>
+      <form onSubmit={signupUser}>
+        <div className="container">
+          <h2>Sign Up</h2>
+          <p>Please fill in this form to create an account.</p>
 
-        <label>
-          <b>Email</b>
-        </label>
-        <input
-          type="text"
-          placeholder="Enter Email"
-          name="email"
-          required
-          value={signUp.email}
-          onChange={signupHandler}
-        />
+          <label>
+            <b>Email</b>
+          </label>
+          <input
+            type="text"
+            placeholder="Enter Email"
+            name="email"
+            required
+            value={signUp.email}
+            onChange={signupHandler}
+          />
 
-        <label>
-          <b>Password</b>
-        </label>
-        <input
-          type="password"
-          placeholder="Enter Password"
-          name="password"
-          value={signUp.password}
-          required
-          onChange={signupHandler}
-        />
+          <label>
+            <b>Password</b>
+          </label>
+          <input
+            type="password"
+            placeholder="Enter Password"
+            name="password"
+            value={signUp.password}
+            required
+            onChange={signupHandler}
+          />
 
-        <label>
-          <b>Repeat Password</b>
-        </label>
-        <input
-          type="password"
-          placeholder="Repeat Password"
-          name="repeatPassword"
-          value={signUp.repeatPassword}
-          required
-          onChange={signupHandler}
-        />
+          <label>
+            <b>Repeat Password</b>
+          </label>
+          <input
+            type="password"
+            placeholder="Repeat Password"
+            name="repeatPassword"
+            value={signUp.repeatPassword}
+            required
+            onChange={signupHandler}
+          />
 
-        <br />
-        <br />
-        <div onSubmit={signupUser}>
-          <button type="submit" className="signupbtn">
-            Sign Up
-          </button>
+          <br />
+          <br />
+          <div onSubmit={signupUser}>
+            <button type="submit" className="btn btn-primary">
+              Sign Up
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      {error ? <p>{error}</p> : null}
+    </div>
   );
 }
 

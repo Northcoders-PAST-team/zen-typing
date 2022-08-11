@@ -2,3 +2,17 @@
   text-align: center;
   background-color: rgb(186, 186, 186);
 }
+
+input,
+button {
+  margin: 10px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.google {
+  width: 20%;
+  margin-left: 4px;
+}
