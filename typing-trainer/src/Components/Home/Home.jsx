@@ -29,8 +29,8 @@ import History from "../History/History";
 
 const choices = ["HTML", "CSS", "javascript", "python"];
 
-export default function Home(auth) {
-  // const [user] = useAuthState(auth);
+export default function Home({ auth }) {
+  const [user] = useAuthState(auth);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
   // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
@@ -165,10 +165,10 @@ export default function Home(auth) {
 
       // const speed =
       //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
-      console.log(auth, "<<auth");
-      console.log(auth.user, "<<auth.user");
+
+      console.log(user, "<<user");
       addDoc(exercisesRef, {
-        // user: auth.
+        user: user.displayName,
         createdAt: Timestamp.fromDate(new Date()),
         time: timeElapsed,
         wpm: speed,
