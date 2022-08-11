@@ -167,18 +167,20 @@ export default function Home({ auth }) {
       //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
 
       console.log(user, "<<user");
-      addDoc(exercisesRef, {
-        user: user.displayName,
-        createdAt: Timestamp.fromDate(new Date()),
-        time: timeElapsed,
-        wpm: speed,
-      })
-        .then((docRef) => {
-          console.log("Document has been added successfully)");
+      if (user) {
+        addDoc(exercisesRef, {
+          user: user.displayName,
+          createdAt: Timestamp.fromDate(new Date()),
+          time: timeElapsed,
+          wpm: speed,
         })
-        .catch((error) => {
-          console.log("ERROR IS " + error);
-        });
+          .then((docRef) => {
+            console.log("Document has been added successfully)");
+          })
+          .catch((error) => {
+            console.log("ERROR IS " + error);
+          });
+      }
 
       return;
     } else {
