@@ -1,7 +1,5 @@
 import { useState, Fragment, useEffect } from "react";
-import Face from "../Face/Face";
-import Word from "./Word";
-import Timer from "./Timer";
+
 import "./Home.scss";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -11,12 +9,28 @@ import React from "react";
 
 //importing database
 import { db } from "../../firebaseConfig";
+import {
+  collection,
+  getDoc,
+  addDoc,
+  deleteDoc,
+  doc,
+  setDoc,
+  updateDoc,
+  Timestamp,
+} from "firebase/firestore";
+
 
 //importing functions
 import { doc, onSnapshot } from "firebase/firestore";
 
-// 8. This is to stop each Word component from rerendering on every onChange rerender
-// I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
+import Face from "../Face/Face";
+import Word from "./Word";
+import Timer from "./Timer";
+import History from "../History/History";
+
+const choices = ["HTML", "CSS", "javascript", "python"];
+
 
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
@@ -27,8 +41,8 @@ export default function Home() {
   const [correctWordArray, setCorrectWordArray] = useState([]);
 
   const [startCounting, setStartCounting] = useState(false);
-
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [speed, setSpeed] = useState(0);
 
   const [emotionLog, setEmotionLog] = useState({
     neutral: 0,
@@ -49,6 +63,10 @@ export default function Home() {
   const [id, setId] = useState("1");
 
   const [paragraph, setParagraph] = useState("");
+
+  const colRef = collection(db, "paragraphs");
+  // const exercisesRef = collection(db, "exercises");
+  const exercisesRef = collection(db, "exercises");
 
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
   function selectHandler(e) {
@@ -103,7 +121,7 @@ export default function Home() {
   // If the keystroke was a space then assume the user has attempted the active word, so increment the activeWordIndex and reset the userInput
   // Log in the correctWordArray a true if the attempt matches the paragraph array item at activeWordIndex, a false otherwise.
   // If the keystroke wasn't a space then they're still typing the active word, so just setUserInput(value).
-  function processInput(value) {
+  const processInput = (value) => {
     if (!startCounting) {
       setStartCounting(true);
     }
@@ -145,11 +163,31 @@ export default function Home() {
       setStartCounting(false);
       setUserInput("FINISHED");
 
+
+      console.log("timeElapsed is " + timeElapsed);
+
+      // const speed =
+      //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
+
+      addDoc(exercisesRef, {
+        createdAt: Timestamp.fromDate(new Date()),
+        time: timeElapsed,
+        wpm: speed,
+      })
+        .then((docRef) => {
+          console.log("Document has been added successfully)");
+        })
+        .catch((error) => {
+          console.log("ERROR IS " + error);
+        });
+
+      setFinished(userInput === "FINISHED");
+
       return;
     } else {
       setUserInput(value);
     }
-  }
+  };
 
   return (
     <div className="home">
@@ -158,6 +196,8 @@ export default function Home() {
         correctWords={correctWordArray.filter(Boolean).length}
         timeElapsed={timeElapsed}
         setTimeElapsed={setTimeElapsed}
+        speed={speed}
+        setSpeed={setSpeed}
         emotionLog={emotionLog}
       />
       <label htmlFor="difficulty">
@@ -241,6 +281,7 @@ export default function Home() {
           style: { color: "black" },
         }}
       />
+      <History />
     </div>
   );
 }

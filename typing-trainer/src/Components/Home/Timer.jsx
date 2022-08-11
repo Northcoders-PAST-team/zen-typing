@@ -6,9 +6,9 @@ export default function Timer({
   setTimeElapsed,
   timeElapsed,
   emotionLog,
+  speed,
+  setSpeed,
 }) {
-  // const { correctWords, startCounting, setTimeElapsed, timeElapsed} } = props;
-
   useEffect(() => {
     let id;
     if (startCounting) {
@@ -16,19 +16,21 @@ export default function Timer({
         setTimeElapsed((oldTime) => {
           return oldTime + 1;
         });
+        setSpeed((correctWords / (timeElapsed / 60) || 0).toFixed(2));
       }, 1000);
     }
     return () => {
       clearInterval(id);
     };
-  }, [startCounting]);
+  }, [startCounting, timeElapsed]);
 
   const minutes = timeElapsed / 60;
 
   return (
     <div>
       <p>Time: {timeElapsed}</p>
-      <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM</p>
+      {/*<p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM</p>*/}
+      <p>Speed: {speed} WPM</p>
       <p>
         Neutral: {emotionLog.neutral}, Happy:{emotionLog.happy}, Disgusted:
         {emotionLog.disgusted}, Sad: {emotionLog.sad}, Angry: {emotionLog.angry}
