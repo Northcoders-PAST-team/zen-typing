@@ -21,7 +21,7 @@ onAuthStateChanged(auth, (user) => {
 
     getDoc(usersRef).then((docSnapshot) => {
       if (docSnapshot.exists()) {
-        usersRef.onSnapshot((doc) => {});
+        usersRef.onSnapshot((doc) => {return;});
       } else {
         // create the document
         setDoc(usersRef, {
