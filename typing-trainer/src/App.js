@@ -37,7 +37,7 @@ onAuthStateChanged(auth, (user) => {
         // create the document
         setDoc(usersRef, {
           email: user.email,
-          userName: user.email,
+          displayName: user.displayName || user.email,
           createdAt: serverTimestamp(),
           friends: [],
           online: true,

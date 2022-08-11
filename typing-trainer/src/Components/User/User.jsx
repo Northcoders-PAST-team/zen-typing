@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import UserInfoCard from "./UserInfoCard";
 import "./User.scss";
 import UserAver from "./UserAver";
@@ -9,13 +9,16 @@ import { useParams } from "react-router-dom";
 import { doc, onSnapshot } from "firebase/firestore";
 
 import { UserContext } from "../User/UserContext";
-import { useContext } from "react";
 
 const User = () => {
   const { user, auth } = useContext(UserContext);
+
   const { user_id } = useParams();
+
   const [userData, setUserData] = useState({});
+
   const [error, setError] = useState(null);
+
   useEffect(() => {
     const usersRef = doc(db, "users", user_id);
 
@@ -25,13 +28,13 @@ const User = () => {
         setError(null);
       } else {
         console.log("User does not exist (profile)");
-        setError("User profile does not exist");
+        setError("400 sorry user profile does not exist");
       }
     });
   }, [user_id]);
 
   const profile = {
-    userName: userData.userName,
+    userName: userData.displayName,
     friendList: userData.friends,
     loggedIn: userData.online,
     totalGames: 20,

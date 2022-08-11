@@ -174,13 +174,19 @@ const ResponsiveAppBar = () => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              {user ? null : (
+                <Link to={`/signup`}>
+                  {" "}
+                  <MenuItem key="signup">
+                    <Typography textAlign="center">Sign Up</Typography>
+                  </MenuItem>
+                </Link>
+              )}
               {user ? (
                 <Link to={`/users/${user.uid}`}>
                   {" "}
-                  <MenuItem key="loggedProfile">
-                    <Typography textAlign="center">
-                      logged in Profile
-                    </Typography>
+                  <MenuItem key="profile">
+                    <Typography textAlign="center">Profile</Typography>
                   </MenuItem>
                 </Link>
               ) : null}

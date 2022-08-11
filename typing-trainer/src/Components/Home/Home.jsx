@@ -175,7 +175,7 @@ export default function Home() {
       console.log(user, "<<user");
       if (user) {
         addDoc(exercisesRef, {
-          user: user.displayName,
+          user: user.displayName || user.email,
           createdAt: Timestamp.fromDate(new Date()),
           time: timeElapsed,
           wpm: speed,

@@ -35,18 +35,10 @@ function SignUp() {
           navigate("/", { replace: true });
           setError(null);
           console.log("user created", cred.user);
-          const docRef = doc(db, "users", cred.user.uid);
-          return setDoc(docRef, {
-            email: SignUp.email,
-            userName: signUp.email,
-            createdAt: serverTimestamp(),
-            friends: [],
-            online: true,
-            avatar: null,
-          });
         })
         .catch((err) => {
           setError(err.message);
+          console.log(err);
         });
     } else {
       setError("password does not match");
@@ -64,6 +56,7 @@ function SignUp() {
           </label>
           <input
             type="text"
+            autofocus
             placeholder="Enter Email"
             name="email"
             required
@@ -96,13 +89,13 @@ function SignUp() {
           />
 
           {/* <label>
-            <b>Avatar photo URL</b>
+            <b>Full name</b>
           </label>
           <input
             type="text"
-            placeholder="Avatar URL"
-            name="photoURL"
-            value={signUp.photoURL}
+            placeholder="Full name"
+            name="displayName"
+            value={signUp.displayName}
             required
             onChange={signupHandler}
           /> */}

@@ -14,7 +14,7 @@ const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
       ) : (
         <img src={Avatar} alt="" className="user-avatar" />
       )}
-      {/* <img src={Avatar} alt="" className="user-avatar" /> */}
+
       <div className="user-options">
         <p className="username">
           {userName} <span className={loggedIn ? "online" : "offline"}></span>

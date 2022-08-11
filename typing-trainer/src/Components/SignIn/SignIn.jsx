@@ -71,6 +71,7 @@ function SignIn() {
           </label>
           <input
             type="text"
+            autofocus
             placeholder="Enter Username"
             name="email"
             value={login.email}
