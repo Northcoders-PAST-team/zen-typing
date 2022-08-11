@@ -11,7 +11,8 @@ export default function ExerciseCard(props) {
   return (
     <div>
       <p>
-        Date: {day}/{month}/{year} {hour}:{minute} | Time: {time} | WPM: {wpm}
+        User: | Date: {day}/{month}/{year} {hour}:{minute} | Time: {time} | WPM:{" "}
+        {wpm}
       </p>
     </div>
   );
