@@ -8,7 +8,11 @@ import { db } from "../../firebaseConfig";
 import { useParams } from "react-router-dom";
 import { doc, onSnapshot } from "firebase/firestore";
 
-const User = ({ auth }) => {
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
+
+const User = () => {
+  const { user, auth } = useContext(UserContext);
   const { user_id } = useParams();
   const [userData, setUserData] = useState({});
   useEffect(() => {
@@ -23,7 +27,7 @@ const User = ({ auth }) => {
     });
   }, [user_id]);
 
-  const user = {
+  const profile = {
     userName: userData.userName,
     friendList: userData.friends,
     loggedIn: userData.online,
@@ -75,16 +79,19 @@ const User = ({ auth }) => {
   return (
     <div className="user">
       <UserInfoCard
-        userName={user.userName}
-        friendList={user.friendList}
-        loggedIn={user.loggedIn}
+        userName={profile.userName}
+        friendList={profile.friendList}
+        loggedIn={profile.loggedIn}
         auth={auth}
         avatar={userData.avatar}
       />
-      <UserAver totalGames={user.totalGames} wordsPerMin={user.wordsPerMin} />
+      <UserAver
+        totalGames={profile.totalGames}
+        wordsPerMin={profile.wordsPerMin}
+      />
       <Graph
-        wordsPerMinData={user.wordsPerMinData}
-        difficulty={user.difficulty}
+        wordsPerMinData={profile.wordsPerMinData}
+        difficulty={profile.difficulty}
       />
     </div>
   );

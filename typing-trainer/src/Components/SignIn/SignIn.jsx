@@ -2,13 +2,17 @@ import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
+
 import {
   signInWithPopup,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
-function SignIn({ auth }) {
+function SignIn() {
+  const { user, auth } = useContext(UserContext);
   let navigate = useNavigate();
   //set login details state with Email
   const [error, setError] = useState(null);

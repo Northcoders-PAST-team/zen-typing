@@ -18,14 +18,14 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const pages = ["About", "Community", "Statistics"];
-const settings = ["Profile", "Account", "Dashboard"];
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
 
-const ResponsiveAppBar = ({ auth }) => {
-  const [user] = useAuthState(auth);
-  if (user) {
-    const { uid } = auth.currentUser;
-  }
+const pages = ["About", "Community", "Statistics"];
+const settings = ["Account", "Dashboard"];
+
+const ResponsiveAppBar = () => {
+  const { user, auth } = useContext(UserContext);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -170,11 +170,16 @@ const ResponsiveAppBar = ({ auth }) => {
                 </Link>
               ) : null}
               {user ? (
-                <MenuItem key="Logout" onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={() => auth.signOut()}>
-                    Logout
-                  </Typography>
-                </MenuItem>
+                <Link to="/">
+                  <MenuItem key="Logout" onClick={handleCloseUserMenu}>
+                    <Typography
+                      textAlign="center"
+                      onClick={() => auth.signOut()}
+                    >
+                      Logout
+                    </Typography>
+                  </MenuItem>
+                </Link>
               ) : (
                 <Link to="/signin">
                   {" "}

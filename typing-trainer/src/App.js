@@ -9,7 +9,9 @@ import { serverTimestamp, setDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import SignIn from "./Components/SignIn/SignIn";
 import SignUp from "./Components/SignUp/SignUp";
+import { UserContext } from "./Components/User/UserContext";
 
+import { useAuthState } from "react-firebase-hooks/auth";
 const auth = getAuth();
 
 //notifies when user signs in and out
@@ -41,17 +43,20 @@ onAuthStateChanged(auth, (user) => {
 });
 
 function App() {
+  const [user] = useAuthState(auth);
   return (
     <div className="App">
       <BrowserRouter>
-        <Nav auth={auth} />
-        <Routes>
-          <Route path={"/"} element={<Home />} />
-          <Route path={"/users/:user_id"} element={<User auth={auth} />} />
-          <Route path={"*"} element={<Errors />} />
-          <Route path={"/signin"} element={<SignIn auth={auth} />} />
-          <Route path={"/signup"} element={<SignUp auth={auth} />} />
-        </Routes>
+        <UserContext.Provider value={{ user, auth }}>
+          <Nav />
+          <Routes>
+            <Route path={"/"} element={<Home />} />
+            <Route path={"/users/:user_id"} element={<User />} />
+            <Route path={"*"} element={<Errors />} />
+            <Route path={"/signin"} element={<SignIn />} />
+            <Route path={"/signup"} element={<SignUp />} />
+          </Routes>
+        </UserContext.Provider>
       </BrowserRouter>
     </div>
   );

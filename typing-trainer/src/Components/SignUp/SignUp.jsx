@@ -4,7 +4,11 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
-function SignUp({ auth }) {
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
+
+function SignUp() {
+  const { user, auth } = useContext(UserContext);
   //navigate hook initialized
   let navigate = useNavigate();
 
@@ -38,7 +42,7 @@ function SignUp({ auth }) {
             createdAt: serverTimestamp(),
             friends: [],
             online: true,
-            avatar: undefined,
+            avatar: null,
           });
         })
         .catch((err) => {
