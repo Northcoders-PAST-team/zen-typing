@@ -181,8 +181,7 @@ export default function Home() {
           console.log("ERROR IS " + error);
         });
 
-      setFinished(userInput === "FINISHED");
-
+     
       return;
     } else {
       setUserInput(value);
