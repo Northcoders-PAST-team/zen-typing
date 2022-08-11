@@ -26,15 +26,8 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
-
-    //   updateDoc(usersRef, {
-    //     online: true,
-    //   }).catch((err) => {
-    //     console.log(err);
-    //   });
-    // });
     const usersRef = doc(db, "users", user.uid);
-    console.log(user.photoURL);
+    console.log(" User is signed in");
     getDoc(usersRef).then((docSnapshot) => {
       if (docSnapshot.exists()) {
         updateDoc(usersRef, {

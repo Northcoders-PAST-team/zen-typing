@@ -34,12 +34,6 @@ function SignIn() {
         console.log("user logged in", cred.user);
         navigate("/", { replace: true });
       })
-      // .then(() => {
-      //   const usersRef = doc(db, "users", user.uid);
-      //   updateDoc(usersRef, {
-      //     online: true,
-      //   });
-      // })
       .catch((err) => {
         setError(err.message);
       });
@@ -54,7 +48,6 @@ function SignIn() {
     });
     //sign in with google popup
     signInWithPopup(auth, provider);
-    console.log(auth, "im currrent user logged in with google");
   }
 
   return (

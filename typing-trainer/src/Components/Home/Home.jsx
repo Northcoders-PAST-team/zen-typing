@@ -6,6 +6,10 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
+// import { useAuthState } from "react-firebase-hooks/auth";
+
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
 
 //importing database
 import { db } from "../../firebaseConfig";
@@ -26,9 +30,9 @@ import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
 
-const choices = ["HTML", "CSS", "javascript", "python"];
-
 export default function Home() {
+  // const [user] = useAuthState(auth);
+  const { user, auth } = useContext(UserContext);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
   // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
@@ -48,14 +52,11 @@ export default function Home() {
     sad: 0,
     disgusted: 0,
   });
-
-  ///testing
-
-  // let primaryEmotion = Object.keys(currentEmotions).reduce((a, b) =>
-  //   currentEmotions[a] > currentEmotions[b] ? a : b
-  // );
+  const [undetected, setUndetected] = useState(0);
 
   const [difficulty, setDifficulty] = useState("easy");
+  const [finished, setFinished] = useState(false);
+  const [hiddenVideo, setHiddenVideo] = useState(false);
   const [id, setId] = useState("1");
 
   const [paragraph, setParagraph] = useState("");
@@ -126,6 +127,8 @@ export default function Home() {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
+      setHiddenVideo(true);
 
       return;
     }
@@ -144,7 +147,10 @@ export default function Home() {
     } else if (
       //   activeWordIndex === cloud.length - 1 &&
       //   userInput === cloud[activeWordIndex].slice(0, -1) &&
-      value === cloud[cloud.length - 1]
+      // value === cloud[cloud.length - 1]
+
+      activeWordIndex === cloud.length - 1 &&
+      value.length === cloud[cloud.length - 1].length
     ) {
       setActiveWordIndex((index) => index + 1);
       setUserInput("");
@@ -158,26 +164,33 @@ export default function Home() {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
+      setHiddenVideo(true);
 
       console.log("timeElapsed is " + timeElapsed);
 
       // const speed =
       //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
 
-      addDoc(exercisesRef, {
-        createdAt: Timestamp.fromDate(new Date()),
-        time: timeElapsed,
-        wpm: speed,
-      })
-        .then((docRef) => {
-          console.log("Document has been added successfully)");
+      console.log(user, "<<user");
+      if (user) {
+        addDoc(exercisesRef, {
+          user: user.displayName,
+          createdAt: Timestamp.fromDate(new Date()),
+          time: timeElapsed,
+          wpm: speed,
         })
-        .catch((error) => {
-          console.log("ERROR IS " + error);
-        });
+          .then((docRef) => {
+            console.log("Document has been added successfully)");
+          })
+          .catch((error) => {
+            console.log("ERROR IS " + error);
+          });
+      }
 
       return;
     } else {
+      //in the middle of a word
       setUserInput(value);
     }
   };
@@ -192,6 +205,7 @@ export default function Home() {
         speed={speed}
         setSpeed={setSpeed}
         emotionLog={emotionLog}
+        undetected={undetected}
       />
       <label htmlFor="difficulty">
         {" "}
@@ -246,6 +260,10 @@ export default function Home() {
         emotionLog={emotionLog}
         timeElapsed={timeElapsed}
         // primaryEmotion={primaryEmotion}
+        setUndetected={setUndetected}
+        undetected={undetected}
+        hiddenVideo={hiddenVideo}
+        setHiddenVideo={setHiddenVideo}
       />
 
       <p>{userInput}</p>
@@ -274,7 +292,7 @@ export default function Home() {
           style: { color: "black" },
         }}
       />
-      <History />
+      <History auth={auth} />
     </div>
   );
 }

@@ -58,7 +58,6 @@ const ResponsiveAppBar = () => {
     }).then(() => {
       auth.signOut();
     });
-    console.log(usersRef);
   };
 
   return (

@@ -15,14 +15,17 @@ const User = () => {
   const { user, auth } = useContext(UserContext);
   const { user_id } = useParams();
   const [userData, setUserData] = useState({});
+  const [error, setError] = useState(null);
   useEffect(() => {
     const usersRef = doc(db, "users", user_id);
 
     onSnapshot(usersRef, (snapshot) => {
       if (snapshot.exists()) {
         setUserData({ ...snapshot.data() });
+        setError(null);
       } else {
         console.log("User does not exist (profile)");
+        setError("User profile does not exist");
       }
     });
   }, [user_id]);
@@ -76,25 +79,29 @@ const User = () => {
   //     "medium",
   //   ],
   // };
-  return (
-    <div className="user">
-      <UserInfoCard
-        userName={profile.userName}
-        friendList={profile.friendList}
-        loggedIn={profile.loggedIn}
-        auth={auth}
-        avatar={userData.avatar}
-      />
-      <UserAver
-        totalGames={profile.totalGames}
-        wordsPerMin={profile.wordsPerMin}
-      />
-      <Graph
-        wordsPerMinData={profile.wordsPerMinData}
-        difficulty={profile.difficulty}
-      />
-    </div>
-  );
+  if (error) {
+    return <p>{error}</p>;
+  } else {
+    return (
+      <div className="user">
+        <UserInfoCard
+          userName={profile.userName}
+          friendList={profile.friendList}
+          loggedIn={profile.loggedIn}
+          auth={auth}
+          avatar={userData.avatar}
+        />
+        <UserAver
+          totalGames={profile.totalGames}
+          wordsPerMin={profile.wordsPerMin}
+        />
+        <Graph
+          wordsPerMinData={profile.wordsPerMinData}
+          difficulty={profile.difficulty}
+        />
+      </div>
+    );
+  }
 };
 
 export default User;
