@@ -66,7 +66,7 @@ export default function Timer({
     ],
   };
 
-}) {
+
   useEffect(() => {
     let id;
     if (startCounting) {
@@ -85,6 +85,7 @@ export default function Timer({
   const minutes = timeElapsed / 60;
 
   return (
+    <>
     <Fragment>
       <div className="feedback">
         <div className="time-elapsed-and-speed">
@@ -116,5 +117,6 @@ export default function Timer({
         , Surprised: {emotionLog.surprised}
       </p>
     </div>
+    </>
   );
 }
