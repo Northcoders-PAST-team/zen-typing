@@ -5,11 +5,13 @@ export default function ExerciseCard(props) {
   const month = dateObj.getUTCMonth() + 1; //months from 1-12
   const day = dateObj.getUTCDate();
   const year = dateObj.getUTCFullYear();
+  const hour = dateObj.getHours();
+  const minute = dateObj.getMinutes();
 
   return (
     <div>
       <p>
-        Date: {day}/{month}/{year} | Time: {time} | WPM: {wpm}
+        Date: {day}/{month}/{year} {hour}:{minute} | Time: {time} | WPM: {wpm}
       </p>
     </div>
   );

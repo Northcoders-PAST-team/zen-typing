@@ -1,6 +1,6 @@
 import "firebase/compat/firestore";
 import { db } from "../../firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, limit, query } from "firebase/firestore";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
@@ -8,7 +8,8 @@ import ExerciseCard from "./ExerciseCard";
 
 export default function History() {
   const exercisesRef = collection(db, "exercises");
-  const [exercises] = useCollectionData(exercisesRef, {
+  const q = query(exercisesRef, orderBy("createdAt", "desc"), limit(5));
+  const [exercises] = useCollectionData(q, {
     idField: "id",
   });
 
