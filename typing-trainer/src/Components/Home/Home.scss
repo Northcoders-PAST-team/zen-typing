@@ -18,3 +18,27 @@
     text-decoration: underline;
 }
 
+.feedback {
+    background-color: rgba(103, 220, 255, 0.213);
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    width: 500px
+}
+
+.time-elapsed-and-speed{
+    display: flex;
+    flex-direction: column;
+}
+
+.face-feedback {
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+
+}
+
+.bar-chart {
+    width: 75%;
+    height: 300px
+}

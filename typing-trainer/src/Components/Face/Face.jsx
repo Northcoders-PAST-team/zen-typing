@@ -8,6 +8,10 @@ export default function Face({
   emotionLog,
   setEmotionLog,
   timeElapsed,
+  undetected,
+  setUndetected,
+  hiddenVideo,
+  setHiddenVideo,
 }) {
   const videoRef = useRef();
   const canvasRef = useRef();
@@ -38,9 +42,8 @@ export default function Face({
       });
   };
 
-  const [hiddenVideo, setHiddenVideo] = useState(false);
-
   const [neutral, setNeutral] = useState();
+
   const [happy, setHappy] = useState();
   const [surprised, setSurprised] = useState();
   const [angry, setAngry] = useState();
@@ -50,12 +53,12 @@ export default function Face({
   const [calm, setCalm] = useState(true);
 
   let currentEmotions = {
-    neutral: neutral,
     happy: happy,
     surprised: surprised,
     angry: angry,
-    sad: sad,
     disgusted: disgusted,
+    sad: sad,
+    neutral: neutral,
   };
 
   let primaryEmotion = !currentEmotions
@@ -69,11 +72,19 @@ export default function Face({
 
   useEffect(() => {
     setCalm(primaryEmotion !== "neutral" ? false : true);
+    emotionLog[primaryEmotion] += 1;
+  }, [timeElapsed]);
 
-    emotionLog[previousEmotion] += timeElapsed - previousInterval;
-    setPreviousInterval(timeElapsed);
-    setPreviousEmotion(primaryEmotion);
-  }, [primaryEmotion]);
+  const [triggerDetectCount, setTriggerDetectCount] = useState(false);
+
+  useEffect(() => {
+    if (startCounting && triggerDetectCount) {
+      setUndetected((previous) => {
+        return previous + 1;
+      });
+      setTriggerDetectCount(false);
+    }
+  }, [undetected, triggerDetectCount]);
 
   const faceDetection = async () => {
     setInterval(async () => {
@@ -83,9 +94,9 @@ export default function Face({
         .withFaceExpressions();
 
       if (!detections[0]) {
-        return;
+        setTriggerDetectCount(true);
       } else {
-        setNeutral(detections[0].expressions.neutral);
+        setNeutral(detections[0].expressions.neutral - 0.8);
         setHappy(detections[0].expressions.happy);
         setSurprised(detections[0].expressions.surprised);
         setAngry(detections[0].expressions.angry);
@@ -158,7 +169,11 @@ export default function Face({
           width="940"
           height="200"
           className={
-            hiddenVideo ? "hidden" : calm ? "face-canvas" : "face-canvas-angry"
+            hiddenVideo
+              ? "hidden"
+              : calm
+              ? "face-canvas-calm"
+              : "face-canvas-not-calm"
           }
         />
       </div>

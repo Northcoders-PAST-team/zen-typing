@@ -50,14 +50,11 @@ export default function Home({ auth }) {
     sad: 0,
     disgusted: 0,
   });
-
-  ///testing
-
-  // let primaryEmotion = Object.keys(currentEmotions).reduce((a, b) =>
-  //   currentEmotions[a] > currentEmotions[b] ? a : b
-  // );
+  const [undetected, setUndetected] = useState(0);
 
   const [difficulty, setDifficulty] = useState("easy");
+  const [finished, setFinished] = useState(false);
+  const [hiddenVideo, setHiddenVideo] = useState(false);
   const [id, setId] = useState("1");
 
   const [paragraph, setParagraph] = useState("");
@@ -128,6 +125,8 @@ export default function Home({ auth }) {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
+      setHiddenVideo(true);
 
       return;
     }
@@ -163,6 +162,8 @@ export default function Home({ auth }) {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
+      setFinished(userInput === "FINISHED");
+      setHiddenVideo(true);
 
       console.log("timeElapsed is " + timeElapsed);
 
@@ -202,6 +203,7 @@ export default function Home({ auth }) {
         speed={speed}
         setSpeed={setSpeed}
         emotionLog={emotionLog}
+        undetected={undetected}
       />
       <label htmlFor="difficulty">
         {" "}
@@ -256,6 +258,10 @@ export default function Home({ auth }) {
         emotionLog={emotionLog}
         timeElapsed={timeElapsed}
         // primaryEmotion={primaryEmotion}
+        setUndetected={setUndetected}
+        undetected={undetected}
+        hiddenVideo={hiddenVideo}
+        setHiddenVideo={setHiddenVideo}
       />
 
       <p>{userInput}</p>
