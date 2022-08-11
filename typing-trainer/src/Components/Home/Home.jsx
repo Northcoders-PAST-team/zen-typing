@@ -146,7 +146,10 @@ export default function Home({ auth }) {
     } else if (
       //   activeWordIndex === cloud.length - 1 &&
       //   userInput === cloud[activeWordIndex].slice(0, -1) &&
-      value === cloud[cloud.length - 1]
+      // value === cloud[cloud.length - 1]
+
+      activeWordIndex === cloud.length - 1 &&
+      value.length === cloud[cloud.length - 1].length
     ) {
       setActiveWordIndex((index) => index + 1);
       setUserInput("");
@@ -184,6 +187,7 @@ export default function Home({ auth }) {
 
       return;
     } else {
+      //in the middle of a word
       setUserInput(value);
     }
   };
