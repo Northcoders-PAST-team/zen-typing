@@ -1,4 +1,6 @@
 import "./Nav.scss";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { Link } from "react-router-dom";
 
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
@@ -14,10 +16,14 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-const pages = ["About", "Community", "Statistics"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useAuthState } from "react-firebase-hooks/auth";
 
-const ResponsiveAppBar = () => {
+const pages = ["About", "Community", "Statistics"];
+const settings = ["Profile", "Account", "Dashboard"];
+
+const ResponsiveAppBar = ({ auth }) => {
+  const [user] = useAuthState(auth);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -66,9 +72,7 @@ const ResponsiveAppBar = () => {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-            >
-              {/* <MenuIcon /> */}
-            </IconButton>
+            ></IconButton>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -94,6 +98,7 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box>
+
           <Typography
             variant="h5"
             noWrap
@@ -123,7 +128,7 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-
+          {user ? <p> {user.email}</p> : null}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -151,6 +156,20 @@ const ResponsiveAppBar = () => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              {user ? (
+                <MenuItem key="Logout" onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={() => auth.signOut()}>
+                    Logout
+                  </Typography>
+                </MenuItem>
+              ) : (
+                <Link to="/signin">
+                  {" "}
+                  <MenuItem key="Login">
+                    <Typography textAlign="center">Login</Typography>
+                  </MenuItem>
+                </Link>
+              )}
             </Menu>
           </Box>
         </Toolbar>
