@@ -56,7 +56,7 @@ function SignUp() {
           </label>
           <input
             type="text"
-            autofocus
+            autoFocus
             placeholder="Enter Email"
             name="email"
             required
