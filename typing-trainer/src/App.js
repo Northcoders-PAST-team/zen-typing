@@ -3,6 +3,7 @@ import { db } from "./firebaseConfig";
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import User from "./Components/User/User";
 import Errors from "./Components/Errors/Errors";
 import { serverTimestamp, setDoc, doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -41,7 +42,10 @@ function App() {
       <BrowserRouter>
         <Nav auth={auth} />
         <Routes>
-          <Route path={"/"} element={<Home auth={auth} />} />
+
+
+          <Route path={"/"} element={<Home />} />
+          <Route path={"/users/:user_id"} element={<User />} />
           <Route path={"*"} element={<Errors />} />
           <Route path={"/signin"} element={<SignIn auth={auth} />} />
           <Route path={"/signup"} element={<SignUp auth={auth} />} />

@@ -18,11 +18,8 @@ import {
   setDoc,
   updateDoc,
   Timestamp,
-  onSnapshot 
+  onSnapshot,
 } from "firebase/firestore";
-
-
-
 
 import Face from "../Face/Face";
 import Word from "./Word";
@@ -30,7 +27,6 @@ import Timer from "./Timer";
 import History from "../History/History";
 
 const choices = ["HTML", "CSS", "javascript", "python"];
-
 
 export default function Home() {
   // 1. Use state to hold the userInput, linked to the text input box
@@ -163,7 +159,6 @@ export default function Home() {
       setStartCounting(false);
       setUserInput("FINISHED");
 
-
       console.log("timeElapsed is " + timeElapsed);
 
       // const speed =
@@ -181,7 +176,6 @@ export default function Home() {
           console.log("ERROR IS " + error);
         });
 
-     
       return;
     } else {
       setUserInput(value);
