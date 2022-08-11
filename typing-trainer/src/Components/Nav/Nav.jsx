@@ -1,7 +1,7 @@
 import "./Nav.scss";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { Link } from "react-router-dom";
 
+import { Link } from "react-router-dom";
+import { db } from "../../firebaseConfig";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -16,10 +16,16 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
+
+import {
+  serverTimestamp,
+  setDoc,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 const pages = ["About", "Community", "Statistics"];
 const settings = ["Account", "Dashboard"];
@@ -43,6 +49,16 @@ const ResponsiveAppBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const logOut = () => {
+    const usersRef = doc(db, "users", user.uid);
+    updateDoc(usersRef, {
+      online: false,
+    }).then(() => {
+      auth.signOut();
+    });
+    console.log(usersRef);
   };
 
   return (
@@ -172,10 +188,7 @@ const ResponsiveAppBar = () => {
               {user ? (
                 <Link to="/">
                   <MenuItem key="Logout" onClick={handleCloseUserMenu}>
-                    <Typography
-                      textAlign="center"
-                      onClick={() => auth.signOut()}
-                    >
+                    <Typography textAlign="center" onClick={logOut}>
                       Logout
                     </Typography>
                   </MenuItem>

@@ -1,7 +1,7 @@
 import { useState } from "react";
-
+import { db } from "../../firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
-
+import { serverTimestamp, setDoc, doc, updateDoc } from "firebase/firestore";
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
 
@@ -34,6 +34,12 @@ function SignIn() {
         console.log("user logged in", cred.user);
         navigate("/", { replace: true });
       })
+      // .then(() => {
+      //   const usersRef = doc(db, "users", user.uid);
+      //   updateDoc(usersRef, {
+      //     online: true,
+      //   });
+      // })
       .catch((err) => {
         setError(err.message);
       });
@@ -48,7 +54,7 @@ function SignIn() {
     });
     //sign in with google popup
     signInWithPopup(auth, provider);
-    console.log(auth.currentUser, "here");
+    console.log(auth, "im currrent user logged in with google");
   }
 
   return (
