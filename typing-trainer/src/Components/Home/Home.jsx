@@ -41,17 +41,13 @@ export default function Home() {
     sad: 0,
     disgusted: 0,
   });
-
-  ///testing
-
-  // let primaryEmotion = Object.keys(currentEmotions).reduce((a, b) =>
-  //   currentEmotions[a] > currentEmotions[b] ? a : b
-  // );
+  const [undetected, setUndetected] = useState(0);
 
   const choices = ["HTML", "CSS", "javascript", "python"];
 
   const [difficulty, setDifficulty] = useState("easy");
   const [finished, setFinished] = useState(false);
+  const [hiddenVideo, setHiddenVideo] = useState(false);
 
   const [paragraph, setParagraph] = useState("");
 
@@ -128,6 +124,7 @@ export default function Home() {
       setStartCounting(false);
       setUserInput("FINISHED");
       setFinished(userInput === "FINISHED");
+      setHiddenVideo(true);
       return;
     }
     // after a word
@@ -160,6 +157,7 @@ export default function Home() {
       setStartCounting(false);
       setUserInput("FINISHED");
       setFinished(userInput === "FINISHED");
+      setHiddenVideo(true);
       return;
     } else {
       setUserInput(value);
@@ -174,6 +172,7 @@ export default function Home() {
         timeElapsed={timeElapsed}
         setTimeElapsed={setTimeElapsed}
         emotionLog={emotionLog}
+        undetected={undetected}
       />
 
       <select name="difficulty" id="difficulty" onChange={selectHandler}>
@@ -224,6 +223,10 @@ export default function Home() {
         emotionLog={emotionLog}
         timeElapsed={timeElapsed}
         // primaryEmotion={primaryEmotion}
+        setUndetected={setUndetected}
+        undetected={undetected}
+        hiddenVideo={hiddenVideo}
+        setHiddenVideo={setHiddenVideo}
       />
 
       <p>{userInput}</p>
