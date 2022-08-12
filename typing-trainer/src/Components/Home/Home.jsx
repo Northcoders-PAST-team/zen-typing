@@ -242,6 +242,7 @@ export default function Home() {
                 {cloud.map((word, index) => {
                   return (
                     <Word
+                      key={index}
                       text={word}
                       active={index === activeWordIndex}
                       correct={correctWordArray[index]}
