@@ -3,8 +3,15 @@ import UserInfoCard from "./UserInfoCard";
 import "./User.scss";
 import UserAver from "./UserAver";
 import Graph from "./Graph";
+import { useParams } from "react-router-dom";
+import "firebase/compat/firestore";
+import { db } from "../../firebaseConfig";
+import { collection, orderBy, limit, query } from "firebase/firestore";
 
-const User = () => {
+const User = ({ auth }) => {
+  const { username } = useParams();
+
+  console.log(username);
   const user = {
     userName: "DAVE2022",
     friendList: ["friend1", "friend2", "friend3"],

@@ -43,7 +43,7 @@ function App() {
         <Nav auth={auth} />
         <Routes>
           <Route path={"/"} element={<Home auth={auth} />} />
-          <Route path={"/users/:user_id"} element={<User />} />
+          <Route path={"/users/:username"} element={<User auth={auth} />} />
           <Route path={"*"} element={<Errors />} />
           <Route path={"/signin"} element={<SignIn auth={auth} />} />
           <Route path={"/signup"} element={<SignUp auth={auth} />} />

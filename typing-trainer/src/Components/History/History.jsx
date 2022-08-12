@@ -1,6 +1,13 @@
 import "firebase/compat/firestore";
 import { db } from "../../firebaseConfig";
-import { collection, getDocs, orderBy, limit, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  orderBy,
+  limit,
+  query,
+  where,
+} from "firebase/firestore";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
