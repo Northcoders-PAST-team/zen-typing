@@ -3,7 +3,20 @@
     flex-direction: column;
     align-items: center;
     justify-items: center;
+    // border-style: solid;
+    border-color: black;
 }
+
+.timerContainer {
+    // border-style: solid;
+}
+
+.faceContainer {
+    // border-style: solid;
+    // background-color: pink;
+}
+
+
 .correct {
     font-weight: bold;
     color: green;
@@ -31,14 +44,3 @@
     flex-direction: column;
 }
 
-.face-feedback {
-    display: flex;
-    flex-direction: row;
-    width: 400px;
-
-}
-
-.bar-chart {
-    width: 75%;
-    height: 300px
-}

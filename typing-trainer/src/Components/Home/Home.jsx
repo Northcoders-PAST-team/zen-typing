@@ -1,5 +1,8 @@
 import { useState, Fragment, useEffect } from "react";
 
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
 import "./Home.scss";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -58,6 +61,43 @@ export default function Home() {
   const [finished, setFinished] = useState(false);
   const [hiddenVideo, setHiddenVideo] = useState(false);
   const [id, setId] = useState("1");
+
+  const labels = ["neutral", "happy", "disgusted", "sad", "angry", "surprised"];
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Emotion Feedback",
+        data: [
+          (((emotionLog.neutral - 1) / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.happy / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.disgusted / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.sad / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.angry / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.surprised / timeElapsed || 0) * 100).toFixed(2),
+        ],
+
+        backgroundColor: [
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   const [paragraph, setParagraph] = useState("");
 
@@ -207,6 +247,19 @@ export default function Home() {
 
   return (
     <div className="home">
+      <Face
+        startCounting={startCounting}
+        setEmotionLog={setEmotionLog}
+        emotionLog={emotionLog}
+        timeElapsed={timeElapsed}
+        // primaryEmotion={primaryEmotion}
+        setUndetected={setUndetected}
+        undetected={undetected}
+        hiddenVideo={hiddenVideo}
+        setHiddenVideo={setHiddenVideo}
+        data={data}
+      />
+
       <Timer
         startCounting={startCounting}
         correctWords={correctWordArray.filter(Boolean).length}
@@ -265,18 +318,6 @@ export default function Home() {
         </div>
       </Fragment>
 
-      <Face
-        startCounting={startCounting}
-        setEmotionLog={setEmotionLog}
-        emotionLog={emotionLog}
-        timeElapsed={timeElapsed}
-        // primaryEmotion={primaryEmotion}
-        setUndetected={setUndetected}
-        undetected={undetected}
-        hiddenVideo={hiddenVideo}
-        setHiddenVideo={setHiddenVideo}
-      />
-
       <p>{userInput}</p>
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
       <TextField
@@ -289,8 +330,8 @@ export default function Home() {
           borderTop: 1,
           borderBottom: 1,
           borderRadius: "16px",
-          mt: "21rem",
-          mb: "15rem",
+          mt: "1rem",
+          mb: "1rem",
           width: 450,
           bgcolor: "white",
           color: "white",
