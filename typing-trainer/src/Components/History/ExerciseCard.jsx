@@ -1,5 +1,6 @@
 export default function ExerciseCard(props) {
   const {
+    uid,
     user,
     createdAt,
     time,
@@ -20,9 +21,9 @@ export default function ExerciseCard(props) {
   return (
     <div>
       <p>
-        User: {user} | Date: {day}/{month}/{year} {hour}:{minute} | Time: {time}{" "}
-        | WPM: {wpm} | Accuracy {accuracy * 100}% | Difficulty: {difficulty} |
-        Paragraph: {paragraph} | Neutral: {neutral.tofixed(2)}%
+        uid: {uid} | User: {user} | Date: {day}/{month}/{year} {hour}:{minute} |
+        Time: {time} | WPM: {wpm} | Accuracy {accuracy * 100}% | Difficulty:{" "}
+        {difficulty} | Paragraph: {paragraph} | Neutral: {neutral}%
       </p>
     </div>
   );

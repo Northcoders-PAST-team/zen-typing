@@ -169,6 +169,7 @@ export default function Home() {
 
       if (user) {
         addDoc(exercisesRef, {
+          uid: user.uid,
           user: user.displayName || user.email,
           createdAt: Timestamp.fromDate(new Date()),
           time: timeElapsed,
