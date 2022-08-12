@@ -62,7 +62,6 @@ export default function Timer({
         setTimeElapsed((oldTime) => {
           return oldTime + 1;
         });
-        setSpeed((correctWords / (timeElapsed / 60) || 0).toFixed(2));
       }, 1000);
     }
     return () => {
@@ -78,7 +77,7 @@ export default function Timer({
         <div className="feedback">
           <div className="time-elapsed-and-speed">
             <p>Time: {timeElapsed}</p>
-            <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM</p>
+            <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM </p>
             <p>
               {!undetected
                 ? ""
