@@ -67,7 +67,7 @@ export default function Home() {
 
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
   function selectHandler(e) {
-    setId(String(Math.floor(Math.random() * 10 + 1)));
+    // setId(String(Math.floor(Math.random() * 10 + 1)));
     setId(String(1));
     setDifficulty(e.target.value);
   }
@@ -181,6 +181,7 @@ export default function Home() {
           time: timeElapsed,
           wpm: speed,
           difficulty: difficulty,
+          paragraph: paragraph,
         })
           .then((docRef) => {
             console.log("Document has been added successfully)");
