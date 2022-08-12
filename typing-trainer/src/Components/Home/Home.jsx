@@ -270,7 +270,7 @@ export default function Home() {
 
         <label htmlFor="difficulty">
           {" "}
-          Excercise
+          Exercise
           <select name="difficulty" id="difficulty" onChange={selectId}>
             <option value="ID">ID</option>
 
