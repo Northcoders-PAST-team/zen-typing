@@ -7,6 +7,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
 // import { useAuthState } from "react-firebase-hooks/auth";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
@@ -29,9 +30,12 @@ import Face from "../Face/Face";
 import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
+import { OptionUnstyled } from "@mui/base";
+import { experimentalStyled } from "@mui/material";
 
 export default function Home() {
   // const [user] = useAuthState(auth);
+  const [search, setSearch] = useSearchParams();
   const { user, auth } = useContext(UserContext);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
@@ -54,10 +58,16 @@ export default function Home() {
   });
   const [undetected, setUndetected] = useState(0);
 
+  const level = search.get("level");
+  const id = search.get("id");
+  const [request, setRequest] = useState({ level: level, id: id });
+
+  // const [request, setRequest] = useState({ level: "easy", id: "1" });
+
   const [difficulty, setDifficulty] = useState("easy");
-  const [finished, setFinished] = useState(false);
+
   const [hiddenVideo, setHiddenVideo] = useState(false);
-  const [id, setId] = useState("1");
+  const [iD, setID] = useState("1");
 
   const [paragraph, setParagraph] = useState("");
 
@@ -65,15 +75,32 @@ export default function Home() {
   // const exercisesRef = collection(db, "exercises");
   const exercisesRef = collection(db, "exercises");
 
+  function selectId(e) {
+    if (e.target.value === "ID") {
+      setID(String(Math.floor(Math.random() * 10 + 1)));
+    } else {
+      setID(e.target.value);
+    }
+  }
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
-  function selectHandler(e) {
-    setId(String(Math.floor(Math.random() * 10 + 1)));
-    setDifficulty(e.target.value);
+  function selectDifficulty(e) {
+    // setId(String(Math.floor(Math.random() * 10 + 1)));
+    if (e.target.value === "choice") {
+      setDifficulty("easy");
+    } else {
+      setDifficulty(e.target.value);
+    }
   }
 
+  function generate() {
+    setRequest({ level: difficulty, id: iD });
+    setSearch({ level: difficulty, id: iD });
+  }
+
+  console.log(request);
   useEffect(() => {
     onSnapshot(
-      doc(db, difficulty, id),
+      doc(db, request.level, request.id),
       (docSnap) => {
         if (docSnap.exists()) {
           setParagraph(docSnap.data().text);
@@ -86,7 +113,7 @@ export default function Home() {
         console.log(err);
       }
     );
-  }, [difficulty, id]);
+  }, [request]);
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
   // const cloud =
@@ -127,7 +154,7 @@ export default function Home() {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
-      setFinished(userInput === "FINISHED");
+
       setHiddenVideo(true);
 
       return;
@@ -164,7 +191,7 @@ export default function Home() {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
-      setFinished(userInput === "FINISHED");
+
       setHiddenVideo(true);
 
       console.log("timeElapsed is " + timeElapsed);
@@ -207,16 +234,34 @@ export default function Home() {
         emotionLog={emotionLog}
         undetected={undetected}
       />
-      <label htmlFor="difficulty">
-        {" "}
-        Difficulty Level
-        <select name="difficulty" id="difficulty" onChange={selectHandler}>
-          {/* <option>choose difficulty level</option> */}
-          <option value="easy">easy</option>
-          <option value="medium">medium</option>
-          <option value="hard">hard</option>
-        </select>
-      </label>
+      <div>
+        <label htmlFor="difficulty">
+          {" "}
+          Difficulty
+          <select name="difficulty" id="difficulty" onChange={selectDifficulty}>
+            <option value="choice">level</option>
+            <option value="easy">easy</option>
+            <option value="medium">medium</option>
+            <option value="hard">hard</option>
+          </select>
+        </label>
+
+        <label htmlFor="difficulty">
+          {" "}
+          Excercise
+          <select name="difficulty" id="difficulty" onChange={selectId}>
+            <option value="ID">ID</option>
+
+            {[...Array(10)].map((o, i) => (
+              <option value={String(i + 1)} key={String(i + 1)}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <button onClick={generate}>Generate new</button>
+      </div>
 
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
       <Fragment>
