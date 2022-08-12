@@ -22,7 +22,7 @@ export default function ExerciseCard(props) {
       <p>
         User: {user} | Date: {day}/{month}/{year} {hour}:{minute} | Time: {time}{" "}
         | WPM: {wpm} | Accuracy {accuracy * 100}% | Difficulty: {difficulty} |
-        Paragraph: {paragraph} | Neutral: {neutral}%
+        Paragraph: {paragraph} | Neutral: {neutral.tofixed(2)}%
       </p>
     </div>
   );
