@@ -142,8 +142,8 @@ export default function Face({
           </div>
           <canvas
             ref={canvasRef}
-            width="940"
-            height="200"
+            // width="940"
+            // height="200"
             className={
               hiddenVideo
                 ? "hidden"

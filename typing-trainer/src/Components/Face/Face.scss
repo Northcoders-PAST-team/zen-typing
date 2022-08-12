@@ -54,9 +54,9 @@
 }
 
 video {
-    // height: 300px;
-    // width: 400px;
-    object-fit: contain;
+    height: 300px;
+    width: 400px;
+    // object-fit: contain;
     // border-radius: 50%;
 
 }
@@ -72,10 +72,12 @@ video {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    
 }
 .face-canvas-not-calm {
     background-color: rgba(255, 201, 157, 0.599);
 }
+
 
 .bar-chart {
     // position: absolute;
