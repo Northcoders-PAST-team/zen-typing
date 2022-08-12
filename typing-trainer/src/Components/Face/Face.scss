@@ -25,11 +25,11 @@
     flex-direction: column;
     // position: absolute;
     // top: 300px;
-    // width: 400px; 
-    // height: 400px; 
+    // width: 300px; 
+    // height: 300px; 
     align-items: center; 
     // justify-content: space-between;
-    -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+    // -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
     // -webkit-border-radius: 50%; 
     // margin-top: 160px;
     // background-color: aqua;
@@ -39,7 +39,7 @@
 
 .face-video {
     position: absolute;
-    top: 190px;
+    top: 195px;
     height: 300px;
     width: 300px;
     object-fit: cover;
@@ -47,11 +47,13 @@
     background-color: #666;
     align-items: center;
     justify-content: center;
+    -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+    -webkit-border-radius: 50%; 
 }
 
 .face-canvas-calm, .face-canvas-not-calm {
     position: absolute;
-    top: 190px;
+    top: 195px;
     // width: 680px;
     // height: 550px;
     height: 300px;
@@ -77,8 +79,8 @@
 
 video {
     height: 300px;
-    width: 300px;
-    border-radius: 50%;
+    width: 400px;
+    // border-radius: 50%;
 }
 
 
