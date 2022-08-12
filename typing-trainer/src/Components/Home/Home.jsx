@@ -35,7 +35,7 @@ import { experimentalStyled } from "@mui/material";
 
 export default function Home() {
   // const [user] = useAuthState(auth);
-  const [search, setSearch] = useSearchParams();
+
   const { user, auth } = useContext(UserContext);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
@@ -58,9 +58,13 @@ export default function Home() {
   });
   const [undetected, setUndetected] = useState(0);
 
+  const [search, setSearch] = useSearchParams();
   const level = search.get("level");
   const id = search.get("id");
-  const [request, setRequest] = useState({ level: level, id: id });
+
+  const [searchLevel, setSearchLevel] = useState(level || "easy");
+  const [searchId, setSearchId] = useState(id || "1");
+  const [request, setRequest] = useState({ level: searchLevel, id: searchId });
 
   // const [request, setRequest] = useState({ level: "easy", id: "1" });
 
@@ -77,7 +81,8 @@ export default function Home() {
 
   function selectId(e) {
     if (e.target.value === "ID") {
-      setID(String(Math.floor(Math.random() * 10 + 1)));
+      // setID(String(Math.floor(Math.random() * 10 + 1)));
+      setID("1");
     } else {
       setID(e.target.value);
     }
@@ -114,6 +119,23 @@ export default function Home() {
       }
     );
   }, [request]);
+
+  // useEffect(() => {
+  //   onSnapshot(
+  //     doc(db, search.level, search.id),
+  //     (docSnap) => {
+  //       if (docSnap.exists()) {
+  //         setParagraph(docSnap.data().text);
+  //       } else {
+  //         // doc.data() will be undefined in this case
+  //         console.log("No such document!");
+  //       }
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }, [search]);
 
   // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
   // const cloud =
@@ -261,6 +283,12 @@ export default function Home() {
         </label>
 
         <button onClick={generate}>Generate new</button>
+        <a
+          href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
+          target="_blank"
+        >
+          share game
+        </a>
       </div>
 
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
