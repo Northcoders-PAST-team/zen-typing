@@ -238,9 +238,6 @@ export default function Home() {
               {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
               {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
               {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
-              {console.log(
-                "map the Word components into the display paragraph"
-              )}
               <p>
                 {cloud.map((word, index) => {
                   return (
