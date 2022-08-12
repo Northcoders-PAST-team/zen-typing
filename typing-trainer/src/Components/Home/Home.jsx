@@ -6,7 +6,10 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+// import { useAuthState } from "react-firebase-hooks/auth";
+
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
 
 //importing database
 import { db } from "../../firebaseConfig";
@@ -27,10 +30,9 @@ import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
 
-const choices = ["HTML", "CSS", "javascript", "python"];
-
-export default function Home({ auth }) {
-  const [user] = useAuthState(auth);
+export default function Home() {
+  // const [user] = useAuthState(auth);
+  const { user, auth } = useContext(UserContext);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
   // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
@@ -173,7 +175,7 @@ export default function Home({ auth }) {
       console.log(user, "<<user");
       if (user) {
         addDoc(exercisesRef, {
-          user: user.displayName,
+          user: user.displayName || user.email,
           createdAt: Timestamp.fromDate(new Date()),
           time: timeElapsed,
           wpm: speed,

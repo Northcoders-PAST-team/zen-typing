@@ -4,7 +4,11 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
-function SignUp({ auth }) {
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
+
+function SignUp() {
+  const { user, auth } = useContext(UserContext);
   //navigate hook initialized
   let navigate = useNavigate();
 
@@ -31,14 +35,10 @@ function SignUp({ auth }) {
           navigate("/", { replace: true });
           setError(null);
           console.log("user created", cred.user);
-          const docRef = doc(db, "users", cred.user.uid);
-          return setDoc(docRef, {
-            email: signUp.email,
-            createdAt: serverTimestamp(),
-          });
         })
         .catch((err) => {
           setError(err.message);
+          console.log(err);
         });
     } else {
       setError("password does not match");
@@ -56,6 +56,7 @@ function SignUp({ auth }) {
           </label>
           <input
             type="text"
+            autoFocus
             placeholder="Enter Email"
             name="email"
             required
@@ -86,6 +87,18 @@ function SignUp({ auth }) {
             required
             onChange={signupHandler}
           />
+
+          {/* <label>
+            <b>Full name</b>
+          </label>
+          <input
+            type="text"
+            placeholder="Full name"
+            name="displayName"
+            value={signUp.displayName}
+            required
+            onChange={signupHandler}
+          /> */}
 
           <br />
           <br />

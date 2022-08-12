@@ -1,6 +1,9 @@
 import { useState } from "react";
-
+import { db } from "../../firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
+import { serverTimestamp, setDoc, doc, updateDoc } from "firebase/firestore";
+import { UserContext } from "../User/UserContext";
+import { useContext } from "react";
 
 import {
   signInWithPopup,
@@ -8,7 +11,8 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
-function SignIn({ auth }) {
+function SignIn() {
+  const { user, auth } = useContext(UserContext);
   let navigate = useNavigate();
   //set login details state with Email
   const [error, setError] = useState(null);
@@ -44,7 +48,6 @@ function SignIn({ auth }) {
     });
     //sign in with google popup
     signInWithPopup(auth, provider);
-    console.log(auth.currentUser, "here");
   }
 
   return (
@@ -68,6 +71,7 @@ function SignIn({ auth }) {
           </label>
           <input
             type="text"
+            autoFocus
             placeholder="Enter Username"
             name="email"
             value={login.email}
