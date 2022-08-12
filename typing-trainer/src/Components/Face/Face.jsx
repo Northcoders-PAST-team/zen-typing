@@ -3,6 +3,9 @@ import "./Face.scss";
 import * as faceapi from "face-api.js";
 import Button from "@mui/material/Button";
 
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
 export default function Face({
   startCounting,
   emotionLog,
@@ -12,6 +15,7 @@ export default function Face({
   setUndetected,
   hiddenVideo,
   setHiddenVideo,
+  data,
 }) {
   const videoRef = useRef();
   const canvasRef = useRef();
@@ -124,59 +128,64 @@ export default function Face({
   };
 
   return (
-    <Fragment>
-      <div className="hide-emotion-and-emotion">
-        <Button
-          className="activate"
-          onClick={() => {
-            setHiddenVideo(hiddenVideo ? false : true);
-          }}
-          variant="contained"
-          sx={{
-            mr: 5,
-            width: "300px",
-          }}
-        >
-          {hiddenVideo
-            ? "activate face recognition"
-            : "deactivate face recognition"}
-        </Button>
-        <p className="current-emotion">
-          {hiddenVideo
-            ? ""
-            : calm
-            ? `Currently calm..`
-            : `CALM DOWN! ${
-                primaryEmotion !== "happy"
-                  ? `You\'re looking a bit too ${primaryEmotion}`
-                  : ""
-              }`}
-        </p>
-      </div>
-
-      <div className="face">
-        <div className="face-video">
-          <video
-            crossOrigin="anonymous"
-            ref={videoRef}
-            autoPlay
-            muted
-            className={hiddenVideo ? "hidden" : ""}
-          ></video>
+    <div className="faceContainer">
+      <Fragment>
+        <div className="face">
+          <div className="face-video">
+            <video
+              crossOrigin="anonymous"
+              ref={videoRef}
+              autoPlay
+              muted
+              className={hiddenVideo ? "hidden" : ""}
+            ></video>
+          </div>
+          <canvas
+            ref={canvasRef}
+            width="940"
+            height="200"
+            className={
+              hiddenVideo
+                ? "hidden"
+                : calm
+                ? "face-canvas-calm"
+                : "face-canvas-not-calm"
+            }
+          />
+          <div className="bar-chart">
+            <Doughnut data={data} />
+          </div>
         </div>
-        <canvas
-          ref={canvasRef}
-          width="940"
-          height="200"
-          className={
-            hiddenVideo
-              ? "hidden"
+
+        <div className="hide-emotion-and-emotion">
+          <Button
+            className="activate"
+            onClick={() => {
+              setHiddenVideo(hiddenVideo ? false : true);
+            }}
+            variant="contained"
+            sx={{
+              mr: 5,
+              width: "300px",
+            }}
+          >
+            {hiddenVideo
+              ? "activate face recognition"
+              : "deactivate face recognition"}
+          </Button>
+          <p className="current-emotion">
+            {hiddenVideo
+              ? ""
               : calm
-              ? "face-canvas-calm"
-              : "face-canvas-not-calm"
-          }
-        />
-      </div>
-    </Fragment>
+              ? `Currently calm..`
+              : `CALM DOWN! ${
+                  primaryEmotion !== "happy"
+                    ? `You\'re looking a bit too ${primaryEmotion}`
+                    : ""
+                }`}
+          </p>
+        </div>
+      </Fragment>
+    </div>
   );
 }
