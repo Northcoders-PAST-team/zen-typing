@@ -1,21 +1,67 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import UserInfoCard from "./UserInfoCard";
 import "./User.scss";
 import UserAver from "./UserAver";
 import Graph from "./Graph";
-import { useParams } from "react-router-dom";
 import "firebase/compat/firestore";
 import { db } from "../../firebaseConfig";
-import { collection, orderBy, limit, query } from "firebase/firestore";
+import {
+  collection,
+  orderBy,
+  limit,
+  query,
+  doc,
+  onSnapshot,
+  where,
+} from "firebase/firestore";
+import { useParams } from "react-router-dom";
+import { UserContext } from "../User/UserContext";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
-const User = ({ auth }) => {
-  const { username } = useParams();
+const User = () => {
+  const { user, auth } = useContext(UserContext);
 
-  console.log(username);
-  const user = {
-    userName: "DAVE2022",
-    friendList: ["friend1", "friend2", "friend3"],
-    loggedIn: true,
+  const { user_id } = useParams();
+
+  const [userData, setUserData] = useState({});
+  const [exercisesData, setExercisesData] = useState([]);
+  console.log(exercisesData);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const usersRef = doc(db, "users", user_id);
+
+    onSnapshot(usersRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setUserData({ ...snapshot.data() });
+        setError(null);
+      } else {
+        console.log("User does not exist (profile)");
+        setError("400 sorry user profile does not exist");
+      }
+    });
+  }, [user_id]);
+
+  useEffect(() => {
+    const exercisesRef = doc(db, "exercises", user_id);
+
+    onSnapshot(exercisesRef, (snapshot) => {
+      if (snapshot.exists()) {
+        setExercisesData([...snapshot.data()]);
+        setError(null);
+      } else {
+        console.log(snapshot);
+        console.log("User does not exist (profile)");
+        setError("400 no data found");
+      }
+    });
+  }, [user_id]);
+
+  const profile = {
+    userName: userData.displayName,
+    friendList: userData.friends,
+    loggedIn: userData.online,
+
     totalGames: 20,
     wordsPerMin: 35.543,
     wordsPerMinData: [
@@ -36,20 +82,30 @@ const User = ({ auth }) => {
       "medium",
     ],
   };
-  return (
-    <div className="user">
-      <UserInfoCard
-        userName={user.userName}
-        friendList={user.friendList}
-        loggedIn={user.loggedIn}
-      />
-      <UserAver totalGames={user.totalGames} wordsPerMin={user.wordsPerMin} />
-      <Graph
-        wordsPerMinData={user.wordsPerMinData}
-        difficulty={user.difficulty}
-      />
-    </div>
-  );
+
+  if (error) {
+    return <p>{error}</p>;
+  } else {
+    return (
+      <div className="user">
+        <UserInfoCard
+          userName={profile.userName}
+          friendList={profile.friendList}
+          loggedIn={profile.loggedIn}
+          auth={auth}
+          avatar={userData.avatar}
+        />
+        <UserAver
+          totalGames={profile.totalGames}
+          wordsPerMin={profile.wordsPerMin}
+        />
+        <Graph
+          wordsPerMinData={profile.wordsPerMinData}
+          difficulty={profile.difficulty}
+        />
+      </div>
+    );
+  }
 };
 
 export default User;
