@@ -14,28 +14,17 @@ export default function Timer({
   timeElapsed,
   emotionLog,
   undetected,
-  
+
   speed,
   setSpeed,
 }) {
-  const labels = [
-    "neutral",
-    "happy",
-    "disgusted",
-    "sad",
-    "angry",
-    "surprised",
-    "undetected",
-  ];
+  const labels = ["neutral", "happy", "disgusted", "sad", "angry", "surprised"];
 
   const data = {
     labels,
     datasets: [
       {
         label: "Emotion Feedback",
-        // data: labels.map((emotion) =>
-        //   emotionLog[emotion]({ min: -1000, max: 1000 })
-        // ),
         data: [
           (((emotionLog.neutral - 1) / timeElapsed || 0) * 100).toFixed(2),
           ((emotionLog.happy / timeElapsed || 0) * 100).toFixed(2),
@@ -66,7 +55,6 @@ export default function Timer({
     ],
   };
 
-
   useEffect(() => {
     let id;
     if (startCounting) {
@@ -86,37 +74,27 @@ export default function Timer({
 
   return (
     <>
-    <Fragment>
-      <div className="feedback">
-        <div className="time-elapsed-and-speed">
-          <p>Time: {timeElapsed}</p>
-          <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM</p>
-          <p>
-            {!undetected
-              ? ""
-              : undetected === 1
-              ? `We couldn't detect you once during the exercise`
-              : `We couldn't detect you ${undetected} times during the exercise.`}
-          </p>
-        </div>
-        <div className="face-feedback">
-          <div className="bar-chart">
-            <Doughnut data={data} />
+      <Fragment>
+        <div className="feedback">
+          <div className="time-elapsed-and-speed">
+            <p>Time: {timeElapsed}</p>
+            <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM</p>
+            <p>
+              {!undetected
+                ? ""
+                : undetected === 1
+                ? `We couldn't detect you once during the exercise`
+                : `We couldn't detect you ${undetected} times during the exercise.`}
+            </p>
           </div>
+          <div className="face-feedback">
+            <div className="bar-chart">
+              <Doughnut data={data} />
+            </div>
+          </div>
+          <br />
         </div>
-        <br />
-      </div>
-    </Fragment>
-    <div>
-      <p>Time: {timeElapsed}</p>
-      {/*<p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM</p>*/}
-      <p>Speed: {speed} WPM</p>
-      <p>
-        Neutral: {emotionLog.neutral}, Happy:{emotionLog.happy}, Disgusted:
-        {emotionLog.disgusted}, Sad: {emotionLog.sad}, Angry: {emotionLog.angry}
-        , Surprised: {emotionLog.surprised}
-      </p>
-    </div>
+      </Fragment>
     </>
   );
 }
