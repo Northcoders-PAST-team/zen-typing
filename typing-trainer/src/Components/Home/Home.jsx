@@ -88,6 +88,7 @@ export default function Home() {
     }
   }
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
+
   function selectDifficulty(e) {
     // setId(String(Math.floor(Math.random() * 10 + 1)));
     if (e.target.value === "choice") {
@@ -119,29 +120,6 @@ export default function Home() {
       }
     );
   }, [request]);
-
-  // useEffect(() => {
-  //   onSnapshot(
-  //     doc(db, search.level, search.id),
-  //     (docSnap) => {
-  //       if (docSnap.exists()) {
-  //         setParagraph(docSnap.data().text);
-  //       } else {
-  //         // doc.data() will be undefined in this case
-  //         console.log("No such document!");
-  //       }
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-  // }, [search]);
-
-  // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
-  // const cloud =
-  //   "apple banana carrot dog elephant fudge ghana hello iguana jacket king llama monkey nose oval potato queen rat steam tomato umbrella very well xylophone young zoom".split(
-  //     " "
-  //   );
 
   let cloud = String(paragraph).split(" ");
   cloud = JSON.stringify(cloud);
@@ -194,10 +172,7 @@ export default function Home() {
         return newResult;
       });
     } else if (
-      //   activeWordIndex === cloud.length - 1 &&
-      //   userInput === cloud[activeWordIndex].slice(0, -1) &&
-      // value === cloud[cloud.length - 1]
-
+      //on completion
       activeWordIndex === cloud.length - 1 &&
       value.length === cloud[cloud.length - 1].length
     ) {
@@ -208,7 +183,6 @@ export default function Home() {
         const word = value.trim();
         const newResult = [...data];
         newResult[activeWordIndex] = word === cloud[activeWordIndex];
-
         return newResult;
       });
       setStartCounting(false);
@@ -216,18 +190,31 @@ export default function Home() {
 
       setHiddenVideo(true);
 
-      console.log("timeElapsed is " + timeElapsed);
+      console.log(correctWordArray, "<<correctWordArray");
+      console.log(emotionLog.neutral, "<<neutral");
 
-      // const speed =
-      //   correctWordArray.filter(Boolean).length / (timeElapsed / 60).toFixed(2);
-
-      console.log(user, "<<user");
       if (user) {
         addDoc(exercisesRef, {
+          uid: user.uid,
           user: user.displayName || user.email,
           createdAt: Timestamp.fromDate(new Date()),
           time: timeElapsed,
-          wpm: speed,
+          difficulty: difficulty,
+          paragraph: paragraph,
+
+          wpm: (
+            (correctWordArray.filter(Boolean).length + 1) /
+              (timeElapsed / 60) || 0
+          ).toFixed(2),
+          accuracy:
+            (correctWordArray.filter(Boolean).length + 1) / cloud.length,
+
+          neutral: ((emotionLog.neutral - 1) / timeElapsed) * 100,
+          happy: (emotionLog.happy / timeElapsed) * 100,
+          sad: (emotionLog.sad / timeElapsed) * 100,
+          surprised: (emotionLog.surprised / timeElapsed) * 100,
+          disgusted: (emotionLog.disgusted / timeElapsed) * 100,
+          angry: (emotionLog.angry / timeElapsed) * 100,
         })
           .then((docRef) => {
             console.log("Document has been added successfully)");
@@ -282,7 +269,9 @@ export default function Home() {
           </select>
         </label>
 
-        <button onClick={generate}>Generate new</button>
+        <button onClick={generate} className="btn btn-primary">
+          Generate new
+        </button>
         <a
           href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
           target="_blank"
@@ -315,6 +304,7 @@ export default function Home() {
                 {cloud.map((word, index) => {
                   return (
                     <Word
+                      key={index}
                       text={word}
                       active={index === activeWordIndex}
                       correct={correctWordArray[index]}

@@ -25,8 +25,8 @@ export default function History({ auth }) {
             .filter((exercise) => {
               return exercise.user === user.displayName;
             })
-            .map((exercise) => {
-              return <ExerciseCard key={exercise.id} exercise={exercise} />;
+            .map((exercise, index) => {
+              return <ExerciseCard key={index} exercise={exercise} />;
             })}
       </ul>
     </div>
