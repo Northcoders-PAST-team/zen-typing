@@ -10,7 +10,8 @@ const Graph = ({ exercisesData }) => {
   let easy = 0;
   let medium = 0;
   let hard = 0;
-
+  const accuracyData =[["Exercise", "Accuracy"]]
+ 
   exercisesData.forEach((exercise, index) => {
     happy += exercise.happy;
     neutral += exercise.neutral;
@@ -22,8 +23,11 @@ const Graph = ({ exercisesData }) => {
       : exercise.difficulty === "medium"
       ? (medium += 1)
       : (hard += 1);
+    accuracyData.push([(index+=1), (exercise.accuracy*100)]);
   });
 
+  const accuracy = JSON.stringify(accuracyData);
+  console.log(accuracy)
   const emotions = JSON.stringify([
     ["Emotion", "Percentage"],
     ["happy", happy / exercisesData.length],
@@ -34,13 +38,13 @@ const Graph = ({ exercisesData }) => {
   ]);
 
   const difficultyData = JSON.stringify([
-    ["Difficulty", "Count"],
-    ["easy", easy],
-    ["medium", medium],
-    ["hard", hard],
+    ["Difficulty", "Count", {role: "style"}],
+    ["easy", easy, "green"],
+    ["medium", medium, "orange"],
+    ["hard", hard, "red"],
   ]);
 
-  const test = [];
+ console.log(exercisesData)
 
   let count = 1;
   const seperateWPM = exercisesData.map((item) => {
@@ -51,18 +55,15 @@ const Graph = ({ exercisesData }) => {
   //state for data going in
   const [data, setData] = useState(wordsPerMin);
   const [chart, setChartType] = useState("Line");
-  const [title, setTitle] = useState("");
-  const options = {
-    animation: {
-      startup: true,
-      easing: "linear",
-      duration: 1500,
-    },
-    is3d: true,
-    title: title,
-  };
-
-  console.log(options);
+  const [title, setTitle]= useState("");
+  const options = {title: `${title}`,animation: {
+    startup: true,
+    easing: "linear",
+    duration: 1500,
+  }}
+  console.log(options)
+  
+  
 
   return (
     <div className="graph">
@@ -76,21 +77,27 @@ const Graph = ({ exercisesData }) => {
             setTitle("words per min per exercise");
           } else if (e.target.value === difficultyData) {
             setChartType("Bar");
-            setTitle("Difficulty chosen");
+           setTitle("Difficulty chosen");
+            
           } else if (e.target.value === emotions) {
             setChartType("PieChart");
             setTitle("Emotions");
+          }else if(e.target.value === accuracy){
+            setChartType("Bar")
           }
         }}
       >
-        <option value={wordsPerMin} id="Line">
+        <option value={wordsPerMin} >
           wordsPerMin every game
         </option>
-        <option value={difficultyData} id="Bar">
+        <option value={difficultyData} >
           difficulty level
         </option>
-        <option value={emotions} id="PieChart">
+        <option value={emotions} >
           Total emotion %
+        </option>
+        <option value={accuracy}>
+          Accuracy
         </option>
       </select>
 
@@ -98,21 +105,15 @@ const Graph = ({ exercisesData }) => {
         <h2>pick a chart</h2>
       ) : (
         <Chart
-          className=""
+          className="graph-area"
           chartType={chart}
           data={JSON.parse(data)}
           width="600px"
           height="400px"
+          padding="20px"
+          backgroundColor="none"
           legendToggle
-          options={{
-            animation: {
-              startup: true,
-              easing: "linear",
-              duration: 1500,
-            },
-            is3d: true,
-            title: title,
-          }}
+          options={options}
         />
       )}
     </div>
