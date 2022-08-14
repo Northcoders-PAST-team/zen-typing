@@ -143,7 +143,7 @@ export default function Home() {
     setSearch({ level: difficulty, id: iD });
   }
 
-  console.log(request);
+  
   useEffect(() => {
     onSnapshot(
       doc(db, request.level, request.id),
@@ -273,7 +273,8 @@ export default function Home() {
 
   return (
     <div className="home">
-      <Face
+      <div className="exercise-area">
+        <Face
         startCounting={startCounting}
         setEmotionLog={setEmotionLog}
         emotionLog={emotionLog}
@@ -285,69 +286,21 @@ export default function Home() {
         setHiddenVideo={setHiddenVideo}
         data={data}
       />
-
-      <Timer
-        startCounting={startCounting}
-        correctWords={correctWordArray.filter(Boolean).length}
-        timeElapsed={timeElapsed}
-        setTimeElapsed={setTimeElapsed}
-        speed={speed}
-        setSpeed={setSpeed}
-        emotionLog={emotionLog}
-        undetected={undetected}
-      />
-      <div>
-        <label htmlFor="difficulty">
-          {" "}
-          Difficulty
-          <select name="difficulty" id="difficulty" onChange={selectDifficulty}>
-            <option value="choice">level</option>
-            <option value="easy">easy</option>
-            <option value="medium">medium</option>
-            <option value="hard">hard</option>
-          </select>
-        </label>
-
-        <label htmlFor="difficulty">
-          {" "}
-          Exercise
-          <select name="difficulty" id="difficulty" onChange={selectId}>
-            <option value="ID">ID</option>
-
-            {[...Array(10)].map((o, i) => (
-              <option value={String(i + 1)} key={String(i + 1)}>
-                {i + 1}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <button onClick={generate} className="btn btn-primary">
-          Generate new
-        </button>
-        <a
-          href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
-          target="_blank"
-        >
-          share game
-        </a>
-      </div>
-
-      {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
+      
       <Fragment>
         <div className="target-paragraph">
           <CssBaseline />
-          <Container maxWidth="sm">
+          <Container maxWidth="md">
             <Box
               sx={{
-                borderLeft: 1,
-                borderRight: 1,
-                borderRadius: "16px",
+                
+                borderRadius: "10px",
                 mt: "1.5rem",
-                bgcolor: "#black",
-                height: "20vh",
-                color: "white",
-                fontFamily: "Georgia",
+                bgcolor: "rgba(255,255,255, 0.5)",
+                height: "fit-content",
+                color: "black",
+                fontFamily: "Monospace",
+                padding: "10px;"
               }}
             >
               {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
@@ -369,9 +322,7 @@ export default function Home() {
           </Container>
         </div>
       </Fragment>
-
-      <p>{userInput}</p>
-      {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
+      
       <TextField
         type="text"
         value={userInput}
@@ -379,24 +330,82 @@ export default function Home() {
           processInput(e.target.value);
         }}
         sx={{
-          borderTop: 1,
-          borderBottom: 1,
-          borderRadius: "16px",
+          fontFamily: "Monospace",
+          borderRadius: "10px",
           mt: "1rem",
           mb: "1rem",
-          width: 450,
-          bgcolor: "white",
+          width: "fit-content",
+          bgcolor: "rgba(255,255,255, 0.5)",
           color: "white",
           input: { color: "black" },
         }}
         id="filled-basic"
-        label="Type here"
+        placeholder="Type here"
         variant="filled"
         InputLabelProps={{
           style: { color: "black" },
         }}
       />
-      <History auth={auth} />
+      </div>
+      
+        <div className="side-menu">
+          <Timer
+        startCounting={startCounting}
+        correctWords={correctWordArray.filter(Boolean).length}
+        timeElapsed={timeElapsed}
+        setTimeElapsed={setTimeElapsed}
+        speed={speed}
+        setSpeed={setSpeed}
+        emotionLog={emotionLog}
+        undetected={undetected}
+      />
+      <div className="difficulty-form">
+        <label htmlFor="difficulty">
+          {" "}Difficulty
+          <select name="difficulty" id="difficulty" onChange={selectDifficulty}>
+            <option value="easy">easy</option>
+            <option value="medium">medium</option>
+            <option value="hard">hard</option>
+          </select>
+        </label>
+
+        <label htmlFor="difficulty">
+          {" "}
+          Exercise
+          <select name="difficulty" id="difficulty" onChange={selectId}>
+            
+
+            {[...Array(10)].map((o, i) => (
+              <option value={String(i + 1)} key={String(i + 1)}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <button onClick={generate} className="btn btn-primary">
+          Generate new
+        </button>
+        <a
+          href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
+          target="_blank"
+        >
+          share game
+        </a>
+      </div>
+        </div>
+      
+      
+
+      {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
+      
+
+      
+      {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
+      <div className="history">
+        <History auth={auth} />
+      </div>
+      
     </div>
   );
 }

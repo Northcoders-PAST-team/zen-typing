@@ -54,18 +54,20 @@ function App() {
   const [user] = useAuthState(auth);
   return (
     <div className="App">
-      <BrowserRouter>
-        <UserContext.Provider value={{ user, auth }}>
-          <Nav />
-          <Routes>
-            <Route path={"/"} element={<Home />} />
-            <Route path={"/users/:user_id"} element={<User />} />
-            <Route path={"*"} element={<Errors />} />
-            <Route path={"/signin"} element={<SignIn />} />
-            <Route path={"/signup"} element={<SignUp />} />
-          </Routes>
-        </UserContext.Provider>
-      </BrowserRouter>
+      <div className="background-overlay">
+        <BrowserRouter>
+          <UserContext.Provider value={{ user, auth }}>
+            <Nav />
+            <Routes>
+              <Route path={"/"} element={<Home />} />
+              <Route path={"/users/:user_id"} element={<User />} />
+              <Route path={"*"} element={<Errors />} />
+              <Route path={"/signin"} element={<SignIn />} />
+              <Route path={"/signup"} element={<SignUp />} />
+            </Routes>
+          </UserContext.Provider>
+        </BrowserRouter>
+      </div>
     </div>
   );
 }

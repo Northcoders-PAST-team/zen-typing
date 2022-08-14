@@ -133,6 +133,7 @@ export default function Face({
         <div className="face">
           <div className="face-video">
             <video
+              id="myVideo"
               crossOrigin="anonymous"
               ref={videoRef}
               autoPlay
@@ -153,7 +154,16 @@ export default function Face({
             }
           />
           <div className="bar-chart">
-            <Doughnut data={data} />
+            <Doughnut data={data} 
+            options={{plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                usePointStyle: true,
+                pointStyle: "circle",
+                padding: 20,
+                color: "white"
+              }}}}}/>
           </div>
         </div>
 
