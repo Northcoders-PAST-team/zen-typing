@@ -312,8 +312,6 @@ export default function Home() {
         disgusted: 0,
       });
       setCorrectWordArray([]);
-
-      console.log("i am active start", activeWordIndex);
     }
     if (
       [
@@ -323,30 +321,25 @@ export default function Home() {
     ) {
       return;
     } else if (keyCode === 32) {
+      checkWordMatches();
       if (activeWordIndex === cloud.length - 1) {
         setStatus("FINISHED");
-        // console.log("finished");
+
         setStartCounting(false);
-        console.log(startCounting);
+
         setKeyboard(false);
         setHiddenVideo(true);
         setActiveWordIndex(0);
         setCurrentInput("");
         setCurrentCharIndex(-1);
         setCurrentChar("");
-        // console.log("i am active finish", activeWordIndex);
+
         setTimeElapsed(0);
         console.table(emotionLog);
         setCorrect(1);
         setIncorrect(1);
-        console.log("im correct", correct);
-        console.log("im cloud", cloud.length);
-        console.log("im accuracy", correct / cloud.length);
 
         if (user) {
-          // console.log(emotionLog.neutral, timeElapsed);
-          // console.log(emotionLog.neutral, timeElapsed);
-          // console.log(((emotionLog.neutral - 1) / timeElapsed) * 100);
           addDoc(exercisesRef, {
             uid: user.uid,
             user: user.displayName || user.email,
@@ -373,7 +366,7 @@ export default function Home() {
             });
         }
       } else {
-        checkWordMatches();
+        // checkWordMatches();
         setActiveWordIndex((current) => current + 1);
         setCurrentInput("");
         setCurrentCharIndex(-1);
@@ -408,8 +401,10 @@ export default function Home() {
   function getClass(index, i, char) {
     if (index === activeWordIndex && i === currentCharIndex && currentChar) {
       if (char === currentChar) {
+        console.log(true);
         return "char";
       } else {
+        console.log(false);
         return "char";
       }
     }

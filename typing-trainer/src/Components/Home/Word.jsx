@@ -4,8 +4,8 @@ import React from "react";
 export default function Word(props) {
   const { text, active, correct } = props;
 
-  console.log(correct);
-  console.log(active);
+  // console.log(correct);
+  // console.log(active);
   if (correct === true) {
     return <span className="correct">{text} </span>;
   }
