@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { db } from "./firebaseConfig";
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";

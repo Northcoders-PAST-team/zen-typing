@@ -66,6 +66,21 @@ video {
 
 }
 
+
+$neutral:"rgba(54, 162, 235, 1)";
+$happy: "rgba(255, 206, 86, 1)";
+$disgusted:"rgba(75, 192, 192, 1)";
+$sad:"rgba(153, 102, 255, 1)";
+$angry:"rgba(255, 99, 132, 1)";
+$surprised:"rgba(255, 159, 64, 1)";
+
+$neutral-light:"rgba(54, 162, 235, 0.2)";
+$happy-light: "rgba(255, 206, 86, 0.2)";
+$disgusted-light:"rgba(75, 192, 192, 0.2)";
+$sad-light:"rgba(153, 102, 255, 0.2)";
+$angry-light:"rgba(255, 99, 132, 0.2)";
+$surprised-light:"rgba(255, 159, 64, 0.2)";
+
 .face-canvas-calm,
 .face-canvas-not-calm {
     position: absolute;
@@ -78,12 +93,12 @@ video {
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-
 }
 
 .face-canvas-not-calm {
     background-color: rgba(255, 201, 157, 0.599);
 }
+
 
 
 .bar-chart {
