@@ -20,6 +20,7 @@ export default function ExerciseCard(props) {
 
   return (
     <div>
+      {console.log("render exercise card component")}
       <p>
         uid: {uid} | User: {user} | Date: {day}/{month}/{year} {hour}:{minute} |
         Time: {time} | WPM: {wpm} | Accuracy {accuracy * 100}% | Difficulty:{" "}
