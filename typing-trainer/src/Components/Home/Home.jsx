@@ -3,6 +3,8 @@ import { useState, Fragment, useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
+import Button from "@mui/material/Button";
+
 import "./Home.scss";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";

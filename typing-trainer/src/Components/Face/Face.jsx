@@ -177,35 +177,35 @@ export default function Face({
             />
           </div>
         </div>
-
-        <div className="hide-emotion-and-emotion">
-          <Button
-            className="activate"
-            onClick={() => {
-              setHiddenVideo(hiddenVideo ? false : true);
-            }}
-            variant="contained"
-            sx={{
-              width: "300px",
-            }}
-          >
-            {hiddenVideo
-              ? "activate face recognition"
-              : "deactivate face recognition"}
-          </Button>
-          <p className="current-emotion">
-            {hiddenVideo
-              ? ""
-              : calm
-              ? `Currently calm..`
-              : `CALM DOWN! ${
-                  primaryEmotion !== "happy"
-                    ? `You\'re looking a bit too ${primaryEmotion}`
-                    : ""
-                }`}
-          </p>
-        </div>
       </Fragment>
+
+      <div className="hide-emotion-and-emotion">
+        <Button
+          className="activate"
+          onClick={() => {
+            setHiddenVideo(hiddenVideo ? false : true);
+          }}
+          variant="contained"
+          sx={{
+            width: "300px",
+          }}
+        >
+          {hiddenVideo
+            ? "activate face recognition"
+            : "deactivate face recognition"}
+        </Button>
+        <p className="current-emotion">
+          {hiddenVideo
+            ? ""
+            : calm
+            ? `Currently calm..`
+            : `CALM DOWN! ${
+                primaryEmotion !== "happy"
+                  ? `You\'re looking a bit too ${primaryEmotion}`
+                  : ""
+              }`}
+        </p>
+      </div>
     </div>
   );
 }
