@@ -16,6 +16,20 @@ export default function Face({
   hiddenVideo,
   setHiddenVideo,
   data,
+  calm,
+  setCalm,
+  neutral,
+  setNeutral,
+  happy,
+  setHappy,
+  surprised,
+  setSurprised,
+  angry,
+  setAngry,
+  sad,
+  setSad,
+  disgusted,
+  setDisgusted,
 }) {
   const videoRef = useRef();
   const canvasRef = useRef();
@@ -46,15 +60,15 @@ export default function Face({
       });
   };
 
-  const [neutral, setNeutral] = useState();
+  // const [neutral, setNeutral] = useState();
 
-  const [happy, setHappy] = useState();
-  const [surprised, setSurprised] = useState();
-  const [angry, setAngry] = useState();
-  const [sad, setSad] = useState();
-  const [disgusted, setDisgusted] = useState();
+  // const [happy, setHappy] = useState();
+  // const [surprised, setSurprised] = useState();
+  // const [angry, setAngry] = useState();
+  // const [sad, setSad] = useState();
+  // const [disgusted, setDisgusted] = useState();
 
-  const [calm, setCalm] = useState(true);
+  // const [calm, setCalm] = useState(true);
 
   let currentEmotions = {
     happy: happy,
@@ -178,34 +192,6 @@ export default function Face({
           </div>
         </div>
       </Fragment>
-
-      <div className="hide-emotion-and-emotion">
-        <Button
-          className="activate"
-          onClick={() => {
-            setHiddenVideo(hiddenVideo ? false : true);
-          }}
-          variant="contained"
-          sx={{
-            width: "300px",
-          }}
-        >
-          {hiddenVideo
-            ? "activate face recognition"
-            : "deactivate face recognition"}
-        </Button>
-        <p className="current-emotion">
-          {hiddenVideo
-            ? ""
-            : calm
-            ? `Currently calm..`
-            : `CALM DOWN! ${
-                primaryEmotion !== "happy"
-                  ? `You\'re looking a bit too ${primaryEmotion}`
-                  : ""
-              }`}
-        </p>
-      </div>
     </div>
   );
 }
