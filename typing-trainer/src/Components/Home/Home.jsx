@@ -388,10 +388,14 @@ export default function Home() {
             difficulty: difficulty,
             paragraph: paragraph,
 
-            wpm: (correct / (timeElapsed / 60) || 0).toFixed(2),
-            accuracy: ((correct / (correct + incorrect)) * 100).toFixed(2),
+            wpm: (
+              (correctWordArray.filter(Boolean).length + 1) /
+                (timeElapsed / 60) || 0
+            ).toFixed(2),
+            accuracy:
+              (correctWordArray.filter(Boolean).length + 1) / cloud.length,
 
-            neutral: Math.floor(((emotionLog.neutral - 1) / timeElapsed) * 100),
+            neutral: ((emotionLog.neutral - 1) / timeElapsed) * 100,
             happy: (emotionLog.happy / timeElapsed) * 100,
             sad: (emotionLog.sad / timeElapsed) * 100,
             surprised: (emotionLog.surprised / timeElapsed) * 100,
