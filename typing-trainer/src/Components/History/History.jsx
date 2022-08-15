@@ -23,18 +23,19 @@ export default function History({ auth }) {
   });
 
   return (
-    <div className="history">
+    <>
       <h3>History</h3>
-
-      {exercises &&
-        user &&
-        exercises
-          .filter((exercise) => {
-            return exercise.user === user.displayName;
-          })
-          .map((exercise, index) => {
-            return <ExerciseCard key={index} exercise={exercise} />;
-          })}
-    </div>
+      <div className="history">
+        {exercises &&
+          user &&
+          exercises
+            .filter((exercise) => {
+              return exercise.user === user.displayName;
+            })
+            .map((exercise, index) => {
+              return <ExerciseCard key={index} exercise={exercise} />;
+            })}
+      </div>
+    </>
   );
 }

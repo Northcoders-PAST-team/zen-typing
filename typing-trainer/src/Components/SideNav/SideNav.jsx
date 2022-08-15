@@ -51,7 +51,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-const drawerWidth = 240;
+const drawerWidth = 350;
 
 const pages = ["About", "Community", "Statistics"];
 const settings = ["Account", "Dashboard"];
@@ -87,22 +87,26 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", background: "black" }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
 
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+        sx={{
+          width: `calc(100% - ${drawerWidth}px)`,
+          ml: `${drawerWidth}px`,
+        }}
       ></AppBar>
 
       <Drawer
         sx={{
-          background: "black",
+          color: "white",
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: drawerWidth,
             boxSizing: "border-box",
+            background: "rgba(0, 0, 0, 0.8)",
           },
         }}
         variant="permanent"
@@ -120,7 +124,7 @@ const ResponsiveAppBar = () => {
             fontFamily: ["Plus Jakarta Sans", "sans-serif"],
             fontWeight: 700,
             letterSpacing: ".3rem",
-            color: "inherit",
+            color: "white",
             textDecoration: "none",
             justifyContent: "center",
             paddingBottom: "20px",
@@ -130,12 +134,18 @@ const ResponsiveAppBar = () => {
           Typing Trainer
         </Typography>
         <Divider />
-        <MenuItem key="statistics" sx={{ fontSize: "50px", mt: "30px" }}>
+        <MenuItem
+          key="statistics"
+          sx={{ fontSize: "50px", mt: "30px", color: "white" }}
+        >
           <LeaderboardIcon sx={{ mr: "20px", fontSize: "40px" }} />
           <Typography textAlign="center">Statistics</Typography>
         </MenuItem>
 
-        <MenuItem key="community" sx={{ fontSize: "50px", mb: "30px" }}>
+        <MenuItem
+          key="community"
+          sx={{ fontSize: "50px", mb: "30px", color: "white" }}
+        >
           <PeopleIcon sx={{ mr: "20px", fontSize: "40px" }} />
           <Typography textAlign="center">Community</Typography>
         </MenuItem>
