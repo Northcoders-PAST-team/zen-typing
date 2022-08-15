@@ -15,7 +15,7 @@ const UserAver = ({ exercisesData }) => {
         </div>
         <div className="average-section">
           <p>Average words per min</p>
-          <p>{wpmAverage / exercisesData.length.toFixed(2)} W/M</p>
+          <p>{wpmAverage / exercisesData.length.toFixed(0)} W/M</p>
         </div>
         <div className="average-section">
           <p>Most frequent difficulty</p>
