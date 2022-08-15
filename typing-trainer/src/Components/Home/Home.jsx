@@ -361,6 +361,7 @@ export default function Home() {
         </Fragment>
 
         <TextField
+          className="user-paragraph"
           type="text"
           value={userInput}
           onChange={(e) => {
@@ -410,15 +411,7 @@ export default function Home() {
               : "deactivate face recognition"}
           </Button>
           <p className="current-emotion">
-            {hiddenVideo
-              ? ""
-              : calm
-              ? `Currently calm..`
-              : `CALM DOWN! ${
-                  primaryEmotion !== "happy"
-                    ? `You\'re looking a bit too ${primaryEmotion}`
-                    : ""
-                }`}
+            {hiddenVideo ? "" : `Currently ${primaryEmotion}`}
           </p>
         </div>
 
