@@ -146,7 +146,7 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-          {user ? <p> {user.email}</p> : null}
+          {user ? <p> {user.email || user.displayName}</p> : null}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

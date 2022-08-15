@@ -142,6 +142,22 @@ export default function Home() {
   function generate() {
     setRequest({ level: difficulty, id: iD });
     setSearch({ level: difficulty, id: iD });
+    setHiddenVideo(false);
+    setKeyboard(true);
+    setStartCounting(false);
+    setActiveWordIndex(0);
+    setCurrentInput("");
+    setCurrentCharIndex(-1);
+    setCurrentChar("");
+    setEmotionLog({
+      neutral: 0,
+      happy: 0,
+      surprised: 0,
+      angry: 0,
+      sad: 0,
+      disgusted: 0,
+    });
+    setTimeElapsed(0);
   }
 
   useEffect(() => {
@@ -166,17 +182,11 @@ export default function Home() {
 
   if (cloud === JSON.stringify(["undefined"])) {
     if (difficulty === "easy") {
-      setParagraph(
-        "Books enable you to expose yourself to new ideas and new ways to achieve your goals. They enable you to think outside the box."
-      );
+      setParagraph("apple box car dog ear");
     } else if (difficulty === "medium") {
-      setParagraph(
-        "Things that used to take hours to complete can now be completed in a matter of minutes because of technology. Everything is just a click away, including banking, sending e-mail, assignments, and even shopping."
-      );
+      setParagraph("Medium diff game: i love typing it's the best");
     } else {
-      setParagraph(
-        "def prepend_path(self, name: str, paths: List[str]) -> None: old_val = self.env.get(name)         paths = [p for p in paths if isdir(p)]         if not paths:  return  if old_val is not None: new_val = ':'.join(itertools.chain(paths, [old_val])) else: new_val = ':'.join(paths)     self.env[name] = new_val ~ `! 1@ 2# 3$ 4% 5^ 6& 7* 8( 9) 0_ -+ =Backspace"
-      );
+      setParagraph("Medium diff game: i love typing it's the best");
     }
   }
   cloud = JSON.parse(cloud);
@@ -185,88 +195,205 @@ export default function Home() {
   // If the keystroke was a space then assume the user has attempted the active word, so increment the activeWordIndex and reset the userInput
   // Log in the correctWordArray a true if the attempt matches the paragraph array item at activeWordIndex, a false otherwise.
   // If the keystroke wasn't a space then they're still typing the active word, so just setUserInput(value).
-  const processInput = (value) => {
+
+  // const processInput = (value) => {
+  //   if (!startCounting) {
+  //     setStartCounting(true);
+  //   }
+
+  //   //If they misspelled the last word then this one will catch them when they try to
+  //   if (activeWordIndex === cloud.length) {
+  //     setStartCounting(false);
+  //     setUserInput("FINISHED");
+
+  //     setHiddenVideo(true);
+
+  //     return;
+  //   }
+  //   // after a word
+  //   if (value.endsWith(" ")) {
+  //     setActiveWordIndex((index) => index + 1);
+  //     setUserInput("");
+
+  //     setCorrectWordArray((data) => {
+  //       const word = value.trim();
+  //       const newResult = [...data];
+  //       newResult[activeWordIndex] = word === cloud[activeWordIndex];
+
+  //       return newResult;
+  //     });
+  //   } else if (
+  //     //on completion
+  //     activeWordIndex === cloud.length - 1 &&
+  //     value.length === cloud[cloud.length - 1].length
+  //   ) {
+  //     setActiveWordIndex((index) => index + 1);
+  //     setUserInput("");
+
+  //     setCorrectWordArray((data) => {
+  //       const word = value.trim();
+  //       const newResult = [...data];
+  //       newResult[activeWordIndex] = word === cloud[activeWordIndex];
+  //       return newResult;
+  //     });
+  //     setStartCounting(false);
+  //     setUserInput("FINISHED");
+
+  //     setHiddenVideo(true);
+
+  //     if (user) {
+  //       addDoc(exercisesRef, {
+  //         uid: user.uid,
+  //         user: user.displayName || user.email,
+  //         createdAt: Timestamp.fromDate(new Date()),
+  //         time: timeElapsed,
+  //         difficulty: difficulty,
+  //         paragraph: paragraph,
+
+  //         wpm: (
+  //           (correctWordArray.filter(Boolean).length + 1) /
+  //             (timeElapsed / 60) || 0
+  //         ).toFixed(2),
+  //         accuracy:
+  //           (correctWordArray.filter(Boolean).length + 1) / cloud.length,
+
+  //         neutral: ((emotionLog.neutral - 1) / timeElapsed) * 100,
+  //         happy: (emotionLog.happy / timeElapsed) * 100,
+  //         sad: (emotionLog.sad / timeElapsed) * 100,
+  //         surprised: (emotionLog.surprised / timeElapsed) * 100,
+  //         disgusted: (emotionLog.disgusted / timeElapsed) * 100,
+  //         angry: (emotionLog.angry / timeElapsed) * 100,
+  //       })
+  //         .then((docRef) => {
+  //           console.log("Document has been added successfully)");
+  //         })
+  //         .catch((error) => {
+  //           console.log("ERROR IS " + error);
+  //         });
+  //     }
+
+  //     return;
+  //   } else {
+  //     //in the middle of a word
+  //     setUserInput(value);
+  //   }
+  // };
+
+  //watches every single character
+  const [currentChar, setCurrentChar] = useState("");
+
+  //watches for the number of correctly typed words
+  const [correct, setCorrect] = useState(1);
+
+  const [incorrect, setIncorrect] = useState(1);
+
+  //watches every single characters index
+  const [currentCharIndex, setCurrentCharIndex] = useState(-1);
+
+  //watches the input everytime user types
+  const [currentInput, setCurrentInput] = useState("");
+
+  const [keyboard, setKeyboard] = useState(true);
+
+  const [status, setStatus] = useState("");
+  //handles the keyDown event, calls checkWordMatches function, updates word to compare and char to compare indexes, resets input value after space key or if it is not space, it sets the current char for comparison with the typed char
+  function handleKeyDown({ keyCode, key }) {
     if (!startCounting) {
+      setStatus("");
       setStartCounting(true);
-    }
-
-    //If they misspelled the last word then this one will catch them when they try to
-    if (activeWordIndex === cloud.length) {
-      setStartCounting(false);
-      setUserInput("FINISHED");
-
-      setHiddenVideo(true);
-
-      return;
-    }
-    // after a word
-    if (value.endsWith(" ")) {
-      setActiveWordIndex((index) => index + 1);
-      setUserInput("");
-
-      setCorrectWordArray((data) => {
-        const word = value.trim();
-        const newResult = [...data];
-        newResult[activeWordIndex] = word === cloud[activeWordIndex];
-
-        return newResult;
+      setHiddenVideo(false);
+      setEmotionLog({
+        neutral: 0,
+        happy: 0,
+        surprised: 0,
+        angry: 0,
+        sad: 0,
+        disgusted: 0,
       });
-    } else if (
-      //on completion
-      activeWordIndex === cloud.length - 1 &&
-      value.length === cloud[cloud.length - 1].length
+      console.log("i am active start", activeWordIndex);
+    }
+    if (
+      [
+        9, 16, 20, 33, 34, 91, 92, 93, 112, 113, 114, 116, 117, 118, 119, 120,
+        122, 122, 123,
+      ].includes(keyCode)
     ) {
-      setActiveWordIndex((index) => index + 1);
-      setUserInput("");
-
-      setCorrectWordArray((data) => {
-        const word = value.trim();
-        const newResult = [...data];
-        newResult[activeWordIndex] = word === cloud[activeWordIndex];
-        return newResult;
-      });
-      setStartCounting(false);
-      setUserInput("FINISHED");
-
-      setHiddenVideo(true);
-
-      if (user) {
-        addDoc(exercisesRef, {
-          uid: user.uid,
-          user: user.displayName || user.email,
-          createdAt: Timestamp.fromDate(new Date()),
-          time: timeElapsed,
-          difficulty: difficulty,
-          paragraph: paragraph,
-
-          wpm: (
-            (correctWordArray.filter(Boolean).length + 1) /
-              (timeElapsed / 60) || 0
-          ).toFixed(2),
-          accuracy:
-            (correctWordArray.filter(Boolean).length + 1) / cloud.length,
-
-          neutral: ((emotionLog.neutral - 1) / timeElapsed) * 100,
-          happy: (emotionLog.happy / timeElapsed) * 100,
-          sad: (emotionLog.sad / timeElapsed) * 100,
-          surprised: (emotionLog.surprised / timeElapsed) * 100,
-          disgusted: (emotionLog.disgusted / timeElapsed) * 100,
-          angry: (emotionLog.angry / timeElapsed) * 100,
-        })
-          .then((docRef) => {
-            console.log("Document has been added successfully)");
-          })
-          .catch((error) => {
-            console.log("ERROR IS " + error);
-          });
-      }
-
       return;
+    } else if (keyCode === 32) {
+      if (activeWordIndex === cloud.length - 1) {
+        setStatus("FINISHED");
+        // console.log("finished");
+        setStartCounting(false);
+        console.log(startCounting);
+        setKeyboard(false);
+        setHiddenVideo(true);
+        setActiveWordIndex(0);
+        setCurrentInput("");
+        setCurrentCharIndex(-1);
+        setCurrentChar("");
+        // console.log("i am active finish", activeWordIndex);
+        setTimeElapsed(0);
+        console.table(emotionLog);
+        setCorrect(1);
+        setIncorrect(1);
+        console.log("im correct", correct);
+        console.log("im cloud", cloud.length);
+        console.log("im accuracy", correct / cloud.length);
+
+        if (user) {
+          addDoc(exercisesRef, {
+            uid: user.uid,
+            user: user.displayName || user.email,
+            createdAt: Timestamp.fromDate(new Date()),
+            time: timeElapsed,
+            difficulty: difficulty,
+            paragraph: paragraph,
+
+            wpm: (correct / (timeElapsed / 60) || 0).toFixed(2),
+            accuracy: (correct / cloud.length).toFixed(2),
+
+            neutral: Math.abs((emotionLog.neutral - 1) / (timeElapsed * 100)),
+            happy: (emotionLog.happy / timeElapsed) * 100,
+            sad: (emotionLog.sad / timeElapsed) * 100,
+            surprised: (emotionLog.surprised / timeElapsed) * 100,
+            disgusted: (emotionLog.disgusted / timeElapsed) * 100,
+            angry: (emotionLog.angry / timeElapsed) * 100,
+          })
+            .then((docRef) => {
+              console.log("Document has been added successfully)");
+            })
+            .catch((error) => {
+              console.log("ERROR IS " + error);
+            });
+        }
+      } else {
+        checkWordMatches();
+        setActiveWordIndex((current) => current + 1);
+        setCurrentInput("");
+        setCurrentCharIndex(-1);
+      }
     } else {
-      //in the middle of a word
-      setUserInput(value);
+      setCurrentCharIndex((current) => current + 1);
+      setCurrentChar(key);
     }
-  };
+  }
+
+  //function that checks whether the word typed is correct or not
+  function checkWordMatches() {
+    cloud[activeWordIndex] === currentInput.trim()
+      ? setCorrect((current) => current + 1)
+      : setIncorrect((current) => current + 1);
+  }
+
+  function getClass(index, i, char) {
+    if (index === activeWordIndex && i === currentCharIndex && currentChar) {
+      if (char === currentChar) {
+        return "correct";
+      } else {
+        return "incorrect";
+      }
+    }
+  }
 
   return (
     <div className="home">
@@ -305,12 +432,22 @@ export default function Home() {
                 <p>
                   {cloud.map((word, index) => {
                     return (
-                      <Word
-                        key={index}
-                        text={word}
-                        active={index === activeWordIndex}
-                        correct={correctWordArray[index]}
-                      />
+                      <span key={index}>
+                        <span>
+                          {word.split("").map((char, i) => {
+                            return (
+                              <span
+                                key={i}
+                                value={char}
+                                className={getClass(index, i, char)}
+                              >
+                                {char}
+                              </span>
+                            );
+                          })}
+                        </span>
+                        <span> </span>
+                      </span>
                     );
                   })}
                 </p>
@@ -318,31 +455,38 @@ export default function Home() {
             </Container>
           </div>
         </Fragment>
-
-        <TextField
-          type="text"
-          value={userInput}
-          onChange={(e) => {
-            processInput(e.target.value);
-          }}
-          sx={{
-            fontFamily: "Monospace",
-            borderRadius: "10px",
-            mt: "1rem",
-            mb: "1rem",
-            width: "fit-content",
-            bgcolor: "rgba(255,255,255, 0.5)",
-            color: "white",
-            input: { color: "black" },
-            textAlign: "center",
-          }}
-          id="filled-basic"
-          placeholder="Type here"
-          variant="filled"
-          InputLabelProps={{
-            style: { color: "black" },
-          }}
-        />
+        {keyboard ? (
+          <TextField
+            type="text"
+            // value={userInput}
+            // onChange={(e) => {
+            //   processInput(e.target.value);
+            // }}
+            value={currentInput}
+            autoFocus
+            onChange={(e) => {
+              setCurrentInput(e.target.value);
+            }}
+            onKeyDown={handleKeyDown}
+            sx={{
+              fontFamily: "Monospace",
+              borderRadius: "10px",
+              mt: "1rem",
+              mb: "1rem",
+              width: "fit-content",
+              bgcolor: "rgba(255,255,255, 0.5)",
+              color: "white",
+              input: { color: "black" },
+              textAlign: "center",
+            }}
+            id="filled-basic"
+            placeholder="Type here"
+            variant="filled"
+            InputLabelProps={{
+              style: { color: "black" },
+            }}
+          />
+        ) : null}
       </div>
 
       <div className="side-menu">
@@ -393,12 +537,17 @@ export default function Home() {
           <button onClick={generate} className="btn btn-primary">
             Generate new
           </button>
-          <a
-            href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
-            target="_blank"
+          <button
+            className="btn btn-success"
+            onClick={() =>
+              navigator.clipboard.writeText(
+                `http://localhost:3000/?level=${request.level}&id=${request.id}`
+              )
+            }
           >
+            {" "}
             share game
-          </a>
+          </button>
         </div>
         <History auth={auth} />
       </div>

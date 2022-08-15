@@ -21,7 +21,7 @@ export default function History({ auth }) {
   if (user) {
     q = query(
       exercisesRef,
-      where("user", "==", user.displayName),
+      where("user", "==", user.displayName || user.email),
       orderBy("createdAt", "desc"),
       limit(5)
     );
