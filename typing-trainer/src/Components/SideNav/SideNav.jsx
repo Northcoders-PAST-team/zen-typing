@@ -97,7 +97,7 @@ const ResponsiveAppBar = () => {
 
       <Drawer
         sx={{
-          backgroundColor: "black",
+          background: "black",
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
