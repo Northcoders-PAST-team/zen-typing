@@ -30,7 +30,8 @@ const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
             </Button>
             {!isDelete ? (
               <Button
-                variant="outlined"
+              className="btn"
+                variant="contained"
                 color="error"
                 onClick={() => {
                   setDelete(true);
