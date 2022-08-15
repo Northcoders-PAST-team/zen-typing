@@ -34,7 +34,7 @@ export default function History({ auth }) {
   });
 
   return (
-    <div>
+    <div className="historyContainer">
       <h3>History</h3>
       <div className="history">
         {exercises &&
