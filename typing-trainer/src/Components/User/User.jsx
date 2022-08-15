@@ -3,21 +3,42 @@ import UserInfoCard from "./UserInfoCard";
 import "./User.scss";
 import UserAver from "./UserAver";
 import Graph from "./Graph";
+import "firebase/compat/firestore";
 import { db } from "../../firebaseConfig";
-
+import {
+  collection,
+  doc,
+  onSnapshot,
+  getDocs,
+  where,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import { useParams } from "react-router-dom";
-import { doc, onSnapshot } from "firebase/firestore";
-
 import { UserContext } from "../User/UserContext";
+import Loading from "../Loading/Loading";
 
 const User = () => {
   const { user, auth } = useContext(UserContext);
 
   const { user_id } = useParams();
+  const exercisesRef = collection(db, "exercises");
 
   const [userData, setUserData] = useState({});
+  const [exercisesData, setExercisesData] = useState([]);
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const getData = async () => {
+    const data = await getDocs(q);
+    setExercisesData(
+      data.docs.map((item) => {
+        return { ...item.data() };
+      })
+    );
+    setLoading(false);
+  };
 
   useEffect(() => {
     const usersRef = doc(db, "users", user_id);
@@ -25,86 +46,41 @@ const User = () => {
     onSnapshot(usersRef, (snapshot) => {
       if (snapshot.exists()) {
         setUserData({ ...snapshot.data() });
+        getData();
         setError(null);
       } else {
         console.log("User does not exist (profile)");
+        setLoading(false);
         setError("400 sorry user profile does not exist");
       }
     });
   }, [user_id]);
 
+  const q = query(exercisesRef, where("uid", "==", user_id), orderBy("createdAt"));
+
   const profile = {
     userName: userData.displayName,
     friendList: userData.friends,
     loggedIn: userData.online,
-    totalGames: 20,
-    wordsPerMin: 35.543,
-    wordsPerMinData: [
-      [1, 40.67],
-      [2, 30.69],
-      [3, 50.36],
-      [4, 60.3],
-      [5, 70.43],
-    ],
-    difficulty: [
-      "easy",
-      "hard",
-      "easy",
-      "medium",
-      "easy",
-      "hard",
-      "easy",
-      "medium",
-    ],
   };
 
-  // const user = {
-  //   userName: "DAVE2022",
-  //   friendList: ["friend1", "friend2", "friend3"],
-  //   loggedIn: true,
-  //   totalGames: 20,
-  //   wordsPerMin: 35.543,
-  //   wordsPerMinData: [
-  //     [1, 40.67],
-  //     [2, 30.69],
-  //     [3, 50.36],
-  //     [4, 60.3],
-  //     [5, 70.43],
-  //   ],
-  //   difficulty: [
-  //     "easy",
-  //     "hard",
-  //     "easy",
-  //     "medium",
-  //     "easy",
-  //     "hard",
-  //     "easy",
-  //     "medium",
-  //   ],
-  // };
-  if (error) {
-    return <p>{error}</p>;
-  } else {
-    return (
-      <div className="user">
-        <UserInfoCard
-          userName={profile.userName}
-          friendList={profile.friendList}
-          loggedIn={profile.loggedIn}
-          auth={auth}
-          avatar={userData.avatar}
-        />
-        <UserAver
-          totalGames={profile.totalGames}
-          wordsPerMin={profile.wordsPerMin}
-        />
-        <Graph
-          wordsPerMinData={profile.wordsPerMinData}
-          difficulty={profile.difficulty}
-        />
-      </div>
-    );
-  }
+  return loading ? (
+    <Loading />
+  ) : error ? (
+    <p>{error}</p>
+  ) : (
+    <div className="user">
+      <UserInfoCard
+        userName={profile.userName}
+        friendList={profile.friendList}
+        loggedIn={profile.loggedIn}
+        auth={auth}
+        avatar={userData.avatar}
+      />
+      <UserAver exercisesData={exercisesData} />
+      <Graph exercisesData={exercisesData} />
+    </div>
+  );
 };
 
 export default User;
