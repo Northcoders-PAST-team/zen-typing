@@ -150,10 +150,12 @@ export default function Face({
             // height="200"
             className={
               hiddenVideo
-                ? "hidden"
-                : calm
-                ? "face-canvas-calm"
-                : primaryEmotion
+                ? // ? "hidden"
+                  // : calm
+                  // ? "face-canvas-calm"
+                  // : "face-canvas-" + primaryEmotion
+                  "hidden"
+                : "face-canvas-" + primaryEmotion
             }
           />
           <div className="bar-chart">

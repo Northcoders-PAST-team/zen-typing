@@ -81,8 +81,15 @@ $sad-light:"rgba(153, 102, 255, 0.2)";
 $angry-light:"rgba(255, 99, 132, 0.2)";
 $surprised-light:"rgba(255, 159, 64, 0.2)";
 
-.face-canvas-calm,
-.face-canvas-not-calm {
+.face-canvas-neutral,
+.face-canvas-not-calm,
+.face-canvas-happy,
+.face-canvas-sad,
+.face-canvas-surprised,
+.face-canvas-angry,
+.face-canvas-disgusted,
+.face-canvas-
+ {
     position: absolute;
     top: 110px;
     // width: 680px;
@@ -97,6 +104,22 @@ $surprised-light:"rgba(255, 159, 64, 0.2)";
 
 .face-canvas-not-calm {
     background-color: rgba(255, 201, 157, 0.599);
+}
+
+.face-canvas-happy {
+    background-color: rgba(255, 206, 86, 0.2);
+}
+.face-canvas-sad {
+    background-color: rgba(153, 102, 255, 0.2);
+}
+.face-canvas-surprised {
+    background-color: rgba(255, 159, 64, 0.2);
+}
+.face-canvas-angry {
+    background-color: rgba(255, 99, 132, 0.2);
+}
+.face-canvas-disgusted {
+    background-color: rgba(75, 192, 192, 0.2);
 }
 
 
