@@ -1,5 +1,8 @@
 import { useState, Fragment, useEffect } from "react";
 
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+
 import "./Home.scss";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -7,6 +10,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
 // import { useAuthState } from "react-firebase-hooks/auth";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
@@ -29,9 +33,12 @@ import Face from "../Face/Face";
 import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
+import { OptionUnstyled } from "@mui/base";
+import { experimentalStyled } from "@mui/material";
 
 export default function Home() {
   // const [user] = useAuthState(auth);
+
   const { user, auth } = useContext(UserContext);
   // 1. Use state to hold the userInput, linked to the text input box
   // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
@@ -54,10 +61,57 @@ export default function Home() {
   });
   const [undetected, setUndetected] = useState(0);
 
+  const [search, setSearch] = useSearchParams();
+  const level = search.get("level");
+  const id = search.get("id");
+
+  const [searchLevel, setSearchLevel] = useState(level || "easy");
+  const [searchId, setSearchId] = useState(id || "1");
+  const [request, setRequest] = useState({ level: searchLevel, id: searchId });
+
+  // const [request, setRequest] = useState({ level: "easy", id: "1" });
+
   const [difficulty, setDifficulty] = useState("easy");
-  const [finished, setFinished] = useState(false);
+
   const [hiddenVideo, setHiddenVideo] = useState(false);
-  const [id, setId] = useState("1");
+  const [iD, setID] = useState("1");
+
+  const labels = ["neutral", "happy", "disgusted", "sad", "angry", "surprised"];
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: "Emotion Feedback",
+        data: [
+          (((emotionLog.neutral - 1) / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.happy / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.disgusted / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.sad / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.angry / timeElapsed || 0) * 100).toFixed(2),
+          ((emotionLog.surprised / timeElapsed || 0) * 100).toFixed(2),
+        ],
+
+        backgroundColor: [
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 159, 64, 0.2)",
+        ],
+        borderColor: [
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 99, 132, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
+          "rgba(255, 159, 64, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
   const [paragraph, setParagraph] = useState("");
 
@@ -65,16 +119,34 @@ export default function Home() {
   // const exercisesRef = collection(db, "exercises");
   const exercisesRef = collection(db, "exercises");
 
+  function selectId(e) {
+    if (e.target.value === "ID") {
+      // setID(String(Math.floor(Math.random() * 10 + 1)));
+      setID("1");
+    } else {
+      setID(e.target.value);
+    }
+  }
   //React.MouseEvent<HTMLButtonElement, MouseEvent>
-  function selectHandler(e) {
+
+  function selectDifficulty(e) {
     // setId(String(Math.floor(Math.random() * 10 + 1)));
-    setId(String(1));
-    setDifficulty(e.target.value);
+    if (e.target.value === "choice") {
+      setDifficulty("easy");
+    } else {
+      setDifficulty(e.target.value);
+    }
   }
 
+  function generate() {
+    setRequest({ level: difficulty, id: iD });
+    setSearch({ level: difficulty, id: iD });
+  }
+
+  console.log(request);
   useEffect(() => {
     onSnapshot(
-      doc(db, difficulty, id),
+      doc(db, request.level, request.id),
       (docSnap) => {
         if (docSnap.exists()) {
           setParagraph(docSnap.data().text);
@@ -87,13 +159,7 @@ export default function Home() {
         console.log(err);
       }
     );
-  }, [difficulty, id]);
-
-  // 4. Make a word cloud which is a paragraph of words seperated by spaces, then split it into an array
-  // const cloud =
-  //   "apple banana carrot dog elephant fudge ghana hello iguana jacket king llama monkey nose oval potato queen rat steam tomato umbrella very well xylophone young zoom".split(
-  //     " "
-  //   );
+  }, [request]);
 
   let cloud = String(paragraph).split(" ");
   cloud = JSON.stringify(cloud);
@@ -128,7 +194,7 @@ export default function Home() {
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
-      setFinished(userInput === "FINISHED");
+
       setHiddenVideo(true);
 
       return;
@@ -161,7 +227,7 @@ export default function Home() {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
-      setFinished(userInput === "FINISHED");
+
       setHiddenVideo(true);
 
       console.log(correctWordArray, "<<correctWordArray");
@@ -207,6 +273,19 @@ export default function Home() {
 
   return (
     <div className="home">
+      <Face
+        startCounting={startCounting}
+        setEmotionLog={setEmotionLog}
+        emotionLog={emotionLog}
+        timeElapsed={timeElapsed}
+        // primaryEmotion={primaryEmotion}
+        setUndetected={setUndetected}
+        undetected={undetected}
+        hiddenVideo={hiddenVideo}
+        setHiddenVideo={setHiddenVideo}
+        data={data}
+      />
+
       <Timer
         startCounting={startCounting}
         correctWords={correctWordArray.filter(Boolean).length}
@@ -217,16 +296,42 @@ export default function Home() {
         emotionLog={emotionLog}
         undetected={undetected}
       />
-      <label htmlFor="difficulty">
-        {" "}
-        Difficulty Level
-        <select name="difficulty" id="difficulty" onChange={selectHandler}>
-          {/* <option>choose difficulty level</option> */}
-          <option value="easy">easy</option>
-          <option value="medium">medium</option>
-          <option value="hard">hard</option>
-        </select>
-      </label>
+      <div>
+        <label htmlFor="difficulty">
+          {" "}
+          Difficulty
+          <select name="difficulty" id="difficulty" onChange={selectDifficulty}>
+            <option value="choice">level</option>
+            <option value="easy">easy</option>
+            <option value="medium">medium</option>
+            <option value="hard">hard</option>
+          </select>
+        </label>
+
+        <label htmlFor="difficulty">
+          {" "}
+          Exercise
+          <select name="difficulty" id="difficulty" onChange={selectId}>
+            <option value="ID">ID</option>
+
+            {[...Array(10)].map((o, i) => (
+              <option value={String(i + 1)} key={String(i + 1)}>
+                {i + 1}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <button onClick={generate} className="btn btn-primary">
+          Generate new
+        </button>
+        <a
+          href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
+          target="_blank"
+        >
+          share game
+        </a>
+      </div>
 
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
       <Fragment>
@@ -265,18 +370,6 @@ export default function Home() {
         </div>
       </Fragment>
 
-      <Face
-        startCounting={startCounting}
-        setEmotionLog={setEmotionLog}
-        emotionLog={emotionLog}
-        timeElapsed={timeElapsed}
-        // primaryEmotion={primaryEmotion}
-        setUndetected={setUndetected}
-        undetected={undetected}
-        hiddenVideo={hiddenVideo}
-        setHiddenVideo={setHiddenVideo}
-      />
-
       <p>{userInput}</p>
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
       <TextField
@@ -289,8 +382,8 @@ export default function Home() {
           borderTop: 1,
           borderBottom: 1,
           borderRadius: "16px",
-          mt: "21rem",
-          mb: "15rem",
+          mt: "1rem",
+          mb: "1rem",
           width: 450,
           bgcolor: "white",
           color: "white",
