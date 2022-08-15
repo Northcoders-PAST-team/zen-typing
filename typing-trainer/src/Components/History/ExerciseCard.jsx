@@ -16,7 +16,12 @@ export default function ExerciseCard(props) {
   const day = dateObj.getUTCDate();
   const year = dateObj.getUTCFullYear();
   const hour = dateObj.getHours();
-  const minute = dateObj.getMinutes();
+  let minute = 0;
+  if (dateObj.getMinutes() < 10) {
+    minute = "0" + dateObj.getMinutes();
+  } else {
+    minute = dateObj.getMinutes();
+  }
 
   return (
     <div>

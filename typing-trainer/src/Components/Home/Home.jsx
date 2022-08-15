@@ -143,7 +143,7 @@ export default function Home() {
     setSearch({ level: difficulty, id: iD });
   }
 
-  console.log(request);
+  // console.log(request);
   useEffect(() => {
     onSnapshot(
       doc(db, request.level, request.id),
@@ -229,9 +229,6 @@ export default function Home() {
       setUserInput("FINISHED");
 
       setHiddenVideo(true);
-
-      console.log(correctWordArray, "<<correctWordArray");
-      console.log(emotionLog.neutral, "<<neutral");
 
       if (user) {
         addDoc(exercisesRef, {
