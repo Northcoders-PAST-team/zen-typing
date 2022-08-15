@@ -2,9 +2,9 @@
   display: grid;
   grid-template-columns: 25% 75%;
   grid-template-rows: auto;
-  grid-template-areas: "info avg" 
-                        "info graph"
-                        "info graph";
+  grid-template-areas: "info avg"
+    "info graph"
+    "info graph";
   min-height: 100vh;
 
 
@@ -14,7 +14,7 @@
     flex-direction: column;
     align-items: center;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     width: 300px;
     height: 100%;
     color: whitesmoke;
@@ -26,68 +26,78 @@
     margin: 50px;
   }
 
-  &-options{
-    height:fit-content;
+  &-options {
+    height: fit-content;
     padding: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
   }
-  
-}
-.username{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.online{
-    background-color: green;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 10px;
+
 }
 
-.offline{
-    background-color: red;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 10px;
+.username {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.average{
-    grid-area: avg;
-    width: 100%;
-    height: 30%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 100px;
+.online {
+  background-color: green;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
 
-    &-bar{
+.offline {
+  background-color: red;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+.average {
+  grid-area: avg;
+  width: 100%;
+  height: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+
+  &-bar {
     display: flex;
-    background-color: rgb(116, 114, 114);
-    width: 600px;
+    width: 90%;
     height: fit-content;
     align-items: center;
     justify-content: space-evenly;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     color: whitesmoke;
+  }
+
+  &-section {
+    background-color: rgb(116, 114, 114);
+    min-width: 20%;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 5px;
+    ;
+  }
 }
 
-    &-section{
-        min-width: 30%;
-    }
-}
-
-.graph{
+.graph {
   grid-area: graph;
   width: 100%;
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
 
+.btn {
+  width: 200px;
+  margin: 30px;
+
+}

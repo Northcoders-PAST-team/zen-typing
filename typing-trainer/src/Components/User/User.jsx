@@ -37,6 +37,7 @@ const User = () => {
         return { ...item.data() };
       })
     );
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -46,7 +47,6 @@ const User = () => {
       if (snapshot.exists()) {
         setUserData({ ...snapshot.data() });
         getData();
-        setLoading(false);
         setError(null);
       } else {
         console.log("User does not exist (profile)");
@@ -56,7 +56,7 @@ const User = () => {
     });
   }, [user_id]);
 
-  const q = query(exercisesRef, where("uid", "==", user_id));
+  const q = query(exercisesRef, where("uid", "==", user_id), orderBy("createdAt"));
 
   const profile = {
     userName: userData.displayName,
