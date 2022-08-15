@@ -23,9 +23,9 @@ export default function History({ auth }) {
   });
 
   return (
-    <div>
+    <>
       <h3>History</h3>
-      <ul>
+      <div className="history">
         {exercises &&
           user &&
           exercises
@@ -35,7 +35,7 @@ export default function History({ auth }) {
             .map((exercise, index) => {
               return <ExerciseCard key={index} exercise={exercise} />;
             })}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 }

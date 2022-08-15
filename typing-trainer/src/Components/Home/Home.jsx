@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
+import SideNav from "../SideNav/SideNav";
 // import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useSearchParams } from "react-router-dom";
 
@@ -143,7 +144,6 @@ export default function Home() {
     setSearch({ level: difficulty, id: iD });
   }
 
-  // console.log(request);
   useEffect(() => {
     onSnapshot(
       doc(db, request.level, request.id),
@@ -270,130 +270,138 @@ export default function Home() {
 
   return (
     <div className="home">
-      <Face
-        startCounting={startCounting}
-        setEmotionLog={setEmotionLog}
-        emotionLog={emotionLog}
-        timeElapsed={timeElapsed}
-        // primaryEmotion={primaryEmotion}
-        setUndetected={setUndetected}
-        undetected={undetected}
-        hiddenVideo={hiddenVideo}
-        setHiddenVideo={setHiddenVideo}
-        data={data}
-      />
+      <div className="exercise-area">
+        <Face
+          startCounting={startCounting}
+          setEmotionLog={setEmotionLog}
+          emotionLog={emotionLog}
+          timeElapsed={timeElapsed}
+          // primaryEmotion={primaryEmotion}
+          setUndetected={setUndetected}
+          undetected={undetected}
+          hiddenVideo={hiddenVideo}
+          setHiddenVideo={setHiddenVideo}
+          data={data}
+        />
 
-      <Timer
-        startCounting={startCounting}
-        correctWords={correctWordArray.filter(Boolean).length}
-        timeElapsed={timeElapsed}
-        setTimeElapsed={setTimeElapsed}
-        speed={speed}
-        setSpeed={setSpeed}
-        emotionLog={emotionLog}
-        undetected={undetected}
-      />
-      <div>
-        <label htmlFor="difficulty">
-          {" "}
-          Difficulty
-          <select name="difficulty" id="difficulty" onChange={selectDifficulty}>
-            <option value="choice">level</option>
-            <option value="easy">easy</option>
-            <option value="medium">medium</option>
-            <option value="hard">hard</option>
-          </select>
-        </label>
+        <Fragment>
+          <div className="target-paragraph">
+            <CssBaseline />
+            <Container maxWidth="md">
+              <Box
+                sx={{
+                  borderRadius: "10px",
+                  mt: "1.5rem",
+                  bgcolor: "rgba(255,255,255, 0.5)",
+                  height: "fit-content",
+                  color: "black",
+                  fontFamily: "Monospace",
+                  padding: "10px;",
+                }}
+              >
+                {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
+                {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
+                {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
+                <p>
+                  {cloud.map((word, index) => {
+                    return (
+                      <Word
+                        key={index}
+                        text={word}
+                        active={index === activeWordIndex}
+                        correct={correctWordArray[index]}
+                      />
+                    );
+                  })}
+                </p>
+              </Box>
+            </Container>
+          </div>
+        </Fragment>
 
-        <label htmlFor="difficulty">
-          {" "}
-          Exercise
-          <select name="difficulty" id="difficulty" onChange={selectId}>
-            <option value="ID">ID</option>
+        <TextField
+          type="text"
+          value={userInput}
+          onChange={(e) => {
+            processInput(e.target.value);
+          }}
+          sx={{
+            fontFamily: "Monospace",
+            borderRadius: "10px",
+            mt: "1rem",
+            mb: "1rem",
+            width: "fit-content",
+            bgcolor: "rgba(255,255,255, 0.5)",
+            color: "white",
+            input: { color: "black" },
+            textAlign: "center",
+          }}
+          id="filled-basic"
+          placeholder="Type here"
+          variant="filled"
+          InputLabelProps={{
+            style: { color: "black" },
+          }}
+        />
+      </div>
 
-            {[...Array(10)].map((o, i) => (
-              <option value={String(i + 1)} key={String(i + 1)}>
-                {i + 1}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <button onClick={generate} className="btn btn-primary">
-          Generate new
-        </button>
-        <a
-          href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
-          target="_blank"
-        >
-          share game
-        </a>
+      <div className="side-menu">
+        <SideNav />
       </div>
 
       {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
-      <Fragment>
-        <div className="target-paragraph">
-          <CssBaseline />
-          <Container maxWidth="sm">
-            <Box
-              sx={{
-                borderLeft: 1,
-                borderRight: 1,
-                borderRadius: "16px",
-                mt: "1.5rem",
-                bgcolor: "#black",
-                height: "20vh",
-                color: "white",
-                fontFamily: "Georgia",
-              }}
-            >
-              {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
-              {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
-              {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
-              <p>
-                {cloud.map((word, index) => {
-                  return (
-                    <Word
-                      key={index}
-                      text={word}
-                      active={index === activeWordIndex}
-                      correct={correctWordArray[index]}
-                    />
-                  );
-                })}
-              </p>
-            </Box>
-          </Container>
-        </div>
-      </Fragment>
 
-      <p>{userInput}</p>
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
-      <TextField
-        type="text"
-        value={userInput}
-        onChange={(e) => {
-          processInput(e.target.value);
-        }}
-        sx={{
-          borderTop: 1,
-          borderBottom: 1,
-          borderRadius: "16px",
-          mt: "1rem",
-          mb: "1rem",
-          width: 450,
-          bgcolor: "white",
-          color: "white",
-          input: { color: "black" },
-        }}
-        id="filled-basic"
-        label="Type here"
-        variant="filled"
-        InputLabelProps={{
-          style: { color: "black" },
-        }}
-      />
-      <History auth={auth} />
+      <div className="right-menu">
+        <Timer
+          startCounting={startCounting}
+          correctWords={correctWordArray.filter(Boolean).length}
+          timeElapsed={timeElapsed}
+          setTimeElapsed={setTimeElapsed}
+          speed={speed}
+          setSpeed={setSpeed}
+          emotionLog={emotionLog}
+          undetected={undetected}
+        />
+        <div className="difficulty-form">
+          <label htmlFor="difficulty">
+            {" "}
+            Difficulty
+            <select
+              name="difficulty"
+              id="difficulty"
+              onChange={selectDifficulty}
+            >
+              <option value="easy">easy</option>
+              <option value="medium">medium</option>
+              <option value="hard">hard</option>
+            </select>
+          </label>
+
+          <label htmlFor="difficulty">
+            {" "}
+            Exercise
+            <select name="difficulty" id="difficulty" onChange={selectId}>
+              {[...Array(10)].map((o, i) => (
+                <option value={String(i + 1)} key={String(i + 1)}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <button onClick={generate} className="btn btn-primary">
+            Generate new
+          </button>
+          <a
+            href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
+            target="_blank"
+          >
+            share game
+          </a>
+        </div>
+        <History auth={auth} />
+      </div>
     </div>
   );
 }
