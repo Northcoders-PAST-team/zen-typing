@@ -365,6 +365,19 @@ export default function Home() {
         console.table(emotionLog);
         setCorrect(1);
         setIncorrect(1);
+        // setEmotionLog(current => {
+        //   const newEmotion = { ...current,emotionLog };
+        //   return newEmotion;
+        // })
+
+        console.log(
+          "this is accuracy",
+          (correct / (correct + incorrect)) * 100
+        );
+        console.log(
+          "this is wpm",
+          (correct / (timeElapsed / 60) || 0).toFixed(2)
+        );
 
         if (user) {
           addDoc(exercisesRef, {
@@ -376,7 +389,7 @@ export default function Home() {
             paragraph: paragraph,
 
             wpm: (correct / (timeElapsed / 60) || 0).toFixed(2),
-            accuracy: (correct / cloud.length).toFixed(2),
+            accuracy: ((correct / (correct + incorrect)) * 100).toFixed(2),
 
             neutral: Math.floor(((emotionLog.neutral - 1) / timeElapsed) * 100),
             happy: (emotionLog.happy / timeElapsed) * 100,
@@ -393,7 +406,7 @@ export default function Home() {
             });
         }
       } else {
-        // checkWordMatches();
+        checkWordMatches();
         setActiveWordIndex((current) => current + 1);
         setCurrentInput("");
         setCurrentCharIndex(-1);

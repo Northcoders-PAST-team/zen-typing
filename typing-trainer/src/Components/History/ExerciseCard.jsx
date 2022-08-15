@@ -33,7 +33,7 @@ export default function ExerciseCard(props) {
       </p>
       <p>Time: {time}</p>
       <p>WPM: {wpm} </p>
-      <p>Accuracy {(accuracy * 100).toFixed(2)}% </p>
+      <p>Accuracy {accuracy.toFixed(2)}% </p>
       <p>Difficulty: {difficulty}</p>
       {neutral ? <p>Neutral: {neutral.toFixed(2)}%</p> : null}
     </div>
