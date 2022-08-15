@@ -230,9 +230,6 @@ export default function Home() {
 
       setHiddenVideo(true);
 
-      console.log(correctWordArray, "<<correctWordArray");
-      console.log(emotionLog.neutral, "<<neutral");
-
       if (user) {
         addDoc(exercisesRef, {
           uid: user.uid,
