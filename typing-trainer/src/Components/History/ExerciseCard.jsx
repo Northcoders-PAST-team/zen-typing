@@ -1,3 +1,5 @@
+import "../Home/Home.scss";
+
 export default function ExerciseCard(props) {
   const {
     uid,
@@ -16,16 +18,24 @@ export default function ExerciseCard(props) {
   const day = dateObj.getUTCDate();
   const year = dateObj.getUTCFullYear();
   const hour = dateObj.getHours();
-  const minute = dateObj.getMinutes();
+  let minute = 0;
+  if (dateObj.getMinutes() < 10) {
+    minute = "0" + dateObj.getMinutes();
+  } else {
+    minute = dateObj.getMinutes();
+  }
 
   return (
-    <div>
-      {console.log("render exercise card component")}
+    <div className="history-card">
+      <p>User: {user}</p>
       <p>
-        uid: {uid} | User: {user} | Date: {day}/{month}/{year} {hour}:{minute} |
-        Time: {time} | WPM: {wpm} | Accuracy {accuracy * 100}% | Difficulty:{" "}
-        {difficulty} | Paragraph: {paragraph} | Neutral: {neutral}%
+        Date: {day}/{month}/{year} {hour}:{minute}
       </p>
+      <p>Time: {time}</p>
+      <p>WPM: {wpm} </p>
+      <p>Accuracy {(accuracy * 100).toFixed(2)}% </p>
+      <p>Difficulty:{difficulty}</p>
+      <p>Neutral: {neutral.toFixed(2)}%</p>
     </div>
   );
 }

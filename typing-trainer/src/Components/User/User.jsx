@@ -5,6 +5,7 @@ import UserAver from "./UserAver";
 import Graph from "./Graph";
 import "firebase/compat/firestore";
 import { db } from "../../firebaseConfig";
+import SideNav from "../SideNav/SideNav";
 import {
   collection,
   doc,
@@ -56,7 +57,11 @@ const User = () => {
     });
   }, [user_id]);
 
-  const q = query(exercisesRef, where("uid", "==", user_id), orderBy("createdAt"));
+  const q = query(
+    exercisesRef,
+    where("uid", "==", user_id),
+    orderBy("createdAt")
+  );
 
   const profile = {
     userName: userData.displayName,
@@ -70,6 +75,9 @@ const User = () => {
     <p>{error}</p>
   ) : (
     <div className="user">
+      <div className="side-nav">
+        <SideNav />
+      </div>
       <UserInfoCard
         userName={profile.userName}
         friendList={profile.friendList}

@@ -76,7 +76,7 @@ export default function Timer({
       <Fragment>
         <div className="feedback">
           <div className="time-elapsed-and-speed">
-            <p>Time: {timeElapsed}</p>
+            <p>Time: {timeElapsed} secs</p>
             <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM </p>
             <p>
               {!undetected
