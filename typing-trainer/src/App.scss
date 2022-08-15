@@ -46,7 +46,7 @@ a {
 
 
 @mixin dots($count) {
-
+z-index: -1;
   $text-shadow: ();
   @for $i from 0 through $count {
     $text-shadow: $text-shadow,
