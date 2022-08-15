@@ -158,6 +158,7 @@ export default function Home() {
       disgusted: 0,
     });
     setTimeElapsed(0);
+    setCorrectWordArray([]);
   }
 
   useEffect(() => {
@@ -310,6 +311,8 @@ export default function Home() {
         sad: 0,
         disgusted: 0,
       });
+      setCorrectWordArray([]);
+
       console.log("i am active start", activeWordIndex);
     }
     if (
@@ -341,6 +344,9 @@ export default function Home() {
         console.log("im accuracy", correct / cloud.length);
 
         if (user) {
+          // console.log(emotionLog.neutral, timeElapsed);
+          // console.log(emotionLog.neutral, timeElapsed);
+          // console.log(((emotionLog.neutral - 1) / timeElapsed) * 100);
           addDoc(exercisesRef, {
             uid: user.uid,
             user: user.displayName || user.email,
@@ -352,7 +358,7 @@ export default function Home() {
             wpm: (correct / (timeElapsed / 60) || 0).toFixed(2),
             accuracy: (correct / cloud.length).toFixed(2),
 
-            neutral: Math.abs((emotionLog.neutral - 1) / (timeElapsed * 100)),
+            neutral: Math.floor(((emotionLog.neutral - 1) / timeElapsed) * 100),
             happy: (emotionLog.happy / timeElapsed) * 100,
             sad: (emotionLog.sad / timeElapsed) * 100,
             surprised: (emotionLog.surprised / timeElapsed) * 100,
@@ -380,17 +386,31 @@ export default function Home() {
 
   //function that checks whether the word typed is correct or not
   function checkWordMatches() {
-    cloud[activeWordIndex] === currentInput.trim()
-      ? setCorrect((current) => current + 1)
-      : setIncorrect((current) => current + 1);
+    if (cloud[activeWordIndex] === currentInput.trim()) {
+      setCorrect((current) => current + 1);
+      setCorrectWordArray((data) => {
+        const newResult = [...data];
+        newResult[activeWordIndex] = true;
+
+        return newResult;
+      });
+    } else {
+      setIncorrect((current) => current + 1);
+      setCorrectWordArray((data) => {
+        const newResult = [...data];
+        newResult[activeWordIndex] = false;
+
+        return newResult;
+      });
+    }
   }
 
   function getClass(index, i, char) {
     if (index === activeWordIndex && i === currentCharIndex && currentChar) {
       if (char === currentChar) {
-        return "correct";
+        return "char";
       } else {
-        return "incorrect";
+        return "char";
       }
     }
   }
@@ -429,11 +449,16 @@ export default function Home() {
                 {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
                 {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
                 {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
+
                 <p>
                   {cloud.map((word, index) => {
                     return (
                       <span key={index}>
-                        <span>
+                        <Word
+                          text={word}
+                          active={index === activeWordIndex}
+                          correct={correctWordArray[index]}
+                        >
                           {word.split("").map((char, i) => {
                             return (
                               <span
@@ -445,7 +470,7 @@ export default function Home() {
                               </span>
                             );
                           })}
-                        </span>
+                        </Word>
                         <span> </span>
                       </span>
                     );

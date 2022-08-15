@@ -53,6 +53,9 @@ function SignIn() {
   return (
     <div>
       <Link to="/">
+        <h3>Home</h3>
+      </Link>
+      <Link to="/">
         {" "}
         <button onClick={signInWithGoogle} className="btn btn-success">
           Sign in with Google
@@ -98,7 +101,9 @@ function SignIn() {
           </button>
         </div>
       </form>
-      <Link to="/signup">Create account</Link>
+      <Link to="/signup">
+        <h3>Create account</h3>
+      </Link>
       {error ? <p>{error}</p> : null}
     </div>
   );
