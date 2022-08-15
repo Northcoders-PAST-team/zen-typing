@@ -402,7 +402,7 @@ export default function Home() {
             share game
           </a>
         </div>
-        <History auth={auth} />
+        {user && <History auth={auth} />}
       </div>
     </div>
   );
