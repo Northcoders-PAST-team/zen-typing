@@ -79,6 +79,31 @@ export default function Home() {
   const [hiddenVideo, setHiddenVideo] = useState(false);
   const [iD, setID] = useState("1");
 
+  const [calm, setCalm] = useState(true);
+
+  const [neutral, setNeutral] = useState();
+
+  const [happy, setHappy] = useState();
+  const [surprised, setSurprised] = useState();
+  const [angry, setAngry] = useState();
+  const [sad, setSad] = useState();
+  const [disgusted, setDisgusted] = useState();
+
+  let currentEmotions = {
+    happy: happy,
+    surprised: surprised,
+    angry: angry,
+    disgusted: disgusted,
+    sad: sad,
+    neutral: neutral,
+  };
+
+  let primaryEmotion = !currentEmotions
+    ? "neutral"
+    : Object.keys(currentEmotions).reduce((a, b) =>
+        currentEmotions[a] > currentEmotions[b] ? a : b
+      );
+
   const labels = ["neutral", "happy", "disgusted", "sad", "angry", "surprised"];
 
   const data = {
@@ -284,6 +309,20 @@ export default function Home() {
           hiddenVideo={hiddenVideo}
           setHiddenVideo={setHiddenVideo}
           data={data}
+          calm={calm}
+          setCalm={setCalm}
+          neutral={neutral}
+          setNeutral={setNeutral}
+          happy={happy}
+          setHappy={setHappy}
+          surprised={surprised}
+          setSurprised={setSurprised}
+          angry={angry}
+          setAngry={setAngry}
+          sad={sad}
+          setSad={setSad}
+          disgusted={disgusted}
+          setDisgusted={setDisgusted}
         />
 
         <Fragment>
@@ -355,6 +394,34 @@ export default function Home() {
 
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
       <div className="right-menu">
+        <div className="hide-emotion-and-emotion">
+          <Button
+            className="activate"
+            onClick={() => {
+              setHiddenVideo(hiddenVideo ? false : true);
+            }}
+            variant="contained"
+            sx={{
+              width: "300px",
+            }}
+          >
+            {hiddenVideo
+              ? "activate face recognition"
+              : "deactivate face recognition"}
+          </Button>
+          <p className="current-emotion">
+            {hiddenVideo
+              ? ""
+              : calm
+              ? `Currently calm..`
+              : `CALM DOWN! ${
+                  primaryEmotion !== "happy"
+                    ? `You\'re looking a bit too ${primaryEmotion}`
+                    : ""
+                }`}
+          </p>
+        </div>
+
         <Timer
           startCounting={startCounting}
           correctWords={correctWordArray.filter(Boolean).length}
@@ -402,7 +469,7 @@ export default function Home() {
             share game
           </a>
         </div>
-        <History auth={auth} />
+        {user && <History auth={auth} />}
       </div>
     </div>
   );
