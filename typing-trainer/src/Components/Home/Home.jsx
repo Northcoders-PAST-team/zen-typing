@@ -441,7 +441,6 @@ export default function Home() {
           </label>
 
           <label htmlFor="difficulty">
-            {" "}
             Exercise
             <select name="difficulty" id="difficulty" onChange={selectId}>
               {[...Array(10)].map((o, i) => (

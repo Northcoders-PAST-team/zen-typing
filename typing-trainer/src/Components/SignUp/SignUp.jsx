@@ -1,3 +1,5 @@
+import "./SignUp.scss";
+
 import { db } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -45,18 +47,18 @@ function SignUp() {
     }
   }
   return (
-    <div>
-      <form onSubmit={signupUser}>
+    <div className="width-100">
+      <form onSubmit={signupUser} className="width-100">
         <div className="container">
-          <h2>Sign Up</h2>
-          <p>Please fill in this form to create an account.</p>
-
-          <label>
+          {/* <h1>Sign Up</h1> */}
+          <h1>Please fill in this form to create an account.</h1>
+          {/* <label>
             <b>Email</b>
-          </label>
+          </label> */}
           <input
             type="text"
             autoFocus
+            aria-label="Email"
             placeholder="Enter Email"
             name="email"
             required
@@ -64,23 +66,21 @@ function SignUp() {
             onChange={signupHandler}
           />
 
-          <label>
+          {/* <label>
             <b>Password</b>
-          </label>
+          </label> */}
           <input
             type="password"
+            aria-label="Password"
             placeholder="Enter Password"
             name="password"
             value={signUp.password}
             required
             onChange={signupHandler}
           />
-
-          <label>
-            <b>Repeat Password</b>
-          </label>
           <input
             type="password"
+            aria-label="Repeat Password"
             placeholder="Repeat Password"
             name="repeatPassword"
             value={signUp.repeatPassword}
@@ -101,9 +101,9 @@ function SignUp() {
           /> */}
 
           <br />
-          <br />
+
           <div onSubmit={signupUser}>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary wide-button">
               Sign Up
             </button>
           </div>
