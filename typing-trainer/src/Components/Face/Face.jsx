@@ -74,6 +74,9 @@ export default function Face({
   const [previousInterval, setPreviousInterval] = useState(0);
   const [previousEmotion, setPreviousEmotion] = useState("neutral");
 
+  console.log(primaryEmotion, "<primary emotion");
+  console.log(calm, "<calm");
+
   useEffect(() => {
     setCalm(primaryEmotion !== "neutral" ? false : true);
     emotionLog[primaryEmotion] += 1;
@@ -147,10 +150,12 @@ export default function Face({
             // height="200"
             className={
               hiddenVideo
-                ? "hidden"
-                : calm
-                ? "face-canvas-calm"
-                : "face-canvas-not-calm"
+                ? // ? "hidden"
+                  // : calm
+                  // ? "face-canvas-calm"
+                  // : "face-canvas-" + primaryEmotion
+                  "hidden"
+                : "face-canvas-" + primaryEmotion
             }
           />
           <div className="bar-chart">
@@ -172,35 +177,35 @@ export default function Face({
             />
           </div>
         </div>
-
-        <div className="hide-emotion-and-emotion">
-          <Button
-            className="activate"
-            onClick={() => {
-              setHiddenVideo(hiddenVideo ? false : true);
-            }}
-            variant="contained"
-            sx={{
-              width: "300px",
-            }}
-          >
-            {hiddenVideo
-              ? "activate face recognition"
-              : "deactivate face recognition"}
-          </Button>
-          <p className="current-emotion">
-            {hiddenVideo
-              ? ""
-              : calm
-              ? `Currently calm..`
-              : `CALM DOWN! ${
-                  primaryEmotion !== "happy"
-                    ? `You\'re looking a bit too ${primaryEmotion}`
-                    : ""
-                }`}
-          </p>
-        </div>
       </Fragment>
+
+      <div className="hide-emotion-and-emotion">
+        <Button
+          className="activate"
+          onClick={() => {
+            setHiddenVideo(hiddenVideo ? false : true);
+          }}
+          variant="contained"
+          sx={{
+            width: "300px",
+          }}
+        >
+          {hiddenVideo
+            ? "activate face recognition"
+            : "deactivate face recognition"}
+        </Button>
+        <p className="current-emotion">
+          {hiddenVideo
+            ? ""
+            : calm
+            ? `Currently calm..`
+            : `CALM DOWN! ${
+                primaryEmotion !== "happy"
+                  ? `You\'re looking a bit too ${primaryEmotion}`
+                  : ""
+              }`}
+        </p>
+      </div>
     </div>
   );
 }
