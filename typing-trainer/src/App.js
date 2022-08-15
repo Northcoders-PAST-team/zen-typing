@@ -57,7 +57,7 @@ function App() {
       <div className="background-overlay">
         <BrowserRouter>
           <UserContext.Provider value={{ user, auth }}>
-            <Nav />
+            {/* <Nav /> */}
             <Routes>
               <Route path={"/"} element={<Home />} />
               <Route path={"/users/:user_id"} element={<User />} />

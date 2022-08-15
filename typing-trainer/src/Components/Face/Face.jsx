@@ -154,16 +154,22 @@ export default function Face({
             }
           />
           <div className="bar-chart">
-            <Doughnut data={data} 
-            options={{plugins: {
-            legend: {
-              position: "bottom",
-              labels: {
-                usePointStyle: true,
-                pointStyle: "circle",
-                padding: 20,
-                color: "white"
-              }}}}}/>
+            <Doughnut
+              data={data}
+              options={{
+                plugins: {
+                  legend: {
+                    position: "bottom",
+                    labels: {
+                      usePointStyle: true,
+                      pointStyle: "circle",
+                      padding: 20,
+                      color: "white",
+                    },
+                  },
+                },
+              }}
+            />
           </div>
         </div>
 
@@ -175,7 +181,6 @@ export default function Face({
             }}
             variant="contained"
             sx={{
-              mr: 5,
               width: "300px",
             }}
           >
