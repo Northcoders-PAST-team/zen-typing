@@ -166,9 +166,23 @@ export default function Home() {
     }
   }
 
+  //just have to add 6 lines to reset startCounting, activeWordIndex, emotionLog, timeElapsed and correctWordArray.
   function generate() {
     setRequest({ level: difficulty, id: iD });
     setSearch({ level: difficulty, id: iD });
+    setStartCounting(0);
+    setActiveWordIndex(0);
+    setEmotionLog({
+      neutral: 0,
+      happy: 0,
+      surprised: 0,
+      angry: 0,
+      sad: 0,
+      disgusted: 0,
+    });
+    setTimeElapsed(0);
+    setCorrectWordArray([]);
+    setUserInput("");
   }
 
   useEffect(() => {
@@ -366,6 +380,7 @@ export default function Home() {
           className="user-paragraph"
           type="text"
           value={userInput}
+          autoFocus
           onChange={(e) => {
             processInput(e.target.value);
           }}
