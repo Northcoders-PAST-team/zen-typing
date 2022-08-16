@@ -75,7 +75,7 @@ export default function Home() {
   // const [request, setRequest] = useState({ level: "easy", id: "1" });
 
   const [difficulty, setDifficulty] = useState("easy");
-
+  const [keyboard, setKeyboard] = useState(true);
   const [hiddenVideo, setHiddenVideo] = useState(false);
   const [iD, setID] = useState("1");
 
@@ -183,6 +183,7 @@ export default function Home() {
     setTimeElapsed(0);
     setCorrectWordArray([]);
     setUserInput("");
+    setKeyboard(true);
   }
 
   useEffect(() => {
@@ -229,13 +230,14 @@ export default function Home() {
   const processInput = (value) => {
     if (!startCounting) {
       setStartCounting(true);
+      setHiddenVideo(false);
     }
 
     //If they misspelled the last word then this one will catch them when they try to
     if (activeWordIndex === cloud.length) {
       setStartCounting(false);
       setUserInput("FINISHED");
-
+      setKeyboard(false);
       setHiddenVideo(true);
 
       return;
@@ -268,7 +270,7 @@ export default function Home() {
       });
       setStartCounting(false);
       setUserInput("FINISHED");
-
+      setKeyboard(false);
       setHiddenVideo(true);
 
       if (user) {
@@ -375,33 +377,34 @@ export default function Home() {
             </Container>
           </div>
         </Fragment>
-
-        <TextField
-          className="user-paragraph"
-          type="text"
-          value={userInput}
-          autoFocus
-          onChange={(e) => {
-            processInput(e.target.value);
-          }}
-          sx={{
-            fontFamily: "Monospace",
-            borderRadius: "10px",
-            mt: "1rem",
-            mb: "1rem",
-            width: "fit-content",
-            bgcolor: "rgba(255,255,255, 0.5)",
-            color: "white",
-            input: { color: "black" },
-            textAlign: "center",
-          }}
-          id="filled-basic"
-          placeholder="Type here"
-          variant="filled"
-          InputLabelProps={{
-            style: { color: "black" },
-          }}
-        />
+        {keyboard ? (
+          <TextField
+            className="user-paragraph"
+            type="text"
+            value={userInput}
+            autoFocus
+            onChange={(e) => {
+              processInput(e.target.value);
+            }}
+            sx={{
+              fontFamily: "Monospace",
+              borderRadius: "10px",
+              mt: "1rem",
+              mb: "1rem",
+              width: "fit-content",
+              bgcolor: "rgba(255,255,255, 0.5)",
+              color: "white",
+              input: { color: "black" },
+              textAlign: "center",
+            }}
+            id="filled-basic"
+            placeholder="Type here"
+            variant="filled"
+            InputLabelProps={{
+              style: { color: "black" },
+            }}
+          />
+        ) : null}
       </div>
 
       <div className="side-menu">
