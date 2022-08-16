@@ -174,15 +174,9 @@ const ResponsiveAppBar = () => {
         ) : null}
         {user ? (
           <Link to="/">
-            <MenuItem
-              key="Logout"
-              onClick={handleCloseUserMenu}
-              sx={{ fontSize: "50px" }}
-            >
+            <MenuItem key="Logout" onClick={logOut} sx={{ fontSize: "50px" }}>
               <LogoutIcon sx={{ mr: "20px", fontSize: "40px" }} />
-              <Typography textAlign="center" onClick={logOut}>
-                Logout
-              </Typography>
+              <Typography textAlign="center">Logout</Typography>
             </MenuItem>
           </Link>
         ) : (
