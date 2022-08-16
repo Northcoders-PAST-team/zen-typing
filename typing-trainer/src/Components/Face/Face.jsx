@@ -176,6 +176,7 @@ export default function Face({
             <Doughnut
               data={data}
               options={{
+                // cutout: 200,
                 plugins: {
                   legend: {
                     position: "bottom",

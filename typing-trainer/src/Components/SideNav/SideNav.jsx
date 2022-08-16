@@ -104,7 +104,7 @@ const ResponsiveAppBar = () => {
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: "290px",
             boxSizing: "border-box",
             background: "rgba(0, 0, 0, 0.55)",
           },
