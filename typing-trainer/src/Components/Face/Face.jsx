@@ -150,6 +150,7 @@ export default function Face({
         <div className="face">
           <div className="face-video">
             <video
+              src="bbt.mp4"
               id="myVideo"
               crossOrigin="anonymous"
               ref={videoRef}
