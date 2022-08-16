@@ -44,6 +44,7 @@ onAuthStateChanged(auth, (user) => {
           friends: [],
           online: true,
           avatar: user.photoURL,
+          id: user.uid,
         });
       }
     });
