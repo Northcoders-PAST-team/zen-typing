@@ -4,7 +4,15 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 
-const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
+const UserInfoCard = ({
+  userName,
+  friendList,
+  loggedIn,
+  auth,
+  avatar,
+  setEdit,
+  user,
+}) => {
   const [isDelete, setDelete] = useState(false);
 
   return (
@@ -17,7 +25,8 @@ const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
 
       <div className="user-options">
         <p className="username">
-          {userName} <span className={loggedIn ? "online" : "offline"}></span>
+          {user.displayName}{" "}
+          <span className={loggedIn ? "online" : "offline"}></span>
         </p>
         {auth.currentUser ? (
           <div>
@@ -25,12 +34,15 @@ const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
               variant="contained"
               size="large"
               startIcon={<BorderColorIcon />}
+              onClick={() => {
+                setEdit(true);
+              }}
             >
               Edit Profile
             </Button>
             {!isDelete ? (
               <Button
-              className="btn"
+                className="btn"
                 variant="contained"
                 color="error"
                 onClick={() => {

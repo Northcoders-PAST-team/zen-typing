@@ -92,6 +92,7 @@
     padding: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 5px;
+    text-align: center
     ;
   }
 }
@@ -105,8 +106,44 @@
   flex-direction: column;
 }
 
-.btn {
-  width: 200px;
-  margin: 30px;
 
+
+.form-container{
+  width: 100%;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+
+  .user-form{
+    color: white;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+  }
+  .form-text-input{
+    padding-left: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        width: 70%;
+        outline: none;
+        border: none;
+        height: 30px;
+        border-radius: 5px;
+        &:focus{
+          border: rgb(25,118,210) 1px solid;
+          outline-width: 2px;
+        }
+
+  }
+  .form-btn{
+    background-color: rgb(25,118,210);
+  }
 }

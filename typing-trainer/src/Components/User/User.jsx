@@ -14,10 +14,12 @@ import {
   where,
   query,
   orderBy,
+  updateDoc,
 } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../User/UserContext";
 import Loading from "../Loading/Loading";
+import EditUser from "./EditUser";
 
 const User = () => {
   const { user, auth } = useContext(UserContext);
@@ -28,8 +30,15 @@ const User = () => {
   const [userData, setUserData] = useState({});
   const [exercisesData, setExercisesData] = useState([]);
 
+  const [edit, setEdit] = useState(false);
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [displayname, setDisplayname] = useState("");
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [inputError, setInputError] = useState();
+  const [fileDir, setFileDir] = useState();
 
   const getData = async () => {
     const data = await getDocs(q);
@@ -39,6 +48,23 @@ const User = () => {
       })
     );
     setLoading(false);
+  };
+
+  const submitData = (e) => {
+    e.preventDefault();
+    const userRef = doc(db, "users", user_id);
+    updateDoc(userRef, {
+      displayName: displayname,
+      email: `${email ? email : user.email}`,
+      phoneNumber: `${phone ? phone : user.phoneNumber}`,
+    })
+      .then(() => {
+        alert("User profile updated");
+        // setEdit(false);
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   useEffect(() => {
@@ -79,14 +105,31 @@ const User = () => {
         <SideNav />
       </div>
       <UserInfoCard
+        user={user}
+        setEdit={setEdit}
         userName={profile.userName}
         friendList={profile.friendList}
         loggedIn={profile.loggedIn}
         auth={auth}
         avatar={userData.avatar}
       />
-      <UserAver exercisesData={exercisesData} />
-      <Graph exercisesData={exercisesData} />
+      {edit ? (
+        <EditUser
+          setEdit={setEdit}
+          user={user}
+          user_id={user_id}
+          setDisplayname={setDisplayname}
+          setEmail={setEdit}
+          setPhone={phone}
+          submitData={submitData}
+          setInputError={setInputError}
+        />
+      ) : (
+        <>
+          <UserAver exercisesData={exercisesData} />
+          <Graph exercisesData={exercisesData} />
+        </>
+      )}
     </div>
   );
 };
