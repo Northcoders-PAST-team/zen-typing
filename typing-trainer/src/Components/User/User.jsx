@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import { UserContext } from "../User/UserContext";
 import Loading from "../Loading/Loading";
 import EditUser from "./EditUser";
+import { updateProfile } from "firebase/auth";
 
 const User = () => {
   const { user, auth } = useContext(UserContext);
@@ -34,11 +35,11 @@ const User = () => {
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [displayname, setDisplayname] = useState("");
-  const [email, setEmail] = useState();
-  const [phone, setPhone] = useState();
+  const [displayname, setDisplayname] = useState();
+
   const [inputError, setInputError] = useState();
-  const [fileDir, setFileDir] = useState();
+
+  console.log(user);
 
   const getData = async () => {
     const data = await getDocs(q);
@@ -52,15 +53,11 @@ const User = () => {
 
   const submitData = (e) => {
     e.preventDefault();
-    const userRef = doc(db, "users", user_id);
-    updateDoc(userRef, {
+    updateProfile(auth.currentUser, {
       displayName: displayname,
-      email: `${email ? email : user.email}`,
-      phoneNumber: `${phone ? phone : user.phoneNumber}`,
     })
       .then(() => {
-        alert("User profile updated");
-        // setEdit(false);
+        setEdit(false);
       })
       .catch((err) => {
         alert(err);
@@ -119,8 +116,6 @@ const User = () => {
           user={user}
           user_id={user_id}
           setDisplayname={setDisplayname}
-          setEmail={setEdit}
-          setPhone={phone}
           submitData={submitData}
           setInputError={setInputError}
         />

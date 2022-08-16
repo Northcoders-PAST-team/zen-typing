@@ -25,7 +25,7 @@ const UserInfoCard = ({
 
       <div className="user-options">
         <p className="username">
-          {user.displayName}{" "}
+          {user.displayName}
           <span className={loggedIn ? "online" : "offline"}></span>
         </p>
         {auth.currentUser ? (
@@ -38,7 +38,7 @@ const UserInfoCard = ({
                 setEdit(true);
               }}
             >
-              Edit Profile
+              Edit Username
             </Button>
             {!isDelete ? (
               <Button
