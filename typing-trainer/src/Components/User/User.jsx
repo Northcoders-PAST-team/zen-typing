@@ -64,7 +64,7 @@ const User = () => {
   );
 
   const profile = {
-    userName: userData.displayName,
+    userName: userData.displayName || user.email,
     friendList: userData.friends,
     loggedIn: userData.online,
   };

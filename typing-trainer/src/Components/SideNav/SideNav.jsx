@@ -134,6 +134,12 @@ const ResponsiveAppBar = () => {
           Typing Trainer
         </Typography>
         <Divider />
+
+        {user ? (
+          <p style={{ color: "white" }}>
+            Logged in as {user.displayName || user.email}
+          </p>
+        ) : null}
         <MenuItem
           key="statistics"
           sx={{ fontSize: "50px", mt: "30px", color: "white" }}
