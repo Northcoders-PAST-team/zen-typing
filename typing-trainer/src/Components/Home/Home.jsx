@@ -3,6 +3,8 @@ import { useState, Fragment, useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
+import Button from "@mui/material/Button";
+
 import "./Home.scss";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -77,6 +79,31 @@ export default function Home() {
   const [hiddenVideo, setHiddenVideo] = useState(false);
   const [iD, setID] = useState("1");
 
+  const [calm, setCalm] = useState(true);
+
+  const [neutral, setNeutral] = useState();
+
+  const [happy, setHappy] = useState();
+  const [surprised, setSurprised] = useState();
+  const [angry, setAngry] = useState();
+  const [sad, setSad] = useState();
+  const [disgusted, setDisgusted] = useState();
+
+  let currentEmotions = {
+    happy: happy,
+    surprised: surprised,
+    angry: angry,
+    disgusted: disgusted,
+    sad: sad,
+    neutral: neutral,
+  };
+
+  let primaryEmotion = !currentEmotions
+    ? "neutral"
+    : Object.keys(currentEmotions).reduce((a, b) =>
+        currentEmotions[a] > currentEmotions[b] ? a : b
+      );
+
   const labels = ["neutral", "happy", "disgusted", "sad", "angry", "surprised"];
 
   const data = {
@@ -95,18 +122,18 @@ export default function Home() {
 
         backgroundColor: [
           "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
           "rgba(255, 206, 86, 0.2)",
           "rgba(75, 192, 192, 0.2)",
           "rgba(153, 102, 255, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
           "rgba(255, 159, 64, 0.2)",
         ],
         borderColor: [
           "rgba(54, 162, 235, 1)",
-          "rgba(255, 99, 132, 1)",
           "rgba(255, 206, 86, 1)",
           "rgba(75, 192, 192, 1)",
           "rgba(153, 102, 255, 1)",
+          "rgba(255, 99, 132, 1)",
           "rgba(255, 159, 64, 1)",
         ],
         borderWidth: 1,
@@ -282,6 +309,20 @@ export default function Home() {
           hiddenVideo={hiddenVideo}
           setHiddenVideo={setHiddenVideo}
           data={data}
+          calm={calm}
+          setCalm={setCalm}
+          neutral={neutral}
+          setNeutral={setNeutral}
+          happy={happy}
+          setHappy={setHappy}
+          surprised={surprised}
+          setSurprised={setSurprised}
+          angry={angry}
+          setAngry={setAngry}
+          sad={sad}
+          setSad={setSad}
+          disgusted={disgusted}
+          setDisgusted={setDisgusted}
         />
 
         <Fragment>
@@ -297,6 +338,8 @@ export default function Home() {
                   color: "black",
                   fontFamily: "Monospace",
                   padding: "10px;",
+                  width: "800px",
+                  fontSize: "26px",
                 }}
               >
                 {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
@@ -320,6 +363,7 @@ export default function Home() {
         </Fragment>
 
         <TextField
+          className="user-paragraph"
           type="text"
           value={userInput}
           onChange={(e) => {
@@ -353,6 +397,26 @@ export default function Home() {
 
       {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
       <div className="right-menu">
+        <div className="hide-emotion-and-emotion">
+          <Button
+            className="activate"
+            onClick={() => {
+              setHiddenVideo(hiddenVideo ? false : true);
+            }}
+            variant="contained"
+            sx={{
+              width: "300px",
+            }}
+          >
+            {hiddenVideo
+              ? "activate face recognition"
+              : "deactivate face recognition"}
+          </Button>
+          <p className="current-emotion">
+            {hiddenVideo ? "" : `Currently ${primaryEmotion}`}
+          </p>
+        </div>
+
         <Timer
           startCounting={startCounting}
           correctWords={correctWordArray.filter(Boolean).length}
@@ -379,7 +443,6 @@ export default function Home() {
           </label>
 
           <label htmlFor="difficulty">
-            {" "}
             Exercise
             <select name="difficulty" id="difficulty" onChange={selectId}>
               {[...Array(10)].map((o, i) => (
@@ -400,7 +463,7 @@ export default function Home() {
             share game
           </a>
         </div>
-        <History auth={auth} />
+        {user && <History auth={auth} />}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import '../Home/Home.scss'
+import "../Home/Home.scss";
 
 export default function ExerciseCard(props) {
   const {
@@ -27,16 +27,15 @@ export default function ExerciseCard(props) {
 
   return (
     <div className="history-card">
-      
-        <p>User: {user}</p>
-        <p>Date: {day}/{month}/{year} {hour}:{minute}</p>
-        <p>Time: {time}</p>
-        <p>WPM: {wpm} </p>
-        <p>Accuracy {(accuracy * 100).toFixed(2)}% </p>
-        <p>Difficulty:{difficulty}</p>
-        <p>Neutral: {(neutral).toFixed(2)}%</p>  
-        
-      
+      <p>User: {user}</p>
+      <p>
+        Date: {day}/{month}/{year} {hour}:{minute}
+      </p>
+      <p>Time: {time}</p>
+      <p>WPM: {wpm} </p>
+      <p>Accuracy {(accuracy * 100).toFixed(2)}% </p>
+      <p>Difficulty: {difficulty}</p>
+      <p>Neutral: {neutral.toFixed(2)}%</p>
     </div>
   );
 }

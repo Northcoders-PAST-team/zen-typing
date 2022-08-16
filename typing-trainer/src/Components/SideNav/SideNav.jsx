@@ -104,9 +104,9 @@ const ResponsiveAppBar = () => {
           width: drawerWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: drawerWidth,
+            width: "290px",
             boxSizing: "border-box",
-            background: "rgba(0, 0, 0, 0.8)",
+            background: "rgba(0, 0, 0, 0.55)",
           },
         }}
         variant="permanent"
@@ -122,8 +122,8 @@ const ResponsiveAppBar = () => {
             mr: 2,
             display: { xs: "none", md: "flex" },
             fontFamily: ["Plus Jakarta Sans", "sans-serif"],
-            fontWeight: 700,
-            letterSpacing: ".3rem",
+            fontWeight: 800,
+            letterSpacing: ".1rem",
             color: "white",
             textDecoration: "none",
             justifyContent: "center",
