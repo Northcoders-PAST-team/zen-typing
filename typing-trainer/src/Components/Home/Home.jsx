@@ -365,7 +365,6 @@ export default function Home() {
         setCurrentCharIndex(-1);
         setCurrentChar("");
 
-        setTimeElapsed(0);
         console.table(emotionLog);
         setCorrect(1);
         setIncorrect(1);
