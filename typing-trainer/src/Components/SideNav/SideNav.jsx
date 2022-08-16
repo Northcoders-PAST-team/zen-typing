@@ -140,15 +140,9 @@ const ResponsiveAppBar = () => {
             Logged in as {user.displayName || user.email}
           </p>
         ) : null}
-        <MenuItem
-          key="statistics"
-          sx={{ fontSize: "50px", mt: "30px", color: "white" }}
-        >
-          <LeaderboardIcon sx={{ mr: "20px", fontSize: "40px" }} />
-          <Typography textAlign="center">Statistics</Typography>
-        </MenuItem>
 
         <MenuItem
+          href="/users"
           key="community"
           sx={{ fontSize: "50px", mb: "30px", color: "white" }}
         >
