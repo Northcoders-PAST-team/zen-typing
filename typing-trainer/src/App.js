@@ -5,6 +5,8 @@ import Home from "./Components/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import User from "./Components/User/User";
 import Errors from "./Components/Errors/Errors";
+import Users from "./Components/AllUsers/Users";
+
 import {
   serverTimestamp,
   setDoc,
@@ -61,6 +63,7 @@ function App() {
             <Routes>
               <Route path={"/"} element={<Home />} />
               <Route path={"/users/:user_id"} element={<User />} />
+              <Route path={"/users"} element={<Users />} />
               <Route path={"*"} element={<Errors />} />
               <Route path={"/signin"} element={<SignIn />} />
               <Route path={"/signup"} element={<SignUp />} />
