@@ -1,3 +1,5 @@
+import "./SignIn.scss";
+
 import { useState } from "react";
 import { db } from "../../firebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
@@ -51,10 +53,12 @@ function SignIn() {
   }
 
   return (
-    <div>
-      <Link to="/">
-        {" "}
-        <button onClick={signInWithGoogle} className="btn btn-success">
+    <div className="width-100 center pt-70">
+      <Link to="/" className="center">
+        <button
+          onClick={signInWithGoogle}
+          className="btn btn-success wide-button"
+        >
           Sign in with Google
           <img
             src="https://img.icons8.com/clouds/100/000000/gmail-new.png"
@@ -65,40 +69,34 @@ function SignIn() {
       </Link>
 
       <form onSubmit={loginUser}>
-        <div className="container">
-          <label>
-            <b>Email</b>
-          </label>
+        <div className="container margin-0">
           <input
             type="text"
             autoFocus
+            aria-label="Email"
             placeholder="Enter Username"
             name="email"
             value={login.email}
             required
             onChange={loginHandler}
           />
-
-          <label>
-            <b>Password</b>
-          </label>
           <input
             type="password"
+            aria-label="Password"
             placeholder="Enter Password"
             name="password"
             value={login.password}
             required
             onChange={loginHandler}
           />
-          <br />
-          <br />
-
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary wide-button">
             Login
           </button>
         </div>
       </form>
-      <Link to="/signup">Create account</Link>
+      <Link to="/signup" className="referral-link">
+        Not registered? Create an account here
+      </Link>
       {error ? <p>{error}</p> : null}
     </div>
   );
