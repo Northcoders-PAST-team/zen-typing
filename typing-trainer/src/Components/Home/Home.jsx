@@ -311,6 +311,20 @@ export default function Home() {
     }
   };
 
+  const [copyMsg, setCopyMsg] = useState(false);
+
+  function copyLink() {
+    navigator.clipboard.writeText(
+      `http://localhost:3000/?level=${request.level}&id=${request.id}`
+    );
+
+    setCopyMsg(true);
+
+    setTimeout(() => {
+      setCopyMsg(false);
+    }, 1000);
+  }
+
   return (
     <div className="home">
       <div className="exercise-area">
@@ -474,12 +488,10 @@ export default function Home() {
           <button onClick={generate} className="btn btn-primary">
             Generate new
           </button>
-          <a
-            href={`http://localhost:3000/?level=${request.level}&id=${request.id}`}
-            target="_blank"
-          >
-            share game
-          </a>
+
+          <button className="btn btn-success" onClick={copyLink}>
+            {copyMsg ? "copied!" : "Share game link"}
+          </button>
         </div>
         {user && <History auth={auth} />}
       </div>
