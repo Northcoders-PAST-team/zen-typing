@@ -347,7 +347,11 @@ export default function Home() {
       ].includes(keyCode)
     ) {
       return;
-    } else if (keyCode === 32) {
+    } else if (
+      keyCode === 32 ||
+      (activeWordIndex === cloud.length - 1 &&
+        currentInput.length === cloud[cloud.length - 1].length)
+    ) {
       checkWordMatches();
       if (activeWordIndex === cloud.length - 1) {
         setStatus("FINISHED");
@@ -545,7 +549,7 @@ export default function Home() {
             onChange={(e) => {
               setCurrentInput(e.target.value);
             }}
-            onKeyDown={handleKeyDown}
+            onKeyUp={handleKeyDown}
             sx={{
               fontFamily: "Monospace",
               borderRadius: "10px",
