@@ -412,9 +412,20 @@ export default function Home() {
               ? "activate face recognition"
               : "deactivate face recognition"}
           </Button>
-          <p className="current-emotion">
-            {hiddenVideo ? "" : `Currently ${primaryEmotion}`}
-          </p>
+          <div className="current-emotion-container">
+            <p className="currently">Currently </p>
+            <div className="current-emotion-box">
+              <p className="current-emotion-status">
+                <strong>
+                  <div
+                    className={hiddenVideo ? "awaiting-input" : primaryEmotion}
+                  >
+                    {hiddenVideo ? " awaiting input" : ` ${primaryEmotion}`}
+                  </div>
+                </strong>
+              </p>
+            </div>
+          </div>
         </div>
 
         <Timer
