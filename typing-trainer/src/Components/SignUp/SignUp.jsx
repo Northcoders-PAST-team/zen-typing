@@ -6,6 +6,8 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
+import SideNav from "../SideNav/SideNav";
+
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
 
@@ -48,6 +50,7 @@ function SignUp() {
   }
   return (
     <div className="width-100">
+      <SideNav />
       <form onSubmit={signupUser} className="width-100">
         <div className="container">
           {/* <h1>Sign Up</h1> */}
