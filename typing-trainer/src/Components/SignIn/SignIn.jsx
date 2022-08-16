@@ -56,9 +56,9 @@ function SignIn() {
 
   return (
     <>
-      <div className="side-nav">
-        <SideNav />
-      </div>
+      {/* <div className="side-nav"> */}
+      <SideNav />
+      {/* </div> */}
       <div className="width-100 center pt-70">
         <Link to="/" className="center">
           <button

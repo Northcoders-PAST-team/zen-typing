@@ -85,7 +85,7 @@ $surprised-light:rgba(255, 159, 64, 0.2);
 @keyframes neutral-fade {
     from {background-color:$neutral}
     
-    to {background-color: $neutral-light; transform: translateY((-100%))}
+    to {background-color: $neutral-light; }
   }
 
   @keyframes angry-fade {
