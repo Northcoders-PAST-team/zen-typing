@@ -341,7 +341,7 @@ export default function Home() {
       setLastWord((current) => (current += key));
     } else if (keyCode === 8) {
       setLastWord((current) => current.slice(0, -1));
-    } else {
+    } else if (keyCode === 32) {
       setLastWord("");
     }
   }
