@@ -410,7 +410,7 @@ export default function Home() {
                     fontFamily: "Monospace', sans-serif",
                     padding: "10px;",
                     width: "800px",
-                    fontSize: "700px",
+                    fontSize: "26px",
                   }}
                 >
                   {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
