@@ -15,7 +15,7 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { UserContext } from "../User/UserContext";
 import Loading from "../Loading/Loading";
 
@@ -73,10 +73,15 @@ const User = () => {
     <Loading />
   ) : error ? (
     <p>{error}</p>
-  ) : (
+  ) : exercisesData.length === 0 ? (
     <div className="user">
       <div className="side-nav">
         <SideNav />
+      </div>
+
+      <div className="avg user-message-container">
+        <p className="user-message">User has no data</p>
+        <Link to={"/"}>Home</Link>
       </div>
       <UserInfoCard
         userName={profile.userName}
@@ -85,8 +90,22 @@ const User = () => {
         auth={auth}
         avatar={userData.avatar}
       />
+    </div>
+  ) : (
+    <div className="user">
+      <div className="side-nav">
+        <SideNav />
+      </div>
+
       <UserAver exercisesData={exercisesData} />
       <Graph exercisesData={exercisesData} />
+      <UserInfoCard
+        userName={profile.userName}
+        friendList={profile.friendList}
+        loggedIn={profile.loggedIn}
+        auth={auth}
+        avatar={userData.avatar}
+      />
     </div>
   );
 };

@@ -136,19 +136,19 @@ const ResponsiveAppBar = () => {
         <Divider />
 
         {user ? (
-          <p style={{ color: "white" }}>
+          <p style={{ color: "white", textAlign: "center"}}>
             Logged in as {user.displayName || user.email}
           </p>
         ) : null}
-
+        <Link to="/users">
         <MenuItem
-          href="/users"
           key="community"
           sx={{ fontSize: "50px", mb: "30px", color: "white" }}
         >
           <PeopleIcon sx={{ mr: "20px", fontSize: "40px" }} />
-          <Typography textAlign="center">Community</Typography>
+          <Typography textAlign="center" >Community</Typography>
         </MenuItem>
+        </Link>
         <Divider />
         {user ? null : (
           <Link to={`/signup`}>
