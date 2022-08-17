@@ -407,10 +407,10 @@ export default function Home() {
                     bgcolor: "rgba(255,255,255, 0.5)",
                     height: "fit-content",
                     color: "black",
-                    fontFamily: "Monospace",
+                    fontFamily: "Monospace', sans-serif",
                     padding: "10px;",
                     width: "800px",
-                    fontSize: "26px",
+                    fontSize: "700px",
                   }}
                 >
                   {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
@@ -467,7 +467,7 @@ export default function Home() {
         </div>
 
         <div className="side-menu">
-          <SideNav />
+          <SideNav startCounting={startCounting} />
         </div>
 
         {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}

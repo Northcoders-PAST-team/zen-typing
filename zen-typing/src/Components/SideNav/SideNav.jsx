@@ -1,7 +1,9 @@
 import "../Nav/Nav.scss";
+import "./SideNav.scss";
 import logo from "../../images/logo.svg";
+import animatedLogo from "../../images/animated-logo.gif";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { db } from "../../firebaseConfig";
 import * as React from "react";
 // import AppBar from "@mui/material/AppBar";
@@ -58,7 +60,7 @@ const drawerWidth = 350;
 const pages = ["About", "Community", "Statistics"];
 const settings = ["Account", "Dashboard"];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = ({ startCounting }) => {
   const { user, auth } = useContext(UserContext);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -88,6 +90,8 @@ const ResponsiveAppBar = () => {
     });
   };
 
+  console.log(startCounting);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -115,7 +119,14 @@ const ResponsiveAppBar = () => {
         anchor="left"
       >
         <Toolbar />
-        <img className="zen-typing" src={logo} alt="zen-typing-logo" />
+
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <img
+            className="logo"
+            src={startCounting ? animatedLogo : logo}
+            alt="zen-typing-logo"
+          />
+        </Link>
         <Typography
           variant="h6"
           noWrap
