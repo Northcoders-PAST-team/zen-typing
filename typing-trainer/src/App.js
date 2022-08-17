@@ -15,6 +15,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import About from "./Components/About/About";
 import SignIn from "./Components/SignIn/SignIn";
 import SignUp from "./Components/SignUp/SignUp";
 import { UserContext } from "./Components/User/UserContext";
@@ -63,6 +64,8 @@ function App() {
             {/* <Nav /> */}
             <Routes>
               <Route path={"/"} element={<Home />} />
+              <Route path={"about"} element={<About />} />
+
               <Route path={"/users/:user_id"} element={<User />} />
               <Route path={"/users"} element={<Users />} />
               <Route path={"*"} element={<Errors />} />

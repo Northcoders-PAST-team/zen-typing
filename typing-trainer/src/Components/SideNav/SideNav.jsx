@@ -39,6 +39,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoginIcon from "@mui/icons-material/Login";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
@@ -131,7 +132,7 @@ const ResponsiveAppBar = () => {
             marginBottom: "60px",
           }}
         >
-          Typing Trainer
+          Zen Typing
         </Typography>
         <Divider />
 
@@ -140,7 +141,16 @@ const ResponsiveAppBar = () => {
             Logged in as {user.displayName || user.email}
           </p>
         ) : null}
-
+        <Link to="/about">
+          <MenuItem
+            href="/about"
+            key="about"
+            sx={{ fontSize: "50px", mb: "30px", color: "white" }}
+          >
+            <AutoStoriesIcon sx={{ mr: "20px", fontSize: "40px" }} />
+            <Typography textAlign="center">About</Typography>
+          </MenuItem>
+        </Link>
         <MenuItem
           href="/users"
           key="community"
