@@ -1,4 +1,5 @@
 import "../Nav/Nav.scss";
+import logo from "../../images/logo.svg";
 
 import { Link } from "react-router-dom";
 import { db } from "../../firebaseConfig";
@@ -39,6 +40,7 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LoginIcon from "@mui/icons-material/Login";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
@@ -113,6 +115,7 @@ const ResponsiveAppBar = () => {
         anchor="left"
       >
         <Toolbar />
+        <img className="zen-typing" src={logo} alt="zen-typing-logo" />
         <Typography
           variant="h6"
           noWrap
@@ -130,24 +133,33 @@ const ResponsiveAppBar = () => {
             paddingBottom: "20px",
             marginBottom: "60px",
           }}
-        >
-          Typing Trainer
-        </Typography>
+        ></Typography>
         <Divider />
 
         {user ? (
-          <p style={{ color: "white", textAlign: "center"}}>
+          <p style={{ color: "white", textAlign: "center" }}>
             Logged in as {user.displayName || user.email}
           </p>
         ) : null}
+
+        <Link to="/about">
+          <MenuItem
+            href="/about"
+            key="about"
+            sx={{ fontSize: "50px", mb: "30px", color: "white" }}
+          >
+            <AutoStoriesIcon sx={{ mr: "20px", fontSize: "40px" }} />
+            <Typography textAlign="center">About</Typography>
+          </MenuItem>
+        </Link>
         <Link to="/users">
-        <MenuItem
-          key="community"
-          sx={{ fontSize: "50px", mb: "30px", color: "white" }}
-        >
-          <PeopleIcon sx={{ mr: "20px", fontSize: "40px" }} />
-          <Typography textAlign="center" >Community</Typography>
-        </MenuItem>
+          <MenuItem
+            key="community"
+            sx={{ fontSize: "50px", mb: "30px", color: "white" }}
+          >
+            <PeopleIcon sx={{ mr: "20px", fontSize: "40px" }} />
+            <Typography textAlign="center">Community</Typography>
+          </MenuItem>
         </Link>
         <Divider />
         {user ? null : (

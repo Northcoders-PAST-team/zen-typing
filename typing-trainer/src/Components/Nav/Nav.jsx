@@ -17,7 +17,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 
 import { UserContext } from "../User/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import {
   serverTimestamp,
@@ -56,7 +56,7 @@ const ResponsiveAppBar = () => {
     updateDoc(usersRef, {
       online: false,
     }).then(() => {
-      auth.signOut();
+      auth.signOut().then(() => {});
     });
   };
 
