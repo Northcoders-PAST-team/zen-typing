@@ -4,13 +4,25 @@ import React from "react";
 export default function Word(props) {
   const { text, active, correct } = props;
   if (correct === true) {
-    return <span className="correct">{text} </span>;
+    return (
+      <span>
+        <span className="correct">{text}</span>{" "}
+      </span>
+    );
   }
   if (correct === false) {
-    return <span className="incorrect">{text} </span>;
+    return (
+      <span>
+        <span className="incorrect">{text}</span>{" "}
+      </span>
+    );
   }
   if (active === true) {
-    return <span className="active">{text} </span>;
+    return (
+      <span>
+        <span className="active">{text}</span>{" "}
+      </span>
+    );
   }
   return <span>{text} </span>;
 }
