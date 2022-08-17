@@ -18,7 +18,7 @@ import Avatar from "../../images/avatar.webp";
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState(null);
   const usersRef = collection(db, "users");
 
   //const q = query(usersRef);
@@ -34,12 +34,22 @@ const Users = () => {
   };
 
   useEffect(() => {
-    getData();
-    setLoading(false);
+    setLoading(true);
+    getData()
+      .then(() => {
+        setLoading(false);
+        setError(null);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, []);
   console.log(users);
   return loading ? (
     <Loading />
+  ) : error ? (
+    <p>{error}</p>
   ) : (
     <div>
       <SideNav />

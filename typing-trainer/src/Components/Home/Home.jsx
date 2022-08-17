@@ -17,7 +17,7 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
-
+import Loading from "../Loading/Loading";
 //importing database
 import { db } from "../../firebaseConfig";
 import {
@@ -49,7 +49,7 @@ export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [startCounting, setStartCounting] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [speed, setSpeed] = useState(0);
@@ -188,18 +188,22 @@ export default function Home() {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     onSnapshot(
       doc(db, request.level, request.id),
       (docSnap) => {
         if (docSnap.exists()) {
           setParagraph(docSnap.data().text);
+          setIsLoading(false);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
+          setIsLoading(false);
         }
       },
       (err) => {
         console.log(err);
+        setIsLoading(false);
       }
     );
   }, [request]);
@@ -341,7 +345,7 @@ export default function Home() {
       setLastWord((current) => (current += key));
     } else if (keyCode === 8) {
       setLastWord((current) => current.slice(0, -1));
-    } else {
+    } else if (keyCode === 32) {
       setLastWord("");
     }
   }
@@ -359,189 +363,197 @@ export default function Home() {
       setCopyMsg(false);
     }, 1000);
   }
-
-  return (
-    <div className="home">
-      <div className="exercise-area">
-        <Face
-          startCounting={startCounting}
-          setEmotionLog={setEmotionLog}
-          emotionLog={emotionLog}
-          timeElapsed={timeElapsed}
-          // primaryEmotion={primaryEmotion}
-          setUndetected={setUndetected}
-          undetected={undetected}
-          hiddenVideo={hiddenVideo}
-          setHiddenVideo={setHiddenVideo}
-          data={data}
-          calm={calm}
-          setCalm={setCalm}
-          neutral={neutral}
-          setNeutral={setNeutral}
-          happy={happy}
-          setHappy={setHappy}
-          surprised={surprised}
-          setSurprised={setSurprised}
-          angry={angry}
-          setAngry={setAngry}
-          sad={sad}
-          setSad={setSad}
-          disgusted={disgusted}
-          setDisgusted={setDisgusted}
-        />
-
-        <Fragment>
-          <div className="target-paragraph">
-            <CssBaseline />
-            <Container maxWidth="md">
-              <Box
-                sx={{
-                  borderRadius: "10px",
-                  mt: "1.5rem",
-                  bgcolor: "rgba(255,255,255, 0.5)",
-                  height: "fit-content",
-                  color: "black",
-                  fontFamily: "Monospace",
-                  padding: "10px;",
-                  width: "800px",
-                  fontSize: "26px",
-                }}
-              >
-                {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
-                {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
-                {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
-                <p>
-                  {cloud.map((word, index) => {
-                    return (
-                      <Word
-                        key={index}
-                        text={word}
-                        active={index === activeWordIndex}
-                        correct={correctWordArray[index]}
-                      />
-                    );
-                  })}
-                </p>
-              </Box>
-            </Container>
-          </div>
-        </Fragment>
-        {keyboard ? (
-          <TextField
-            className="user-paragraph"
-            type="text"
-            value={userInput}
-            autoFocus
-            onChange={(e) => {
-              processInput(e.target.value);
-            }}
-            onKeyDown={lastWordHandle}
-            sx={{
-              fontFamily: "Monospace",
-              borderRadius: "10px",
-              mt: "1rem",
-              mb: "1rem",
-              width: "fit-content",
-              bgcolor: "rgba(255,255,255, 0.5)",
-              color: "white",
-              input: { color: "black" },
-              textAlign: "center",
-            }}
-            id="filled-basic"
-            placeholder="Type here"
-            variant="filled"
-            InputLabelProps={{
-              style: { color: "black" },
-            }}
+  if (isLoading) {
+    <Loading />;
+  } else {
+    return (
+      <div className="home">
+        <div className="exercise-area">
+          <Face
+            startCounting={startCounting}
+            setEmotionLog={setEmotionLog}
+            emotionLog={emotionLog}
+            timeElapsed={timeElapsed}
+            // primaryEmotion={primaryEmotion}
+            setUndetected={setUndetected}
+            undetected={undetected}
+            hiddenVideo={hiddenVideo}
+            setHiddenVideo={setHiddenVideo}
+            data={data}
+            calm={calm}
+            setCalm={setCalm}
+            neutral={neutral}
+            setNeutral={setNeutral}
+            happy={happy}
+            setHappy={setHappy}
+            surprised={surprised}
+            setSurprised={setSurprised}
+            angry={angry}
+            setAngry={setAngry}
+            sad={sad}
+            setSad={setSad}
+            disgusted={disgusted}
+            setDisgusted={setDisgusted}
           />
-        ) : null}
-      </div>
 
-      <div className="side-menu">
-        <SideNav />
-      </div>
+          <Fragment>
+            <div className="target-paragraph">
+              <CssBaseline />
+              <Container maxWidth="md">
+                <Box
+                  sx={{
+                    borderRadius: "10px",
+                    mt: "1.5rem",
+                    bgcolor: "rgba(255,255,255, 0.5)",
+                    height: "fit-content",
+                    color: "black",
+                    fontFamily: "Monospace",
+                    padding: "10px;",
+                    width: "800px",
+                    fontSize: "26px",
+                  }}
+                >
+                  {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
+                  {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
+                  {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
+                  <p>
+                    {cloud.map((word, index) => {
+                      return (
+                        <Word
+                          key={index}
+                          text={word}
+                          active={index === activeWordIndex}
+                          correct={correctWordArray[index]}
+                        />
+                      );
+                    })}
+                  </p>
+                </Box>
+              </Container>
+            </div>
+          </Fragment>
+          {keyboard ? (
+            <TextField
+              className="user-paragraph"
+              type="text"
+              value={userInput}
+              autoFocus
+              onChange={(e) => {
+                processInput(e.target.value);
+              }}
+              onKeyDown={lastWordHandle}
+              sx={{
+                fontFamily: "Monospace",
+                borderRadius: "10px",
+                mt: "1rem",
+                mb: "1rem",
+                width: "fit-content",
+                bgcolor: "rgba(255,255,255, 0.5)",
+                color: "white",
+                input: { color: "black" },
+                textAlign: "center",
+              }}
+              inputProps={{
+                autoComplete: "off",
+              }}
+              id="filled-basic"
+              placeholder="Type here"
+              variant="filled"
+              InputLabelProps={{
+                style: { color: "black" },
+              }}
+            />
+          ) : null}
+        </div>
 
-      {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
+        <div className="side-menu">
+          <SideNav />
+        </div>
 
-      {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
-      <div className="right-menu">
-        <div className="hide-emotion-and-emotion">
-          <Button
-            className="activate"
-            onClick={() => {
-              setHiddenVideo(hiddenVideo ? false : true);
-            }}
-            variant="contained"
-            sx={{
-              width: "300px",
-            }}
-          >
-            {hiddenVideo
-              ? "activate face recognition"
-              : "deactivate face recognition"}
-          </Button>
-          <div className="current-emotion-container">
-            <p className="currently">Currently </p>
-            <div className="current-emotion-box">
-              <p className="current-emotion-status">
-                <strong>
-                  <div
-                    className={hiddenVideo ? "awaiting-input" : primaryEmotion}
-                  >
-                    {hiddenVideo ? " awaiting input" : ` ${primaryEmotion}`}
-                  </div>
-                </strong>
-              </p>
+        {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
+
+        {/* 0. A text input box with value linked to the userInput state, onChange sets the userInput state and hence updates this value*/}
+        <div className="right-menu">
+          <div className="hide-emotion-and-emotion">
+            <Button
+              className="activate"
+              onClick={() => {
+                setHiddenVideo(hiddenVideo ? false : true);
+              }}
+              variant="contained"
+              sx={{
+                width: "300px",
+              }}
+            >
+              {hiddenVideo
+                ? "activate face recognition"
+                : "deactivate face recognition"}
+            </Button>
+            <div className="current-emotion-container">
+              <p className="currently">Currently </p>
+              <div className="current-emotion-box">
+                <p className="current-emotion-status">
+                  <strong>
+                    <div
+                      className={
+                        hiddenVideo ? "awaiting-input" : primaryEmotion
+                      }
+                    >
+                      {hiddenVideo ? " awaiting input" : ` ${primaryEmotion}`}
+                    </div>
+                  </strong>
+                </p>
+              </div>
             </div>
           </div>
+
+          <Timer
+            startCounting={startCounting}
+            correctWords={correctWordArray.filter(Boolean).length}
+            timeElapsed={timeElapsed}
+            setTimeElapsed={setTimeElapsed}
+            speed={speed}
+            setSpeed={setSpeed}
+            emotionLog={emotionLog}
+            undetected={undetected}
+          />
+          <div className="difficulty-form">
+            <label htmlFor="difficulty">
+              {" "}
+              Difficulty
+              <select
+                name="difficulty"
+                id="difficulty"
+                onChange={selectDifficulty}
+              >
+                <option value="easy">easy</option>
+                <option value="medium">medium</option>
+                <option value="hard">hard</option>
+              </select>
+            </label>
+
+            <label htmlFor="difficulty">
+              Exercise
+              <select name="difficulty" id="difficulty" onChange={selectId}>
+                {[...Array(10)].map((o, i) => (
+                  <option value={String(i + 1)} key={String(i + 1)}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <button onClick={generate} className="btn btn-primary">
+              Generate new
+            </button>
+
+            <button className="btn btn-success" onClick={copyLink}>
+              {copyMsg ? "copied!" : "Share game link"}
+            </button>
+          </div>
+          {user && <History auth={auth} />}
         </div>
-
-        <Timer
-          startCounting={startCounting}
-          correctWords={correctWordArray.filter(Boolean).length}
-          timeElapsed={timeElapsed}
-          setTimeElapsed={setTimeElapsed}
-          speed={speed}
-          setSpeed={setSpeed}
-          emotionLog={emotionLog}
-          undetected={undetected}
-        />
-        <div className="difficulty-form">
-          <label htmlFor="difficulty">
-            {" "}
-            Difficulty
-            <select
-              name="difficulty"
-              id="difficulty"
-              onChange={selectDifficulty}
-            >
-              <option value="easy">easy</option>
-              <option value="medium">medium</option>
-              <option value="hard">hard</option>
-            </select>
-          </label>
-
-          <label htmlFor="difficulty">
-            Exercise
-            <select name="difficulty" id="difficulty" onChange={selectId}>
-              {[...Array(10)].map((o, i) => (
-                <option value={String(i + 1)} key={String(i + 1)}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <button onClick={generate} className="btn btn-primary">
-            Generate new
-          </button>
-
-          <button className="btn btn-success" onClick={copyLink}>
-            {copyMsg ? "copied!" : "Share game link"}
-          </button>
-        </div>
-        {user && <History auth={auth} />}
       </div>
-    </div>
-  );
+    );
+  }
 }

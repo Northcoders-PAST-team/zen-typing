@@ -7,7 +7,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import SideNav from "../SideNav/SideNav";
-
+import Loading from "../Loading/Loading";
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
 
@@ -17,7 +17,7 @@ function SignUp() {
   let navigate = useNavigate();
 
   const [error, setError] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   //set signup details state with Email
   const [signUp, setSignUp] = useState({
     email: "",
@@ -31,6 +31,7 @@ function SignUp() {
   }
 
   function signupUser(e) {
+    setLoading(true);
     e.preventDefault();
 
     if (signUp.password === signUp.repeatPassword) {
@@ -38,20 +39,25 @@ function SignUp() {
         .then((cred) => {
           navigate("/", { replace: true });
           setError(null);
+          setLoading(false);
           console.log("user created", cred.user);
         })
         .catch((err) => {
           setError(err.message);
+          setLoading(false);
           console.log(err);
         });
     } else {
       setError("password does not match");
+      setLoading(false);
     }
   }
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="width-100">
       <SideNav />
-      <form onSubmit={signupUser} className="width-100">
+      <form onSubmit={signupUser} className="width-100" autoComplete="off">
         <div className="container">
           {/* <h1>Sign Up</h1> */}
           <h1>Please fill in this form to create an account.</h1>
@@ -112,7 +118,7 @@ function SignUp() {
           </div>
         </div>
       </form>
-      {error ? <p>{error}</p> : null}
+      {error ? <p className="error">{error}</p> : null}
     </div>
   );
 }
