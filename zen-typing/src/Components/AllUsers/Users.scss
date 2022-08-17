@@ -1,0 +1,52 @@
+.users{
+    z-index: 2;
+    display: flex;
+    width: 90vw;
+    margin-left: 300px;
+    flex-wrap: wrap;
+    min-height: 100px;
+
+    &-card{
+        background-color: rgba(0,0,0,0.5);
+        height: 250px;
+        width: 250px;
+        margin: 50px;
+        border-radius: 5px;
+        z-index:1;
+        cursor:pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 10px;
+        color: white;
+
+        &:hover{
+            transform : scale(1.2);
+            transition: ease-in-out 10s;
+        }
+    }
+
+    &-Avatar{
+        width: 50%;
+        border-radius: 50%;
+    }
+}
+
+.online {
+    z-index: 1;
+    background-color: green;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }
+  
+  .offline {
+    z-index: 1;
+    background-color: red;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+  }

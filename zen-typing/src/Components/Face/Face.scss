@@ -1,0 +1,242 @@
+$neutral:rgba(54, 162, 235, 1);
+$happy: rgba(255, 206, 86, 1);
+$disgusted:rgba(75, 192, 192, 1);
+$sad:rgba(153, 102, 255, 1);
+$angry: rgba(255, 99, 132, 1);
+$surprised:rgba(255, 159, 64, 1);
+
+$neutral-light:rgba(54, 162, 235, 0.2);
+$happy-light: rgba(255, 206, 86, 0.2);
+$disgusted-light:rgba(75, 192, 192, 0.2);
+$sad-light:rgba(153, 102, 255, 0.2);
+$angry-light:rgba(255, 99, 132, 0.2);
+$surprised-light:rgba(255, 159, 64, 0.2);
+
+.hide-emotion-and-emotion {
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    // text-align: center;
+}
+
+.current-emotion-container {
+    padding-top: 20px;
+
+    display: flex;
+    justify-content: flex-start;
+    // align-items: center;
+    color: white;
+    animation-name: adjust-emotion;
+    animation-duration: 2s;
+    animation-delay: -2s;
+    font-size: 20px;
+    padding-left: 30px;
+}
+
+.current-emotion-box {
+    margin: auto;
+    overflow: hidden;
+}
+
+.currently {
+    // position: absolute;
+    // padding-right: 6px;
+
+}
+
+.current-emotion-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+}
+
+.awaiting-input, .neutral, .angry, .sad, .disgusted, .surprised, .happy {
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.neutral {
+    animation-name: neutral-fade;
+}
+
+.angry {
+    animation-name: angry-fade;
+}
+
+.sad {
+    animation-name: sad-fade;
+}
+
+.disgusted {
+    animation-name: disgusted-fade;
+}
+
+.surprised {
+    animation-name: surprised-fade;
+}
+
+.happy {
+    animation-name: happy-fade;
+}
+
+
+@keyframes neutral-fade {
+    from {background-color:$neutral}
+    
+    to {background-color: $neutral-light; }
+  }
+
+  @keyframes angry-fade {
+    from {background-color:$angry}
+    to {background-color: $angry-light;}
+  }
+
+  @keyframes sad-fade {
+    from {background-color:$sad}
+    to {background-color: $sad-light;}
+  }
+
+  @keyframes disgusted-fade {
+    from {background-color:$disgusted}
+    to {background-color: $disgusted-light;}
+  }
+
+  @keyframes surprised-fade {
+    from {background-color:$surprised}
+    to {background-color: $surprised-light;}
+  }
+
+  @keyframes happy-fade {
+    from {background-color:$happy}
+    to {background-color: $happy-light;}
+  }
+
+  @keyframes surprised-fade {
+    from {background-color:$surprised}
+    to {background-color: $surprised-light;}
+  }
+
+
+
+
+
+.activate-button {
+    padding-right: 200px;
+    text-align: center;
+}
+
+
+.face {
+    display: flex;
+
+    flex-direction: column;
+    // position: absolute;
+    // top: 300px;
+    // width: 300px; 
+    // height: 300px; 
+    align-items: center;
+    justify-content: center;
+    // -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+    // -webkit-border-radius: 50%; 
+    // margin-top: 160px;
+    // background-color: aqua;
+    // border-style: solid;
+
+}
+
+.face-video {
+    display: flex;
+    position: absolute;
+    top: 110px;
+    height: 300px;
+    width: 300px;
+
+    // height: 200px;
+    // width: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+    -webkit-border-radius: 50%;
+    // -webkit-column-width: 300px;
+}
+
+video {
+    // height: 300px;
+    // width: 400px;
+
+        height: 300px;
+        width: 400px;
+    // object-fit: contain;
+    // border-radius: 50%;
+
+}
+
+
+
+
+.face-canvas-neutral,
+.face-canvas-not-calm,
+.face-canvas-happy,
+.face-canvas-sad,
+.face-canvas-surprised,
+.face-canvas-angry,
+.face-canvas-disgusted,
+.face-canvas-
+ {
+    position: absolute;
+    top: 110px;
+    // width: 680px;
+    // height: 550px;
+    height: 300px;
+    width: 300px;
+    background-color: rgba(144, 138, 255, 0.432);
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.face-canvas-not-calm {
+    background-color: rgba(255, 201, 157, 0.599);
+}
+
+.face-canvas-happy {
+    background-color: rgba(255, 206, 86, 0.4);
+}
+.face-canvas-sad {
+    background-color: rgba(153, 102, 255, 0.6);
+}
+.face-canvas-surprised {
+    background-color: rgba(255, 159, 64, 0.5);
+}
+.face-canvas-angry {
+    background-color: rgba(255, 99, 132, 0.45);
+}
+.face-canvas-disgusted {
+    background-color: rgba(75, 192, 192, 0.5);
+}
+
+
+
+.bar-chart {
+    // position: absolute;
+    width: 500px;
+    height: 500px
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+
+// .face-feedback {
+//     display: absolute;
+//     flex-direction: row;
+//     width: 400px;
+
+// }
