@@ -405,7 +405,7 @@ export default function Home() {
                     bgcolor: "rgba(255,255,255, 0.5)",
                     height: "fit-content",
                     color: "black",
-                    fontFamily: "Monospace",
+                    fontFamily: "Monospace', sans-serif",
                     padding: "10px;",
                     width: "800px",
                     fontSize: "26px",
@@ -465,7 +465,7 @@ export default function Home() {
         </div>
 
         <div className="side-menu">
-          <SideNav />
+          <SideNav startCounting={startCounting} />
         </div>
 
         {/* 5. The box for the sample paragraph the user must type, populated by Word components. */}
