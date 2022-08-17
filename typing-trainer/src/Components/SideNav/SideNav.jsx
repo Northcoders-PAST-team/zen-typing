@@ -1,4 +1,5 @@
 import "../Nav/Nav.scss";
+import logo from "../../images/logo.svg";
 
 import { Link } from "react-router-dom";
 import { db } from "../../firebaseConfig";
@@ -114,6 +115,7 @@ const ResponsiveAppBar = () => {
         anchor="left"
       >
         <Toolbar />
+        <img className="zen-typing" src={logo} alt="zen-typing-logo" />
         <Typography
           variant="h6"
           noWrap
@@ -131,9 +133,7 @@ const ResponsiveAppBar = () => {
             paddingBottom: "20px",
             marginBottom: "60px",
           }}
-        >
-          Zen Typing
-        </Typography>
+        ></Typography>
         <Divider />
 
         {user ? (
