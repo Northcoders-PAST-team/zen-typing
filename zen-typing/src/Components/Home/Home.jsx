@@ -213,16 +213,14 @@ export default function Home() {
 
   if (cloud === JSON.stringify(["undefined"])) {
     if (difficulty === "easy") {
-      setParagraph(
-        "Books enable you to expose yourself to new ideas and new ways to achieve your goals. They enable you to think outside the box."
-      );
+      setParagraph("A JavaScript array is an ordered collection of data");
     } else if (difficulty === "medium") {
       setParagraph(
-        "Things that used to take hours to complete can now be completed in a matter of minutes because of technology. Everything is just a click away, including banking, sending e-mail, assignments, and even shopping."
+        "In computer science, zero indexing means that we start counting ordered collections from zero. All JavaScript arrays are zero-indexed"
       );
     } else {
       setParagraph(
-        "def prepend_path(self, name: str, paths: List[str]) -> None: old_val = self.env.get(name)         paths = [p for p in paths if isdir(p)]         if not paths:  return  if old_val is not None: new_val = ':'.join(itertools.chain(paths, [old_val])) else: new_val = ':'.join(paths)     self.env[name] = new_val ~ `! 1@ 2# 3$ 4% 5^ 6& 7* 8( 9) 0_ -+ =Backspace"
+        "All arrays have a .length property indicating the number of items present inside the array. In other languages, arrays and ordered collections of data have limitations on the amount of data they can store"
       );
     }
   }
