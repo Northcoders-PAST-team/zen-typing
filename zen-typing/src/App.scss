@@ -3,6 +3,7 @@
   margin: 0;
   box-sizing: border-box;
 }
+
 .App {
   /* background-image: url("./images/zen.jpg"); */
   background-position: center;
@@ -12,6 +13,7 @@
   z-index: 1;
   min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .background-overlay {
@@ -47,15 +49,14 @@ a {
 
 
 @mixin dots($count) {
-z-index: 0;
+  z-index: 0;
   $text-shadow: ();
+
   @for $i from 0 through $count {
     $text-shadow: $text-shadow,
-                 (-.5+(random()) * 3) + em
-                 (-.5+(random()) * 3) + em
-                 7px
-                 hsla(random() * 360, 100%, 50%,.9);
+      (-.5+(random()) * 3) + em (-.5+(random()) * 3) + em 7px hsla(random() * 360, 100%, 50%, .9);
   }
+
   text-shadow: $text-shadow;
 }
 
@@ -64,14 +65,17 @@ html {
   background: #123;
 }
 
-body, head {
+body,
+head {
   display: block;
   font-size: 52px;
   color: transparent;
 }
 
-head::before, head::after,
-body::before, body::after {
+head::before,
+head::after,
+body::before,
+body::after {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -112,9 +116,8 @@ head::after {
   from {
     transform: rotate(0deg) scale(12) translateX(-20px);
   }
+
   to {
     transform: rotate(360deg) scale(18) translateX(20px);
   }
 }
-
-
