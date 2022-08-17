@@ -170,7 +170,6 @@ export default function Home() {
   function generate() {
     setRequest({ level: difficulty, id: iD });
     setSearch({ level: difficulty, id: iD });
-    setStartCounting(0);
     setActiveWordIndex(0);
     setEmotionLog({
       neutral: 0,
@@ -184,6 +183,8 @@ export default function Home() {
     setCorrectWordArray([]);
     setUserInput("");
     setKeyboard(true);
+    setHiddenVideo(false);
+    setStartCounting(false);
   }
 
   useEffect(() => {
@@ -260,7 +261,6 @@ export default function Home() {
       value.length === cloud[cloud.length - 1].length
     ) {
       setActiveWordIndex((index) => index + 1);
-      setUserInput("");
 
       setCorrectWordArray((data) => {
         const word = value.trim();
@@ -269,9 +269,15 @@ export default function Home() {
         return newResult;
       });
       setStartCounting(false);
-      setUserInput("FINISHED");
+
       setKeyboard(false);
       setHiddenVideo(true);
+      console.log(lastWord === cloud[cloud.length - 1]);
+
+      console.log(lastWord);
+      let arr = [...correctWordArray, lastWord === cloud[cloud.length - 1]];
+      console.log(correctWordArray);
+      console.log(arr);
 
       if (user) {
         addDoc(exercisesRef, {
@@ -282,12 +288,10 @@ export default function Home() {
           difficulty: difficulty,
           paragraph: paragraph,
 
-          wpm: (
-            (correctWordArray.filter(Boolean).length + 1) /
-              (timeElapsed / 60) || 0
-          ).toFixed(2),
-          accuracy:
-            (correctWordArray.filter(Boolean).length + 1) / cloud.length,
+          wpm: (arr.filter(Boolean).length / (timeElapsed / 60) || 0).toFixed(
+            2
+          ),
+          accuracy: arr.filter(Boolean).length / cloud.length,
 
           neutral: ((emotionLog.neutral - 1) / timeElapsed) * 100,
           happy: (emotionLog.happy / timeElapsed) * 100,
@@ -310,6 +314,37 @@ export default function Home() {
       setUserInput(value);
     }
   };
+
+  const [lastWord, setLastWord] = useState("");
+
+  function lastWordHandle({ keyCode, key }) {
+    if (
+      [
+        ...Array.from(
+          {
+            length: 26,
+          },
+          (v, k) => k + 65
+        ),
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        219,
+        220,
+        221,
+        222,
+      ].includes(keyCode)
+    ) {
+      setLastWord((current) => (current += key));
+    } else if (keyCode === 8) {
+      setLastWord((current) => current.slice(0, -1));
+    } else {
+      setLastWord("");
+    }
+  }
 
   const [copyMsg, setCopyMsg] = useState(false);
 
@@ -400,6 +435,7 @@ export default function Home() {
             onChange={(e) => {
               processInput(e.target.value);
             }}
+            onKeyDown={lastWordHandle}
             sx={{
               fontFamily: "Monospace",
               borderRadius: "10px",
