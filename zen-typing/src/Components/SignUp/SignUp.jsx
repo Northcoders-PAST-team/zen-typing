@@ -52,18 +52,18 @@ function SignUp() {
       setLoading(false);
     }
   }
+
   return loading ? (
     <Loading />
   ) : (
-    <div className="width-100">
+    <div>
       <SideNav />
-      <form onSubmit={signupUser} className="width-100" autoComplete="off">
-        <div className="container">
-          {/* <h1>Sign Up</h1> */}
-          <h1>Please fill in this form to create an account.</h1>
-          {/* <label>
-            <b>Email</b>
-          </label> */}
+      <div className="form-container">
+        <form onSubmit={signupUser} autoComplete="off">
+          <h1 className="form-title">
+            Please fill in this form to create an account.
+          </h1>
+          {error ? <p className="form-error">{error}</p> : null}
           <input
             type="text"
             autoFocus
@@ -73,11 +73,9 @@ function SignUp() {
             required
             value={signUp.email}
             onChange={signupHandler}
+            className="form-input"
           />
 
-          {/* <label>
-            <b>Password</b>
-          </label> */}
           <input
             type="password"
             aria-label="Password"
@@ -86,6 +84,7 @@ function SignUp() {
             value={signUp.password}
             required
             onChange={signupHandler}
+            className="form-input"
           />
           <input
             type="password"
@@ -95,30 +94,16 @@ function SignUp() {
             value={signUp.repeatPassword}
             required
             onChange={signupHandler}
+            className="form-input"
           />
-
-          {/* <label>
-            <b>Full name</b>
-          </label>
-          <input
-            type="text"
-            placeholder="Full name"
-            name="displayName"
-            value={signUp.displayName}
-            required
-            onChange={signupHandler}
-          /> */}
 
           <br />
 
-          <div onSubmit={signupUser}>
-            <button type="submit" className="btn btn-primary wide-button">
-              Sign Up
-            </button>
-          </div>
-        </div>
-      </form>
-      {error ? <p className="error">{error}</p> : null}
+          <button type="submit" className="btn btn-primary wide-button">
+            Sign Up
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

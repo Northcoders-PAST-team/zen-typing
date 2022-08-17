@@ -67,12 +67,36 @@ function SignIn() {
       {/* <div className="side-nav"> */}
       <SideNav />
       {/* </div> */}
-      <div className="width-100 center pt-70">
-        <Link to="/" className="center">
-          <button
-            onClick={signInWithGoogle}
-            className="btn btn-success wide-button"
-          >
+      <div className="form-container">
+        <form onSubmit={loginUser} autocomplete="off">
+          {error ? <p className="form-error">{error}</p> : null}
+          <input
+            type="text"
+            autoFocus
+            aria-label="Email"
+            placeholder="Enter Username"
+            name="email"
+            value={login.email}
+            required
+            onChange={loginHandler}
+            className="form-input"
+          />
+          <input
+            type="password"
+            aria-label="Password"
+            placeholder="Enter Password"
+            name="password"
+            value={login.password}
+            required
+            onChange={loginHandler}
+            className="form-input"
+          />
+          <button type="submit" className="btn btn-primary">
+            Login
+          </button>
+        </form>
+        <Link to="/" className="center button-container">
+          <button onClick={signInWithGoogle} className="btn btn-success">
             Sign in with Google
             <img
               src="https://img.icons8.com/clouds/100/000000/gmail-new.png"
@@ -81,37 +105,9 @@ function SignIn() {
             />
           </button>
         </Link>
-
-        <form onSubmit={loginUser} autocomplete="off">
-          <div className="container margin-0">
-            <input
-              type="text"
-              autoFocus
-              aria-label="Email"
-              placeholder="Enter Username"
-              name="email"
-              value={login.email}
-              required
-              onChange={loginHandler}
-            />
-            <input
-              type="password"
-              aria-label="Password"
-              placeholder="Enter Password"
-              name="password"
-              value={login.password}
-              required
-              onChange={loginHandler}
-            />
-            <button type="submit" className="btn btn-primary wide-button">
-              Login
-            </button>
-          </div>
-        </form>
         <Link to="/signup" className="referral-link">
           Not registered? Create an account here
         </Link>
-        {error ? <p>{error}</p> : null}
       </div>
     </>
   );

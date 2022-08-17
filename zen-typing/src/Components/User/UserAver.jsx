@@ -16,6 +16,8 @@ const UserAver = ({ exercisesData }) => {
       ? medium++
       : hard++;
   });
+
+  console.log(exercisesData);
   return (
     <div className="average">
       <div className="average-bar">
@@ -39,7 +41,7 @@ const UserAver = ({ exercisesData }) => {
         </div>
         <div className="average-section">
           <p>Accuracy</p>
-          <p>{(accuracyAverage / exercisesData.length).toFixed(2)} %</p>
+          <p>{((accuracyAverage * 100) / exercisesData.length).toFixed(2)} %</p>
         </div>
       </div>
     </div>
