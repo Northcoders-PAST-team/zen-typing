@@ -19,47 +19,6 @@ const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
         <p className="username">
           {userName} <span className={loggedIn ? "online" : "offline"}></span>
         </p>
-        {auth.currentUser ? (
-          <div>
-            <Button
-              variant="contained"
-              size="large"
-              startIcon={<BorderColorIcon />}
-            >
-              Edit Profile
-            </Button>
-            {!isDelete ? (
-              <Button
-              className="btn"
-                variant="contained"
-                color="error"
-                onClick={() => {
-                  setDelete(true);
-                }}
-                startIcon={<DeleteIcon />}
-                size="large"
-              >
-                Delete profile
-              </Button>
-            ) : (
-              <div>
-                <p className="user-option-question">Are you sure?</p>
-                <Button variant="contained" color="success">
-                  Yes
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => {
-                    setDelete(false);
-                  }}
-                >
-                  No
-                </Button>
-              </div>
-            )}
-          </div>
-        ) : null}
       </div>
 
       <div className="user-friends">
