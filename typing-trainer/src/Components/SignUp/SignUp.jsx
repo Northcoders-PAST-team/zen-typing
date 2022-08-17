@@ -51,7 +51,7 @@ function SignUp() {
   return (
     <div className="width-100">
       <SideNav />
-      <form onSubmit={signupUser} className="width-100">
+      <form onSubmit={signupUser} className="width-100" autoComplete="off">
         <div className="container">
           {/* <h1>Sign Up</h1> */}
           <h1>Please fill in this form to create an account.</h1>

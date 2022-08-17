@@ -74,7 +74,7 @@ function SignIn() {
           </button>
         </Link>
 
-        <form onSubmit={loginUser}>
+        <form onSubmit={loginUser} autocomplete="off">
           <div className="container margin-0">
             <input
               type="text"

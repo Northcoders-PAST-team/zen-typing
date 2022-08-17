@@ -411,6 +411,9 @@ export default function Home() {
               input: { color: "black" },
               textAlign: "center",
             }}
+            inputProps={{
+              autoComplete: "off",
+            }}
             id="filled-basic"
             placeholder="Type here"
             variant="filled"
