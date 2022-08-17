@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { serverTimestamp, setDoc, doc, updateDoc } from "firebase/firestore";
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
-
+import Loading from "../Loading/Loading";
 import SideNav from "../SideNav/SideNav";
 
 import {
@@ -18,6 +18,7 @@ import {
 function SignIn() {
   const { user, auth } = useContext(UserContext);
   let navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   //set login details state with Email
   const [error, setError] = useState(null);
   const [login, setLogin] = useState({
@@ -32,14 +33,17 @@ function SignIn() {
 
   function loginUser(e) {
     e.preventDefault();
+    setLoading(true);
     signInWithEmailAndPassword(auth, login.email, login.password)
       .then((cred) => {
         setError(null);
+        setLoading(false);
         console.log("user logged in", cred.user);
         navigate("/", { replace: true });
       })
       .catch((err) => {
         setError(err.message);
+        setLoading(false);
       });
   }
 
@@ -54,7 +58,11 @@ function SignIn() {
     signInWithPopup(auth, provider);
   }
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : error ? (
+    <p>{error}</p>
+  ) : (
     <>
       {/* <div className="side-nav"> */}
       <SideNav />
