@@ -88,8 +88,8 @@ export default function Face({
   const [previousInterval, setPreviousInterval] = useState(0);
   const [previousEmotion, setPreviousEmotion] = useState("neutral");
 
-  console.log(primaryEmotion, "<primary emotion");
-  console.log(calm, "<calm");
+  // console.log(primaryEmotion, "<primary emotion");
+  // console.log(calm, "<calm");
 
   useEffect(() => {
     setCalm(primaryEmotion !== "neutral" ? false : true);
