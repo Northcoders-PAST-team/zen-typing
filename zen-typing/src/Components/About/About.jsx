@@ -23,7 +23,6 @@ export default function About() {
         <p>
           Zen Typing was made by a group of Northcoders students in August 2022:
         </p>
-        <br />
         <p>
           <a href="https://github.com/Paulos-se">Paulos Ghirmai</a>,
           <a href="https://github.com/AlistairHopson"> Alistair Hopson</a>,
