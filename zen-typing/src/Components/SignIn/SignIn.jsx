@@ -69,6 +69,7 @@ function SignIn() {
       {/* </div> */}
       <div className="form-container">
         <form onSubmit={loginUser} autocomplete="off">
+          <h1 className="form-title">Sign in:</h1>
           {error ? <p className="form-error">{error}</p> : null}
           <input
             type="text"
@@ -95,7 +96,11 @@ function SignIn() {
             Login
           </button>
         </form>
-        <Link to="/" className="center button-container">
+        <Link
+          to="/"
+          className="center button-container"
+          style={{ textDecoration: "none" }}
+        >
           <button onClick={signInWithGoogle} className="btn btn-success">
             Sign in with Google
             <img
@@ -105,8 +110,12 @@ function SignIn() {
             />
           </button>
         </Link>
-        <Link to="/signup" className="referral-link">
-          Not registered? Create an account here
+        <Link
+          to="/signup"
+          className="referral-link"
+          style={{ textDecoration: "none" }}
+        >
+          Not registered? <u>Create an account here</u>
         </Link>
       </div>
     </>

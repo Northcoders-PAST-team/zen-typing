@@ -1,3 +1,5 @@
+import "./Home.scss";
+
 import { useState, Fragment, useEffect } from "react";
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -5,7 +7,6 @@ import { Doughnut } from "react-chartjs-2";
 
 import Button from "@mui/material/Button";
 
-import "./Home.scss";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -405,16 +406,17 @@ export default function Home() {
                     bgcolor: "rgba(255,255,255, 0.5)",
                     height: "fit-content",
                     color: "black",
-                    fontFamily: "Monospace', sans-serif",
+                    fontFamily: "'League Sparta', sans-serif",
                     padding: "10px;",
-                    width: "800px",
-                    fontSize: "26px",
+                    // width: "800px",
+                    fontWeight: "700",
+                    fontSize: "24px",
                   }}
                 >
                   {/* 6. Map over our paragraph array, for each word render a Word component and pass it props of what the word is, wether it's the active word and if it's correct */}
                   {/* The word is active if it's index in the array is the same as the activeWordIndex state */}
                   {/* The word is correct if it's position in the correctWordArray is true, false if false. */}
-                  <p>
+                  <p className="mb-0">
                     {cloud.map((word, index) => {
                       return (
                         <Word
@@ -448,11 +450,15 @@ export default function Home() {
                 width: "fit-content",
                 bgcolor: "rgba(255,255,255, 0.5)",
                 color: "white",
-                input: { color: "black" },
+                input: { color: "white" },
                 textAlign: "center",
+                // height: "200px",
+                fontSize: "50px",
+                backgroundColor: "black",
               }}
               inputProps={{
                 autoComplete: "off",
+                style: { fontSize: "35px" },
               }}
               id="filled-basic"
               placeholder="Type here"
@@ -490,7 +496,7 @@ export default function Home() {
             <div className="current-emotion-container">
               <p className="currently">Currently </p>
               <div className="current-emotion-box">
-                <p className="current-emotion-status">
+                <div className="current-emotion-status">
                   <strong>
                     <div
                       className={
@@ -500,7 +506,7 @@ export default function Home() {
                       {hiddenVideo ? " awaiting input" : ` ${primaryEmotion}`}
                     </div>
                   </strong>
-                </p>
+                </div>
               </div>
             </div>
           </div>

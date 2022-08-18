@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap');
+
 
 .home {
     display: grid;
@@ -13,6 +15,15 @@
     flex-direction: column;
     align-items: center;
     margin-top: 25px;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.target-paragraph {
+
+    width: 900px;
 }
 
 .user-paragraph {
@@ -114,43 +125,119 @@
     }
 }
 
-.timerContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 50px;
-    text-align: center;
-}
-
-// .faceContainer {
-//     // border-style: solid;
-//     // background-color: pink;
+// @keyframes slideInFromLeft {
+//     0% {
+//       transform: translateX(-100%);
+//     }
+//     100% {
+//       transform: translateX(0);
+//     }
 // }
 
+.timer-container{
+    width: 100%;
+    padding-top: 15px;
+}
 
+.timer-container-started {
+    width: 100%;
+    padding-top: 15px;
+    background-color: black;
+    animation: fadein 0.5s;
+}
+
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes incorrect-text {
+    0% {opacity:1;}
+    25% { opacity:0;}
+    50% { opacity:1;}
+    65% { opacity:0;}
+    80% { opacity:1;}
+    90% { opacity:0;}
+    100% {opacity:1;}
+}
+
+// @keyframes blinker {
+//     50% {
+//       opacity: 0;
+//     }
+//   }
+
+
+// @keyframes NAME-YOUR-ANIMATION {
+//     0%, 49% {
+//       background-color:  rgba(253, 225, 67, 0.567);
+//     //   border: 3px solid #e50000;
+//     }
+//     50%, 100% {
+//     //   background-color: #e50000;
+//     //   border: 3px solid rgb(117, 209, 63);
+//     }
+//   }
+
+@keyframes moveGradient {
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
 .correct {
     font-weight: bold;
-    color: green;
+    color: rgb(3, 107, 3);
+    animation: fadein 0.5s;
 }
 
 .incorrect {
     font-weight: bold;
-    color: red;
+    color: rgb(148, 0, 0);
+    animation: incorrect-text 0.75s;
 }
 
 .active {
     font-weight: bold;
-    color: blue;
+    color: rgb(15, 16, 40);
+    font-size: 26px;
     text-decoration: underline;
+    background-color: rgba(253, 225, 67, 0.567);
+    padding: 8px;
+    padding-left: 4px;
+    padding-right: 4px;
+    animation: moveGradient 1s infinite;
+
+    background: linear-gradient(
+      60deg,
+      rgba(54, 162, 235, 0.5),
+      rgba(255, 206, 86, 0.5),
+
+     rgba(75, 192, 192, 0.5),
+     rgba(153, 102, 255, 0.5),
+     rgba(255, 206, 86, 0.5),
+
+      rgba(255, 99, 132, 0.5),
+
+     rgba(255, 159, 64, 0.5),
+    );
+    background-size: 300% 300%;
+    background-position: 0 50%;
+    border-color: black;
+    border-width: 10px;
+    animation: moveGradient 4s alternate infinite;
 }
 
-.feedback {
+.feedback, .feedback-live {
     display: flex;
-    flex-direction: column;
-    width: 50%;
+    width: 100%;
 }
+
+.feedback-live {
+    background-color: rgba(0, 0, 0, 0.459);
+}
+
 
 .time-elapsed-and-speed {
     display: flex;
