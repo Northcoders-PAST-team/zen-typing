@@ -1,5 +1,4 @@
 import "./App.scss";
-import "animate.css";
 import { db } from "./firebaseConfig";
 import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
