@@ -496,7 +496,7 @@ export default function Home() {
             <div className="current-emotion-container">
               <p className="currently">Currently </p>
               <div className="current-emotion-box">
-                <p className="current-emotion-status">
+                <div className="current-emotion-status">
                   <strong>
                     <div
                       className={
@@ -506,7 +506,7 @@ export default function Home() {
                       {hiddenVideo ? " awaiting input" : ` ${primaryEmotion}`}
                     </div>
                   </strong>
-                </p>
+                </div>
               </div>
             </div>
           </div>
