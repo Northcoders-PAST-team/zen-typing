@@ -1,5 +1,4 @@
 import React from "react";
-import "animate.css";
 
 // 7. Define the Word component, picking up the 3 props it's passed and destructure them, change className based on props
 export default function Word(props) {
