@@ -55,6 +55,8 @@ $surprised-light:rgba(255, 159, 64, 0.2);
 .awaiting-input, .neutral, .angry, .sad, .disgusted, .surprised, .happy {
     animation-duration: 2s;
     animation-iteration-count: infinite;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 .neutral {

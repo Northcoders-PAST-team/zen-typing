@@ -12,7 +12,7 @@ export default function About() {
       <div className="about-box">
         <p>
           <strong>Zen Typing</strong> is an interactive typing tool to help you
-          improve you enter a focused and productive state whilst typing.
+          enter a focused and productive state whilst using your keyboard.
           <br />
           <br />
           Select an activity by difficulty, and then start typing to begin
@@ -32,8 +32,8 @@ export default function About() {
           <br />
           <p>
             {`See our project on `}
-            <a href="https://github.com/Northcoders-PAST-team/typing-trainer">
-              GitHub
+            <a href="https://github.com/Northcoders-PAST-team/zen-typing">
+              GitHub.
             </a>
           </p>
         </p>

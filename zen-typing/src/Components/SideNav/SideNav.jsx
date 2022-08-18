@@ -149,7 +149,11 @@ const ResponsiveAppBar = ({ startCounting }) => {
 
         {user ? (
           <p style={{ color: "white", textAlign: "center" }}>
-            Logged in as {user.displayName || user.email}
+            Logged in as{" "}
+            <Link to={`/users/${user.uid}`}>
+              {" "}
+              <strong>{user.displayName || user.email}</strong>
+            </Link>
           </p>
         ) : null}
 
@@ -157,48 +161,105 @@ const ResponsiveAppBar = ({ startCounting }) => {
           <MenuItem
             href="/about"
             key="about"
-            sx={{ fontSize: "50px", mb: "30px", color: "white" }}
+            sx={{
+              fontSize: "50px",
+              mb: "30px",
+              ml: "20px",
+              color: "white",
+            }}
+            onMouseEnter={(e) =>
+              (e.target.style.backgroundColor = "rgba(149, 0, 175, 0.45)")
+            }
+            onMouseLeave={(e) =>
+              (e.target.style.backgroundColor = "rgba(0, 0, 0, 0)")
+            }
           >
-            <AutoStoriesIcon sx={{ mr: "20px", fontSize: "40px" }} />
+            <AutoStoriesIcon
+              sx={{ mr: "20px", ml: "20px", fontSize: "40px" }}
+            />
             <Typography textAlign="center">About</Typography>
           </MenuItem>
         </Link>
         <Link to="/users">
           <MenuItem
             key="community"
-            sx={{ fontSize: "50px", mb: "30px", color: "white" }}
+            sx={{ fontSize: "50px", mb: "30px", ml: "20px", color: "white" }}
+            onMouseEnter={(e) =>
+              (e.target.style.backgroundColor = "rgba(149, 0, 175, 0.45)")
+            }
+            onMouseLeave={(e) =>
+              (e.target.style.backgroundColor = "rgba(0, 0, 0, 0)")
+            }
           >
-            <PeopleIcon sx={{ mr: "20px", fontSize: "40px" }} />
+            <PeopleIcon sx={{ mr: "20px", ml: "20px", fontSize: "40px" }} />
             <Typography textAlign="center">Community</Typography>
           </MenuItem>
         </Link>
         <Divider />
         {user ? null : (
           <Link to={`/signup`}>
-            <MenuItem key="signup" sx={{ fontSize: "50px" }}>
-              <HowToRegIcon sx={{ mr: "20px", fontSize: "40px" }} />
+            <MenuItem
+              key="signup"
+              sx={{ fontSize: "50px", mb: "20px", ml: "20px", color: "white" }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = "rgba(149, 0, 175, 0.45)")
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "rgba(0, 0, 0, 0)")
+              }
+            >
+              <HowToRegIcon sx={{ mr: "20px", ml: "20px", fontSize: "40px" }} />
               <Typography textAlign="center">Sign Up</Typography>
             </MenuItem>
           </Link>
         )}
         {user ? (
           <Link to={`/users/${user.uid}`}>
-            <MenuItem key="profile" sx={{ fontSize: "50px" }}>
+            <MenuItem
+              key="profile"
+              sx={{ fontSize: "50px", mb: "20px", ml: "35px", color: "white" }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = "rgba(149, 0, 175, 0.45)")
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "rgba(0, 0, 0, 0)")
+              }
+            >
               <AccountCircleIcon sx={{ mr: "20px", fontSize: "40px" }} />
               <Typography textAlign="center">Profile</Typography>
             </MenuItem>
+            <Divider />
           </Link>
         ) : null}
         {user ? (
           <Link to="/">
-            <MenuItem key="Logout" onClick={logOut} sx={{ fontSize: "50px" }}>
+            <MenuItem
+              key="Logout"
+              onClick={logOut}
+              sx={{ fontSize: "50px", ml: "35px", color: "white" }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = "rgba(149, 0, 175, 0.45)")
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "rgba(0, 0, 0, 0)")
+              }
+            >
               <LogoutIcon sx={{ mr: "20px", fontSize: "40px" }} />
               <Typography textAlign="center">Logout</Typography>
             </MenuItem>
           </Link>
         ) : (
           <Link to="/signin">
-            <MenuItem key="Login" sx={{ fontSize: "50px" }}>
+            <MenuItem
+              key="Login"
+              sx={{ fontSize: "50px", ml: "35px", color: "white" }}
+              onMouseEnter={(e) =>
+                (e.target.style.backgroundColor = "rgba(149, 0, 175, 0.45)")
+              }
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "rgba(0, 0, 0, 0)")
+              }
+            >
               <LoginIcon sx={{ mr: "20px", fontSize: "40px" }} />
               <Typography textAlign="center">Login</Typography>
             </MenuItem>

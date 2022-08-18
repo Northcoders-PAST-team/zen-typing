@@ -44,7 +44,10 @@ button {
 .referral-link {
     z-index: 100;
     text-align: center;
-
+    background-color:  rgba(0,0,0,0.5);
+    padding: 12px;
+    color: white;
+    text-underline-offset: 3px;
 }
 
 .form-title {

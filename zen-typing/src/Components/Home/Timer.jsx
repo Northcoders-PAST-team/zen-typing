@@ -72,23 +72,23 @@ export default function Timer({
   const minutes = timeElapsed / 60;
 
   return (
-    <div className="timerContainer">
+    <div
+      className={timeElapsed ? "timer-container-started" : "timer-container"}
+    >
       <Fragment>
-        <div className="feedback">
-          <div className="time-elapsed-and-speed">
-            <p>Time: {timeElapsed} secs</p>
-            <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM </p>
-            <p>
-              {!undetected
-                ? ""
-                : undetected === 1
-                ? `We couldn't detect you once during the exercise`
-                : `We couldn't detect you ${undetected} times during the exercise.`}
-            </p>
-          </div>
-
-          <br />
+        <div className="time-elapsed-and-speed">
+          <p>Time: {timeElapsed} secs</p>
+          <p>Speed: {(correctWords / minutes || 0).toFixed(2)} WPM </p>
+          <p>
+            {!undetected
+              ? ""
+              : undetected === 1
+              ? `We couldn't detect you once during the exercise`
+              : `We couldn't detect you ${undetected} times during the exercise.`}
+          </p>
         </div>
+
+        <br />
       </Fragment>
     </div>
   );
