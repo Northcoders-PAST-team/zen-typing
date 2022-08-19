@@ -1,20 +1,11 @@
 import "../Home/Home.scss";
 
 export default function ExerciseCard(props) {
-  const {
-    uid,
-    user,
-    createdAt,
-    time,
-    wpm,
-    difficulty,
-    paragraph,
-    accuracy,
-    neutral,
-  } = props.exercise;
+  const { user, createdAt, time, wpm, difficulty, accuracy, neutral } =
+    props.exercise;
 
   const dateObj = new Date(createdAt.seconds * 1000);
-  const month = dateObj.getUTCMonth() + 1; //months from 1-12
+  const month = dateObj.getUTCMonth() + 1;
   const day = dateObj.getUTCDate();
   const year = dateObj.getUTCFullYear();
   const hour = dateObj.getHours();

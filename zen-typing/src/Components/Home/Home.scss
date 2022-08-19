@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap');
 
-
 .home {
     display: grid;
     border-color: black;
@@ -22,13 +21,11 @@
 }
 
 .target-paragraph {
-
     width: 900px;
 }
 
 .user-paragraph {
     z-index: 1;
-
 }
 
 .side-nav {
@@ -53,9 +50,6 @@
     min-height: 100vh;
     max-height: 100%;
     overflow: hidden;
-
-
-
     .historyContainer {
         width: 80%;
     }
@@ -94,7 +88,6 @@
         border-radius: 10px;
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 1);
     }
-
 }
 
 .difficulty-form {
@@ -125,15 +118,6 @@
     }
 }
 
-// @keyframes slideInFromLeft {
-//     0% {
-//       transform: translateX(-100%);
-//     }
-//     100% {
-//       transform: translateX(0);
-//     }
-// }
-
 .timer-container{
     width: 100%;
     padding-top: 15px;
@@ -145,7 +129,6 @@
     background-color: black;
     animation: fadein 0.5s;
 }
-
 
 @keyframes fadein {
     from { opacity: 0; }
@@ -161,24 +144,6 @@
     90% { opacity:0;}
     100% {opacity:1;}
 }
-
-// @keyframes blinker {
-//     50% {
-//       opacity: 0;
-//     }
-//   }
-
-
-// @keyframes NAME-YOUR-ANIMATION {
-//     0%, 49% {
-//       background-color:  rgba(253, 225, 67, 0.567);
-//     //   border: 3px solid #e50000;
-//     }
-//     50%, 100% {
-//     //   background-color: #e50000;
-//     //   border: 3px solid rgb(117, 209, 63);
-//     }
-//   }
 
 @keyframes moveGradient {
     50% {
@@ -213,13 +178,10 @@
       60deg,
       rgba(54, 162, 235, 0.5),
       rgba(255, 206, 86, 0.5),
-
      rgba(75, 192, 192, 0.5),
      rgba(153, 102, 255, 0.5),
      rgba(255, 206, 86, 0.5),
-
       rgba(255, 99, 132, 0.5),
-
      rgba(255, 159, 64, 0.5),
     );
     background-size: 300% 300%;
@@ -244,5 +206,3 @@
     flex-direction: column;
     width: 100%;
 }
-
-///@at-root
