@@ -1,10 +1,8 @@
 import "./SignUp.scss";
 
-import { db } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import SideNav from "../SideNav/SideNav";
 import Loading from "../Loading/Loading";
@@ -12,13 +10,11 @@ import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
 
 function SignUp() {
-  const { user, auth } = useContext(UserContext);
-  //navigate hook initialized
+  const { auth } = useContext(UserContext);
   let navigate = useNavigate();
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  //set signup details state with Email
   const [signUp, setSignUp] = useState({
     email: "",
     password: "",

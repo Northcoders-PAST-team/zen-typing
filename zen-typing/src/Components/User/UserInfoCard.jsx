@@ -1,12 +1,5 @@
-import { useState } from "react";
 import Avatar from "../../images/avatar.webp";
-import { Button } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-
 const UserInfoCard = ({ userName, friendList, loggedIn, auth, avatar }) => {
-  const [isDelete, setDelete] = useState(false);
-
   return (
     <div className="user-InfoCard">
       {avatar ? (

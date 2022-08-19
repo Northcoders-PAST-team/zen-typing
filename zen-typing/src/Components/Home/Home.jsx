@@ -2,9 +2,6 @@ import "./Home.scss";
 
 import { useState, Fragment, useEffect } from "react";
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "react-chartjs-2";
-
 import Button from "@mui/material/Button";
 
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,22 +10,16 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import SideNav from "../SideNav/SideNav";
-// import { useAuthState } from "react-firebase-hooks/auth";
 import { Link, useSearchParams } from "react-router-dom";
 
 import { UserContext } from "../User/UserContext";
 import { useContext } from "react";
 import Loading from "../Loading/Loading";
-//importing database
 import { db } from "../../firebaseConfig";
 import {
   collection,
-  getDoc,
   addDoc,
-  deleteDoc,
   doc,
-  setDoc,
-  updateDoc,
   Timestamp,
   onSnapshot,
 } from "firebase/firestore";
@@ -37,16 +28,10 @@ import Face from "../Face/Face";
 import Word from "./Word";
 import Timer from "./Timer";
 import History from "../History/History";
-import { OptionUnstyled } from "@mui/base";
-import { experimentalStyled } from "@mui/material";
 
 export default function Home() {
-  // const [user] = useAuthState(auth);
-
   const { user, auth } = useContext(UserContext);
-  // 1. Use state to hold the userInput, linked to the text input box
-  // 2. Use state to track what number in the word array the user is on, start at 0 and increment everytime they type a space
-  // 3. Use state to track wether each word was spelled correctly or incorrectly e. [true, true, false, true]
+
   const [userInput, setUserInput] = useState("");
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [correctWordArray, setCorrectWordArray] = useState([]);
@@ -72,8 +57,6 @@ export default function Home() {
   const [searchLevel, setSearchLevel] = useState(level || "easy");
   const [searchId, setSearchId] = useState(id || "1");
   const [request, setRequest] = useState({ level: searchLevel, id: searchId });
-
-  // const [request, setRequest] = useState({ level: "easy", id: "1" });
 
   const [difficulty, setDifficulty] = useState("easy");
   const [keyboard, setKeyboard] = useState(true);
@@ -145,21 +128,17 @@ export default function Home() {
   const [paragraph, setParagraph] = useState("");
 
   const colRef = collection(db, "paragraphs");
-  // const exercisesRef = collection(db, "exercises");
   const exercisesRef = collection(db, "exercises");
 
   function selectId(e) {
     if (e.target.value === "ID") {
-      // setID(String(Math.floor(Math.random() * 10 + 1)));
       setID("1");
     } else {
       setID(e.target.value);
     }
   }
-  //React.MouseEvent<HTMLButtonElement, MouseEvent>
 
   function selectDifficulty(e) {
-    // setId(String(Math.floor(Math.random() * 10 + 1)));
     if (e.target.value === "choice") {
       setDifficulty("easy");
     } else {
@@ -167,7 +146,6 @@ export default function Home() {
     }
   }
 
-  //just have to add 6 lines to reset startCounting, activeWordIndex, emotionLog, timeElapsed and correctWordArray.
   function generate() {
     setRequest({ level: difficulty, id: iD });
     setSearch({ level: difficulty, id: iD });
@@ -197,7 +175,6 @@ export default function Home() {
           setParagraph(docSnap.data().text);
           setIsLoading(false);
         } else {
-          // doc.data() will be undefined in this case
           console.log("No such document!");
           setIsLoading(false);
         }
@@ -275,12 +252,8 @@ export default function Home() {
 
       setKeyboard(false);
       setHiddenVideo(true);
-      console.log(lastWord === cloud[cloud.length - 1]);
 
-      console.log(lastWord);
       let arr = [...correctWordArray, lastWord === cloud[cloud.length - 1]];
-      console.log(correctWordArray);
-      console.log(arr);
 
       if (user) {
         addDoc(exercisesRef, {
@@ -373,7 +346,6 @@ export default function Home() {
             setEmotionLog={setEmotionLog}
             emotionLog={emotionLog}
             timeElapsed={timeElapsed}
-            // primaryEmotion={primaryEmotion}
             setUndetected={setUndetected}
             undetected={undetected}
             hiddenVideo={hiddenVideo}
@@ -408,7 +380,6 @@ export default function Home() {
                     color: "black",
                     fontFamily: "'League Sparta', sans-serif",
                     padding: "10px;",
-                    // width: "800px",
                     fontWeight: "700",
                     fontSize: "24px",
                   }}
@@ -452,7 +423,6 @@ export default function Home() {
                 color: "white",
                 input: { color: "white" },
                 textAlign: "center",
-                // height: "200px",
                 fontSize: "50px",
                 backgroundColor: "black",
               }}

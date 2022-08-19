@@ -1,6 +1,6 @@
 import "./Graph.scss";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Chart } from "react-google-charts";
 
 const Graph = ({ exercisesData }) => {
@@ -29,7 +29,6 @@ const Graph = ({ exercisesData }) => {
   });
 
   const accuracy = JSON.stringify(accuracyData);
-  console.log(accuracy);
   const emotions = JSON.stringify([
     ["Emotion", "Percentage"],
     ["happy", happy / exercisesData.length],
@@ -54,7 +53,6 @@ const Graph = ({ exercisesData }) => {
   });
   const wordsPerMin = JSON.stringify([["Exercise", "W/M"], ...seperateWPM]);
 
-  //state for data going in
   const [data, setData] = useState(wordsPerMin);
   const [chart, setChartType] = useState("Line");
   const [title, setTitle] = useState("");
@@ -71,7 +69,6 @@ const Graph = ({ exercisesData }) => {
       duration: 1500,
     },
   };
-  console.log(options);
 
   return (
     <div className="graph">

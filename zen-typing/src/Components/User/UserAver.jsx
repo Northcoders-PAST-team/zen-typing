@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 const UserAver = ({ exercisesData }) => {
   let wpmAverage = 0;
   let accuracyAverage = 0;
@@ -17,7 +15,6 @@ const UserAver = ({ exercisesData }) => {
       : hard++;
   });
 
-  console.log(exercisesData);
   return (
     <div className="average">
       <div className="average-bar">

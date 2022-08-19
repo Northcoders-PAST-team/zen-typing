@@ -1,6 +1,5 @@
 import "./App.scss";
 import { db } from "./firebaseConfig";
-import Nav from "./Components/Nav/Nav";
 import Home from "./Components/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import User from "./Components/User/User";
@@ -21,14 +20,10 @@ import SignUp from "./Components/SignUp/SignUp";
 import { UserContext } from "./Components/User/UserContext";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useState } from "react";
 const auth = getAuth();
 
-//notifies when user signs in and out
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
     const usersRef = doc(db, "users", user.uid);
     console.log(" User is signed in");
     getDoc(usersRef).then((docSnapshot) => {
@@ -37,7 +32,6 @@ onAuthStateChanged(auth, (user) => {
           online: true,
         });
       } else {
-        // create the document
         setDoc(usersRef, {
           email: user.email,
           displayName: user.displayName || user.email,
@@ -61,11 +55,9 @@ function App() {
       <div className="background-overlay">
         <BrowserRouter>
           <UserContext.Provider value={{ user, auth }}>
-            {/* <Nav /> */}
             <Routes>
               <Route path={"/"} element={<Home />} />
               <Route path={"about"} element={<About />} />
-
               <Route path={"/users/:user_id"} element={<User />} />
               <Route path={"/users"} element={<Users />} />
               <Route path={"*"} element={<Errors />} />

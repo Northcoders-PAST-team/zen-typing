@@ -2,9 +2,6 @@ import "./About.scss";
 
 import SideNav from "../SideNav/SideNav";
 
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-
 export default function About() {
   return (
     <div className="about-container">

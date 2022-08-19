@@ -1,22 +1,17 @@
 import { Fragment, useRef, useEffect, useState } from "react";
 import "./Face.scss";
 import * as faceapi from "face-api.js";
-import Button from "@mui/material/Button";
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 export default function Face({
   startCounting,
   emotionLog,
-  setEmotionLog,
   timeElapsed,
   undetected,
   setUndetected,
   hiddenVideo,
-  setHiddenVideo,
   data,
-  calm,
   setCalm,
   neutral,
   setNeutral,
@@ -60,16 +55,6 @@ export default function Face({
       });
   };
 
-  // const [neutral, setNeutral] = useState();
-
-  // const [happy, setHappy] = useState();
-  // const [surprised, setSurprised] = useState();
-  // const [angry, setAngry] = useState();
-  // const [sad, setSad] = useState();
-  // const [disgusted, setDisgusted] = useState();
-
-  // const [calm, setCalm] = useState(true);
-
   let currentEmotions = {
     happy: happy,
     surprised: surprised,
@@ -84,12 +69,6 @@ export default function Face({
     : Object.keys(currentEmotions).reduce((a, b) =>
         currentEmotions[a] > currentEmotions[b] ? a : b
       );
-
-  const [previousInterval, setPreviousInterval] = useState(0);
-  const [previousEmotion, setPreviousEmotion] = useState("neutral");
-
-  // console.log(primaryEmotion, "<primary emotion");
-  // console.log(calm, "<calm");
 
   useEffect(() => {
     setCalm(primaryEmotion !== "neutral" ? false : true);
@@ -160,23 +139,12 @@ export default function Face({
           </div>
           <canvas
             ref={canvasRef}
-            // width="940"
-            // height="200"
-            className={
-              hiddenVideo
-                ? // ? "hidden"
-                  // : calm
-                  // ? "face-canvas-calm"
-                  // : "face-canvas-" + primaryEmotion
-                  "hidden"
-                : "face-canvas-" + primaryEmotion
-            }
+            className={hiddenVideo ? "hidden" : "face-canvas-" + primaryEmotion}
           />
           <div className="bar-chart">
             <Doughnut
               data={data}
               options={{
-                // cutout: 200,
                 plugins: {
                   legend: {
                     position: "bottom",

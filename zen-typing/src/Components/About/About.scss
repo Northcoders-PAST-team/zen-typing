@@ -19,12 +19,10 @@
 }
 
 ul {
-
     padding-left: 15em;
 }
 
 a {
-    // text-shadow: -1px -1px 0 rgb(248, 248, 248, 0.4), 1px -1px 0 rgb(255, 255, 255, 0.4), -1px 1px 0 rgb(255, 255, 255, 0.4), 1px 1px 0 rgb(255, 255, 255, 0.4);
     color: white;
     text-decoration: underline;
     text-decoration-color: rgb(149, 0, 175, 0.8);
@@ -34,7 +32,6 @@ a {
 
 a:hover {
     color: white;
-
     text-decoration-style: solid;
     text-underline-offset: 7px;
     text-decoration-color: rgb(149, 0, 175, 1);

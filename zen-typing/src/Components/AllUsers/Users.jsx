@@ -1,14 +1,6 @@
 import SideNav from "../SideNav/SideNav";
 import { useEffect, useState, useContext } from "react";
-import {
-  collection,
-  doc,
-  onSnapshot,
-  getDocs,
-  where,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import Loading from "../Loading/Loading";
 import { db } from "../../firebaseConfig";
 import { Link } from "react-router-dom";
@@ -20,8 +12,6 @@ const Users = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const usersRef = collection(db, "users");
-
-  //const q = query(usersRef);
 
   const getData = async () => {
     const data = await getDocs(usersRef);

@@ -28,5 +28,4 @@ export default function Word(props) {
 }
 
 // 8. This is to stop each Word component from rerendering on every onChange rerender
-// I guess it's like saying please remember this component and don't rerender it with everything else, only when it's specifically rerendered
 Word = React.memo(Word);
